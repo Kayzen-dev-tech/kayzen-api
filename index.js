@@ -139,7 +139,7 @@ async function scrapeWallpaper(query) {
 
 async function scrapeLirik(query) {
     try {
-        const { data: searchData } = await axios.get(`https://lirik.my/?s=${encodeURIComponent(query)}`);
+        const { data: searchData } = await axios.get(`https://www.azlyrics.com/search/?q=${encodeURIComponent(query)}`);
         const $ = cheerio.load(searchData);
         const link = $('.entry-title a').attr('href');
         if (!link) return null;
