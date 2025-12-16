@@ -36,7 +36,7 @@
     <div class="info-section" id="about">
         <div class="card">
             <h3><i class="fas fa-user"></i> About Kayzen Izumi</h3>
-            <p>Halo, saya Kayzen Izumi. Seorang pengembang yang berfokus pada JavaScript dan Bot Automation. Saya suka membangun sistem yang efisien dan berbagi kode dengan komunitas.</p>
+            <p>Halo, saya Kayzen Izumi. Seorang pengembang yang berfokus pada JavaScript dan Bot Automation. Saya suka membangun sistem yang efisien dan berbagi kode dengan komunitas, selain itu saya juga suka cosplayer, dan tentu juga suka my bini @h___rvn🤭.</p>
         </div>
         <div class="card">
             <h3><i class="fas fa-code"></i> About Web Ini</h3>
@@ -72,7 +72,27 @@
                 <span>GitHub</span>
             </a>
         </div>
+
+        <div class="special-link-container">
+            <a href="https://instagram.com/h___rvn" target="_blank" class="special-card">
+                <i class="fas fa-heart" style="color: #ff4d4d;"></i>
+                <span>My Bini (동그란) 😋</span>
+            </a>
         </div>
+    </div>
+
+    <div class="slider-container" style="background: #111; border-top: 1px solid #333;">
+        <h2 style="color: #ff4d4d; border-bottom-color: #ff4d4d;">❤️ My Bini Gallery ❤️</h2>
+        <div class="slider-wrapper">
+            <div class="slider-track">
+                <% for(let i=1; i<=5; i++) { %>
+                    <div class="slide">
+                        <img src="/images/bini<%= i %>.jpg" alt="My Bini <%= i %>" style="border: 2px solid #ff4d4d; box-shadow: 0 0 15px rgba(255, 77, 77, 0.4);">
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
 
     <div class="update-section">
         <div class="update-box">
