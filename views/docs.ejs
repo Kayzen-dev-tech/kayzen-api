@@ -15,67 +15,73 @@
     </header>
 
     <div class="container">
+        
         <div class="category">
             <h2><i class="fas fa-download"></i> 1. Media & Download</h2>
-            <div class="endpoint-box">
-                <div class="endpoint-title"><span class="method">GET</span> /api/download/youtube</div>
-                <div class="input-group"> <input type="text" id="yt_q" class="input-field" placeholder="Judul Lagu"><button class="btn-send" onclick="sendReq('/api/download/youtube','q','yt_q')"><i class="fas fa-paper-plane"></i></button></div>
-            </div>
-            <div class="endpoint-box">
-                <div class="endpoint-title"><span class="method">GET</span> /api/download/tiktok</div>
-                <div class="input-group"> <input type="text" id="tt_u" class="input-field" placeholder="Link TikTok"><button class="btn-send" onclick="sendReq('/api/download/tiktok','url','tt_u')"><i class="fas fa-paper-plane"></i></button></div>
-            </div>
-            <div class="endpoint-box">
-                <div class="endpoint-title"><span class="method">GET</span> /api/download/instagram</div>
-                <div class="input-group"> <input type="text" id="ig_u" class="input-field" placeholder="Link Instagram"><button class="btn-send" onclick="sendReq('/api/download/instagram','url','ig_u')"><i class="fas fa-camera-retro"></i></button></div>
-            </div>
-            <div class="endpoint-box">
-                <div class="endpoint-title"><span class="method">GET</span> /api/download/pinterest</div>
-                <div class="input-group"> <input type="text" id="pin_u" class="input-field" placeholder="Link Pinterest"><button class="btn-send" onclick="sendReq('/api/download/pinterest','url','pin_u')"><i class="fas fa-thumbtack"></i></button></div>
-            </div>
-            <div class="endpoint-box">
-                <div class="endpoint-title"><span class="method">GET</span> /api/search/tiktok</div>
-                <div class="input-group"> <input type="text" id="tt_s" class="input-field" placeholder="Cari TikTok"><button class="btn-send" onclick="sendReq('/api/search/tiktok','q','tt_s')"><i class="fas fa-search"></i></button></div>
-            </div>
             <div class="endpoint-box">
                 <div class="endpoint-title"><span class="method">GET</span> /api/search/pinterest</div>
                 <div class="input-group"> <input type="text" id="pin_s" class="input-field" placeholder="Cari Pinterest"><button class="btn-send" onclick="sendReq('/api/search/pinterest','q','pin_s')"><i class="fas fa-search"></i></button></div>
             </div>
             <div class="endpoint-box">
-                <div class="endpoint-title"><span class="method">GET</span> /api/search/wiki</div>
-                <div class="input-group"> <input type="text" id="wiki_q" class="input-field" placeholder="Cari Wiki"><button class="btn-send" onclick="sendReq('/api/search/wiki','q','wiki_q')"><i class="fas fa-book"></i></button></div>
+                <div class="endpoint-title"><span class="method">GET</span> /api/download/instagram <span class="badge" style="background:#E1306C">New</span></div>
+                <div class="input-group"> <input type="text" id="ig_url" class="input-field" placeholder="Link Instagram (Post/Reels)"><button class="btn-send" onclick="sendReq('/api/download/instagram','url','ig_url')"><i class="fas fa-download"></i></button></div>
             </div>
         </div>
 
         <div class="category">
-            <h2><i class="fas fa-tools"></i> 2. Tools / Maker</h2>
+            <h2><i class="fas fa-tv"></i> 2. Anime & Manga</h2>
             <div class="endpoint-box">
-                <div class="endpoint-title"><span class="method">GET</span> /api/maker/brat <span class="badge" style="background:hotpink">Anime V2</span></div>
-                <div class="input-group"> <input type="text" id="brat_t" class="input-field" placeholder="Teks Brat"><button class="btn-send" onclick="sendReq('/api/maker/brat','text','brat_t')"><i class="fas fa-paint-brush"></i></button></div>
+                <div class="endpoint-title"><span class="method">GET</span> /api/anime/search</div>
+                <div class="input-group"> <input type="text" id="ani_q" class="input-field" placeholder="Cari Anime"><button class="btn-send" onclick="sendReq('/api/anime/search','q','ani_q')"><i class="fas fa-search"></i></button></div>
             </div>
             <div class="endpoint-box">
-                <div class="endpoint-title"><span class="method">GET</span> /api/tools/img2ascii</div>
-                <div class="input-group"> <input type="text" id="asc_u" class="input-field" placeholder="Link Gambar"><button class="btn-send" onclick="sendReq('/api/tools/img2ascii','url','asc_u')"><i class="fas fa-image"></i></button></div>
+                <div class="endpoint-title"><span class="method">GET</span> /api/anime/manga</div>
+                <div class="input-group"> <input type="text" id="man_q" class="input-field" placeholder="Cari Manga"><button class="btn-send" onclick="sendReq('/api/anime/manga','q','man_q')"><i class="fas fa-search"></i></button></div>
+            </div>
+            <div class="endpoint-box" style="cursor: pointer;" onclick="testApi('/api/anime/top')">
+                <div class="endpoint-title"><span class="method">GET</span> /api/anime/top <span class="badge">Klik Disini</span></div>
             </div>
         </div>
 
         <div class="category">
-            <h2><i class="fas fa-eye"></i> 3. Stalker</h2>
+            <h2><i class="fas fa-shopping-cart"></i> 3. E-Commerce</h2>
             <div class="endpoint-box">
-                <div class="endpoint-title"><span class="method">GET</span> /api/stalk/github</div>
-                <div class="input-group"> <input type="text" id="gh_u" class="input-field" placeholder="User Github"><button class="btn-send" onclick="sendReq('/api/stalk/github','username','gh_u')"><i class="fas fa-search"></i></button></div>
+                <div class="endpoint-title"><span class="method">GET</span> /api/search/lazada <span class="badge" style="background:#0f0556">New</span></div>
+                <div class="input-group"> <input type="text" id="lzd_q" class="input-field" placeholder="Cari Barang di Lazada"><button class="btn-send" onclick="sendReq('/api/search/lazada','q','lzd_q')"><i class="fas fa-search"></i></button></div>
+            </div>
+        </div>
+
+        <div class="category">
+            <h2><i class="fas fa-tools"></i> 4. Tools & Maker</h2>
+            <div class="endpoint-box">
+                <div class="endpoint-title"><span class="method">GET</span> /api/tools/lyrics <span class="badge">AI Gen</span></div>
+                <div class="input-group"> <input type="text" id="lyric_ai" class="input-field" placeholder="Buat Lirik via AI"><button class="btn-send" onclick="sendReq('/api/tools/lyrics','q','lyric_ai')"><i class="fas fa-robot"></i></button></div>
             </div>
             <div class="endpoint-box">
-                <div class="endpoint-title"><span class="method">GET</span> /api/stalk/instagram</div>
-                <div class="input-group"> <input type="text" id="ig_stalk" class="input-field" placeholder="User IG"><button class="btn-send" onclick="sendReq('/api/stalk/instagram','username','ig_stalk')"><i class="fab fa-instagram"></i></button></div>
+                <div class="endpoint-title"><span class="method">GET</span> /api/tools/lirik-lagu <span class="badge" style="background:#25D366">Original</span></div>
+                <div class="input-group"> <input type="text" id="lyric_real" class="input-field" placeholder="Cari Lirik Lagu (Lirik.my)"><button class="btn-send" onclick="sendReq('/api/tools/lirik-lagu','q','lyric_real')"><i class="fas fa-music"></i></button></div>
             </div>
             <div class="endpoint-box">
-                <div class="endpoint-title"><span class="method">GET</span> /api/stalk/tiktok</div>
-                <div class="input-group"> <input type="text" id="tt_stalk" class="input-field" placeholder="User TikTok"><button class="btn-send" onclick="sendReq('/api/stalk/tiktok','username','tt_stalk')"><i class="fab fa-tiktok"></i></button></div>
+                <div class="endpoint-title"><span class="method">GET</span> /api/maker/editor <span class="badge" style="background:#00d2ff">AI Edit</span></div>
+                <div class="input-group" style="gap:5px;"> 
+                    <input type="text" id="edit_url" class="input-field" placeholder="URL Gambar">
+                    <input type="text" id="edit_prompt" class="input-field" placeholder="Prompt (Ex: Make it snowing)">
+                    <button class="btn-send" onclick="sendEditReq()"><i class="fas fa-magic"></i></button>
+                </div>
             </div>
-             <div class="endpoint-box">
-                <div class="endpoint-title"><span class="method">GET</span> /api/stalk/npm</div>
-                <div class="input-group"> <input type="text" id="npm_u" class="input-field" placeholder="Nama Paket NPM"><button class="btn-send" onclick="sendReq('/api/stalk/npm','package','npm_u')"><i class="fas fa-search"></i></button></div>
+        </div>
+
+        <div class="category">
+            <h2><i class="fas fa-dice"></i> 5. Random & Info</h2>
+            <div class="endpoint-box">
+                <div class="endpoint-title"><span class="method">GET</span> /api/search/wallpaper</div>
+                <div class="input-group"> <input type="text" id="wall_q" class="input-field" placeholder="Cari Wallpaper"><button class="btn-send" onclick="sendReq('/api/search/wallpaper','q','wall_q')"><i class="fas fa-image"></i></button></div>
+            </div>
+            <div class="endpoint-box" style="cursor: pointer;" onclick="testApi('/api/random/waifu')">
+                <div class="endpoint-title"><span class="method">GET</span> /api/random/waifu <span class="badge">Klik Disini</span></div>
+            </div>
+            <div class="endpoint-box" style="cursor: pointer;" onclick="testApi('/api/info/gempa')">
+                <div class="endpoint-title"><span class="method">GET</span> /api/info/gempa <span class="badge">Klik Disini</span></div>
             </div>
         </div>
     </div>
@@ -84,10 +90,11 @@
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
             <h3>Result Preview</h3>
+            
             <div id="mediaPreview" style="margin-bottom: 15px; text-align: center; display: none;">
                 <img id="previewImage" src="" style="max-width: 100%; border-radius: 8px; display: none; margin: 0 auto; border: 1px solid #444;">
                 <video id="previewVideo" controls style="max-width: 100%; width: 100%; border-radius: 8px; display: none;"></video>
-                <audio id="previewAudio" controls style="width: 100%; margin-top: 10px; display: none;"></audio>
+                <div id="sliderContainer" style="display:none; overflow-x:auto; white-space:nowrap; gap:10px; padding:10px;"></div>
             </div>
             <pre id="jsonOutput">Loading...</pre>
         </div>
@@ -95,23 +102,36 @@
 
     <script>
         function sendReq(u,p,i){ const v=document.getElementById(i).value; if(!v)return alert("Isi dulu!"); testApi(`${u}?${p}=${encodeURIComponent(v)}`); }
+        function sendEditReq() {
+            const u = document.getElementById('edit_url').value; const p = document.getElementById('edit_prompt').value;
+            if(!u || !p) return alert("Isi URL & Prompt!"); testApi(`/api/maker/editor?url=${encodeURIComponent(u)}&prompt=${encodeURIComponent(p)}`);
+        }
+
         function testApi(url){
-            const m=document.getElementById('responseModal'),j=document.getElementById('jsonOutput'),md=document.getElementById('mediaPreview'),im=document.getElementById('previewImage'),vi=document.getElementById('previewVideo'),au=document.getElementById('previewAudio');
-            m.style.display='flex'; j.textContent='Fetching...'; md.style.display='none'; im.style.display='none'; vi.style.display='none'; au.style.display='none'; vi.src=""; au.src="";
+            const m=document.getElementById('responseModal'),j=document.getElementById('jsonOutput'),md=document.getElementById('mediaPreview'),im=document.getElementById('previewImage'),vi=document.getElementById('previewVideo'),sl=document.getElementById('sliderContainer');
+            m.style.display='flex'; j.textContent='Fetching...'; md.style.display='none'; im.style.display='none'; vi.style.display='none'; sl.style.display='none'; sl.innerHTML=""; vi.src="";
+            
             fetch(url).then(r=>{ const ct=r.headers.get("content-type"); if(ct&&ct.includes("image")) return r.blob().then(b=>({blob:b,isBlob:true})); return r.json(); })
             .then(d=>{
                 if(d.isBlob){ j.textContent="Image Blob"; im.src=URL.createObjectURL(d.blob); im.style.display='block'; md.style.display='block'; }
                 else { 
                     j.textContent=JSON.stringify(d,null,2); 
                     if(d.data){
-                        let src = d.data.url || d.data.image || d.data.video || (Array.isArray(d.data)?d.data[0]:null);
-                        if(d.data.result) src = d.data.result.url || d.data.result; 
+                        const r = d.data;
+                        let src = r.url || r.image || (Array.isArray(r)?r[0]?.image:null);
                         
-                        if(src && typeof src === 'string') {
+                        // Handle Instagram
+                        if(r.media && Array.isArray(r.media)) {
                             md.style.display='block';
-                            if(src.match(/\.(mp4)/)) { vi.src=src; vi.style.display='block'; }
-                            else if(src.match(/\.(mp3)/)) { au.src=src; au.style.display='block'; }
-                            else { im.src=src; im.style.display='block'; }
+                            if(r.type==='video'){ vi.src=r.media[0]; vi.style.display='block'; }
+                            else if(r.type==='slide'){ 
+                                sl.style.display='flex'; 
+                                r.media.forEach(m=>{const i=document.createElement('img');i.src=m;i.style.height='150px';i.style.marginRight='10px';sl.appendChild(i)}); 
+                            } else { im.src=r.media[0]; im.style.display='block'; }
+                        }
+                        // Handle General
+                        else if(src && typeof src==='string') {
+                            md.style.display='block'; im.src=src; im.style.display='block';
                         }
                     }
                 }
