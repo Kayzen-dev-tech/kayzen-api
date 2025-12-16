@@ -86,4 +86,41 @@ pre {
     border: 1px solid #333; 
 }
 
+/* Styling Khusus untuk Tombol 'My Bini' */
+.special-link-container {
+    display: flex;
+    justify-content: center; /* Supaya posisi di tengah horizontal */
+    align-items: center;
+    margin-top: 30px; /* Jarak dari grid sosmed di atasnya */
+    width: 100%;
+}
+
+.special-card {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 35px;
+    background: #1a1a1a;
+    border: 2px solid #ff4d4d;
+    border-radius: 50px;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(255, 77, 77, 0.2);
+}
+
+.special-card:hover {
+    background: #ff4d4d; /* Background jadi merah saat di-hover */
+    color: #fff;
+    transform: scale(1.05); /* Sedikit membesar saat di-hover */
+    box-shadow: 0 0 25px rgba(255, 77, 77, 0.6); /* Glowing makin terang */
+}
+
+.special-card span {
+    letter-spacing: 0.5px;
+    }
+                                                                                                                                                                                                                           
+
 footer { text-align: center; padding: 30px; background: #000; color: #666; font-size: 0.9rem; border-top: 1px solid #222; }
