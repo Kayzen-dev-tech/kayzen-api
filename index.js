@@ -346,6 +346,10 @@ app.get('/api/search/wiki', async (req, res) => {
     res.json({ status: true, creator: "Kayzen Izumi", data: result });
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}
+
+module.exports = app;
