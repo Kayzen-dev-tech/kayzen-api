@@ -146,8 +146,9 @@ async function wattpadStalk(username) {
 }
 async function igStalk(username) {
     try {
-        const { data } = await axios.get(`https://api.ryzendesu.vip/api/stalk/ig?username=${username}`);
-        return data;
+        const { data } = await axios.get(`https://api.agatz.xyz/api/stalkig?username=${username}`);
+        if (data.status !== 200) return { error: "User not found" };
+        return data.data;
     } catch (e) { return { error: "User not found / Private" }; }
 }
 async function tiktokStalk(username) {
@@ -184,15 +185,20 @@ async function pinterestSearch(query) {
 }
 async function pinterestDl(url) {
     try {
-        const { data } = await axios.get(`https://api.ryzendesu.vip/api/downloader/pinterest?url=${url}`);
-        return data;
-    } catch (e) { return { error: "Gagal download" }; }
+        const { data } = await axios.get(`https://widipe.com/download/pindl?url=${url}`);
+        if (!data.status) return { error: "Gagal download / Link Salah" };
+        return { 
+            url: data.result.url, 
+            type: data.result.media_type 
+        }; 
+    } catch (e) { return { error: "Server Down / Gagal" }; }
 }
 async function igDownload(url) {
     try {
-        const { data } = await axios.get(`https://api.ryzendesu.vip/api/downloader/igdl?url=${url}`);
-        return data;
-    } catch (e) { return { error: "Gagal download" }; }
+        const { data } = await axios.get(`https://widipe.com/download/igdl?url=${url}`);
+        if (!data.status) return { error: "Gagal download" };
+        return data.result; // Mengembalikan array url video/foto
+    } catch (e) { return { error: "Gagal download / Link Salah" }; }
 }
 
 // 4. RANDOM & TOOLS
