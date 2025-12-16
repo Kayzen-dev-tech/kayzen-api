@@ -6,16 +6,6 @@
     <title>API Docs - Kayzen</title>
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .endpoint-box { background: #222; padding: 15px; margin-bottom: 15px; border-radius: 8px; border-left: 4px solid #00d2ff; }
-        .endpoint-title { display: flex; align-items: center; margin-bottom: 10px; font-weight: bold; font-family: monospace; font-size: 1rem; }
-        .input-group { display: flex; gap: 10px; }
-        .input-field { flex: 1; padding: 10px; border-radius: 5px; border: 1px solid #444; background: #1a1a1a; color: #fff; outline: none; }
-        .input-field:focus { border-color: #00d2ff; }
-        .btn-send { padding: 10px 20px; background: #00d2ff; color: #000; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        .btn-send:hover { background: #00b0d4; }
-        .method { margin-right: 10px; }
-    </style>
 </head>
 <body class="docs-body">
 
@@ -51,44 +41,26 @@
                 <div class="endpoint-title"><span class="method">GET</span> /api/search/pinterest</div>
                 <div class="input-group"> <input type="text" id="pin_s" class="input-field" placeholder="Cari Pinterest"><button class="btn-send" onclick="sendReq('/api/search/pinterest','q','pin_s')"><i class="fas fa-search"></i></button></div>
             </div>
-        </div>
-
-        <div class="category">
-            <h2><i class="fas fa-tv"></i> 2. Anime & Manga</h2>
             <div class="endpoint-box">
-                <div class="endpoint-title"><span class="method">GET</span> /api/anime/search</div>
-                <div class="input-group"> <input type="text" id="ani_q" class="input-field" placeholder="Cari Anime"><button class="btn-send" onclick="sendReq('/api/anime/search','q','ani_q')"><i class="fas fa-search"></i></button></div>
-            </div>
-            <div class="endpoint-box">
-                <div class="endpoint-title"><span class="method">GET</span> /api/anime/manga</div>
-                <div class="input-group"> <input type="text" id="man_q" class="input-field" placeholder="Cari Manga"><button class="btn-send" onclick="sendReq('/api/anime/manga','q','man_q')"><i class="fas fa-search"></i></button></div>
-            </div>
-            <div class="endpoint-box">
-                <div class="endpoint-title"><span class="method">GET</span> /api/anime/character</div>
-                <div class="input-group"> <input type="text" id="char_q" class="input-field" placeholder="Cari Karakter"><button class="btn-send" onclick="sendReq('/api/anime/character','q','char_q')"><i class="fas fa-search"></i></button></div>
-            </div>
-            <div class="endpoint-box" style="cursor: pointer;" onclick="testApi('/api/anime/top')">
-                <div class="endpoint-title"><span class="method">GET</span> /api/anime/top <span class="badge">Klik Disini</span></div>
+                <div class="endpoint-title"><span class="method">GET</span> /api/search/wiki</div>
+                <div class="input-group"> <input type="text" id="wiki_q" class="input-field" placeholder="Cari Wiki"><button class="btn-send" onclick="sendReq('/api/search/wiki','q','wiki_q')"><i class="fas fa-book"></i></button></div>
             </div>
         </div>
 
         <div class="category">
-            <h2><i class="fas fa-tools"></i> 3. Tools / Maker</h2>
+            <h2><i class="fas fa-tools"></i> 2. Tools / Maker</h2>
             <div class="endpoint-box">
-                <div class="endpoint-title"><span class="method">GET</span> /api/maker/brat <span class="badge" style="background:hotpink">Anime</span></div>
+                <div class="endpoint-title"><span class="method">GET</span> /api/maker/brat <span class="badge" style="background:hotpink">Anime V2</span></div>
                 <div class="input-group"> <input type="text" id="brat_t" class="input-field" placeholder="Teks Brat"><button class="btn-send" onclick="sendReq('/api/maker/brat','text','brat_t')"><i class="fas fa-paint-brush"></i></button></div>
             </div>
             <div class="endpoint-box">
-                <div class="endpoint-title"><span class="method">GET</span> /api/tools/ascii</div>
-                <div class="input-group"> <input type="text" id="asc_t" class="input-field" placeholder="Teks ASCII"><button class="btn-send" onclick="sendReq('/api/tools/ascii','text','asc_t')"><i class="fas fa-font"></i></button></div>
-            </div>
-            <div class="endpoint-box" style="cursor: pointer;" onclick="testApi('/api/tools/ip-lookup')">
-                <div class="endpoint-title"><span class="method">GET</span> /api/tools/ip-lookup <span class="badge">Klik Disini</span></div>
+                <div class="endpoint-title"><span class="method">GET</span> /api/tools/img2ascii</div>
+                <div class="input-group"> <input type="text" id="asc_u" class="input-field" placeholder="Link Gambar"><button class="btn-send" onclick="sendReq('/api/tools/img2ascii','url','asc_u')"><i class="fas fa-image"></i></button></div>
             </div>
         </div>
 
         <div class="category">
-            <h2><i class="fas fa-eye"></i> 4. Stalker</h2>
+            <h2><i class="fas fa-eye"></i> 3. Stalker</h2>
             <div class="endpoint-box">
                 <div class="endpoint-title"><span class="method">GET</span> /api/stalk/github</div>
                 <div class="input-group"> <input type="text" id="gh_u" class="input-field" placeholder="User Github"><button class="btn-send" onclick="sendReq('/api/stalk/github','username','gh_u')"><i class="fas fa-search"></i></button></div>
@@ -101,45 +73,9 @@
                 <div class="endpoint-title"><span class="method">GET</span> /api/stalk/tiktok</div>
                 <div class="input-group"> <input type="text" id="tt_stalk" class="input-field" placeholder="User TikTok"><button class="btn-send" onclick="sendReq('/api/stalk/tiktok','username','tt_stalk')"><i class="fab fa-tiktok"></i></button></div>
             </div>
-            <div class="endpoint-box">
-                <div class="endpoint-title"><span class="method">GET</span> /api/stalk/steam</div>
-                <div class="input-group"> <input type="text" id="st_u" class="input-field" placeholder="User Steam"><button class="btn-send" onclick="sendReq('/api/stalk/steam','username','st_u')"><i class="fas fa-gamepad"></i></button></div>
-            </div>
-             <div class="endpoint-box">
-                <div class="endpoint-title"><span class="method">GET</span> /api/stalk/wattpad</div>
-                <div class="input-group"> <input type="text" id="wp_u" class="input-field" placeholder="User Wattpad"><button class="btn-send" onclick="sendReq('/api/stalk/wattpad','username','wp_u')"><i class="fas fa-book"></i></button></div>
-            </div>
-             <div class="endpoint-box">
-                <div class="endpoint-title"><span class="method">GET</span> /api/stalk/reddit</div>
-                <div class="input-group"> <input type="text" id="rd_u" class="input-field" placeholder="User Reddit"><button class="btn-send" onclick="sendReq('/api/stalk/reddit','username','rd_u')"><i class="fas fa-search"></i></button></div>
-            </div>
              <div class="endpoint-box">
                 <div class="endpoint-title"><span class="method">GET</span> /api/stalk/npm</div>
                 <div class="input-group"> <input type="text" id="npm_u" class="input-field" placeholder="Nama Paket NPM"><button class="btn-send" onclick="sendReq('/api/stalk/npm','package','npm_u')"><i class="fas fa-search"></i></button></div>
-            </div>
-        </div>
-
-        <div class="category">
-            <h2><i class="fas fa-dice"></i> 5. Random & Info</h2>
-            <div class="endpoint-box">
-                <div class="endpoint-title"><span class="method">GET</span> /api/search/wallpaper</div>
-                <div class="input-group"> <input type="text" id="wall_q" class="input-field" placeholder="Cari Wallpaper"><button class="btn-send" onclick="sendReq('/api/search/wallpaper','q','wall_q')"><i class="fas fa-image"></i></button></div>
-            </div>
-            <div class="endpoint-box">
-                <div class="endpoint-title"><span class="method">GET</span> /api/search/wiki</div>
-                <div class="input-group"> <input type="text" id="wiki_q" class="input-field" placeholder="Cari Wiki"><button class="btn-send" onclick="sendReq('/api/search/wiki','q','wiki_q')"><i class="fas fa-book"></i></button></div>
-            </div>
-            
-            <div class="endpoint-box" style="cursor: pointer;" onclick="testApi('/api/random/waifu')">
-                <div class="endpoint-title"><span class="method">GET</span> /api/random/waifu <span class="badge">Klik Disini</span></div>
-            </div>
-
-            <div class="endpoint-box" style="cursor: pointer;" onclick="testApi('/api/random/neko')">
-                <div class="endpoint-title"><span class="method">GET</span> /api/random/neko <span class="badge">Klik Disini</span></div>
-            </div>
-
-             <div class="endpoint-box" style="cursor: pointer;" onclick="testApi('/api/info/gempa')">
-                <div class="endpoint-title"><span class="method">GET</span> /api/info/gempa <span class="badge">Klik Disini</span></div>
             </div>
         </div>
     </div>
@@ -168,8 +104,9 @@
                 else { 
                     j.textContent=JSON.stringify(d,null,2); 
                     if(d.data){
-                        // Logic deteksi media yang lebih kuat
-                        const src = d.data.url || d.data.image || d.data.video || d.data.shakemap || (Array.isArray(d.data)?d.data[0]:null);
+                        let src = d.data.url || d.data.image || d.data.video || (Array.isArray(d.data)?d.data[0]:null);
+                        if(d.data.result) src = d.data.result.url || d.data.result; 
+                        
                         if(src && typeof src === 'string') {
                             md.style.display='block';
                             if(src.match(/\.(mp4)/)) { vi.src=src; vi.style.display='block'; }
