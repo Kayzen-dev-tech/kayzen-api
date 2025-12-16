@@ -12,7 +12,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Node.js-18.x-339933?style=for-the-badge&logo=nodedotjs" />
   <img src="https://img.shields.io/badge/Express.js-4.x-000000?style=for-the-badge&logo=express" />
-  <img src="https://img.shields.io/badge/Deploy-Koyeb-121212?style=for-the-badge&logo=koyeb&logoColor=white" />
+  <img src="https://img.shields.io/badge/Deploy-Vercel-121212?style=for-the-badge&logo=vercel&logoColor=white" />
 </p>
 
 <p align="center">
