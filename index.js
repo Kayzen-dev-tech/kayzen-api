@@ -30,16 +30,37 @@ async function getWaifu(t){try{const{data}=await axios.get(t==='nsfw'?'https://a
 // --- Social Media ---
 async function pinterestSearch(query) {
     try {
-        const modifiedQuery = `${query} aesthetic`;
-        const { data } = await axios.get(`https://www.pinterest.com/resource/BaseSearchResource/get/?source_url=/search/pins/?q=${query}&data={"options":{"isPrefetch":false,"query":"${modifiedQuery}","scope":"pins","no_fetch_context_on_resource":false},"context":{}}`);
-        const results = data?.resource_response?.data?.results || [];
-        return results.map(v => ({
-            id: v.id,
-            title: v.grid_title || v.title,
-            image: v.images?.orig?.url || v.images['736x']?.url
-        })).filter(v => v.image).sort(() => Math.random() - 0.5);
-    } catch (e) { return []; }
-}
+        const { data } = await axios.get(`https://www.pinterest.com/search/pins/?q=${encodeURIComponent(query)}`, {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+                "Referer": "https://www.pinterest.com/"
+            }
+        });
+
+        const $ = cheerio.load(data);
+        const script = $('#__PWS_DATA__').html();
+        
+        if (!script) return [];
+
+        const json = JSON.parse(script);
+        const results = json?.props?.initialReduxState?.pins || {};
+        
+        // Convert object of objects to array
+        return Object.values(results)
+            .filter(pin => pin.images && (pin.images.orig || pin.images['736x']))
+            .map(pin => ({
+                id: pin.id,
+                title: pin.grid_title || pin.title || pin.description || "No Title",
+                image: pin.images.orig?.url || pin.images['736x']?.url,
+                pinner: pin.pinner?.username
+            }))
+            .sort(() => Math.random() - 0.5) // Shuffle
+            .slice(0, 20);
+    } catch (e) {
+        console.error("Pinterest Error:", e.message);
+        return [];
+    }
+                                          }
 
 async function scrapeIG(url) {
     try {
@@ -73,21 +94,38 @@ async function generateLyrics(prompt) {
     } catch (e) { return "Gagal mengambil lirik AI"; }
 }
 
+ya function scrapeLirik(query) {
 async function scrapeLirik(query) {
     try {
-        const { data } = await axios.get(`https://lirik.my/?s=${encodeURIComponent(query)}`, {
-            headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" }
+        // Cari Lagu
+        const { data: searchData } = await axios.get(`https://lirik.my/?s=${encodeURIComponent(query)}`, {
+            headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" }
         });
-        const $ = cheerio.load(data);
-        const link = $("article.post").find(".entry-title a").attr("href");
+        
+        const $ = cheerio.load(searchData);
+        const link = $('.entry-title a').attr('href') || $('article a').first().attr('href');
+        
         if (!link) return null;
-        const { data: page } = await axios.get(link, {
-            headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" }
+
+        const { data: lyricData } = await axios.get(link, {
+            headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" }
         });
-        const $$ = cheerio.load(page);
-        $$(".entry-content script, .entry-content style").remove();
-        return $$(".entry-content").text().trim();
-    } catch (e) { return null; }
+
+        const $$ = cheerio.load(lyricData);
+        const content = $$('.entry-content');
+        
+        content.find('script, style, div, .sharedaddy').remove();
+        
+        let lyrics = content.html()
+            .replace(/<br\s*\/?>/gi, '\n')
+            .replace(/<\/p>/gi, '\n\n')
+            .replace(/<[^>]+>/g, '');
+
+        return lyrics.trim();
+    } catch (e) {
+        console.error("Lirik Error:", e.message);
+        return null;
+    }
 }
 
 async function scrapeImgEditor(url, prompt) {
@@ -113,24 +151,35 @@ async function scrapeImgEditor(url, prompt) {
 // --- E-Commerce ---
 async function scrapeLazada(query) {
     try {
-        const headers = {
-            'accept': '*/*', 'accept-language': 'id-ID',
-            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'referer': `https://www.lazada.co.id/tag/${query}/`
-        };
-        const url = `https://www.lazada.co.id/tag/${query}/?ajax=true&catalog_redirect_tag=true&isFirstRequest=true&page=1&q=${query}`;
-        const { data } = await axios.get(url, { headers });
-        const allItems = data.mods?.listItems || [];
-        return allItems.slice(0, 10).map(item => ({
+        const url = `https://www.lazada.co.id/tag/${encodeURIComponent(query)}/?ajax=true&catalog_redirect_tag=true&isFirstRequest=true&page=1&q=${encodeURIComponent(query)}`;
+        
+        const { data } = await axios.get(url, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+                'Referer': `https://www.lazada.co.id/tag/${query}/`,
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json, text/javascript, */*; q=0.01',
+                'Sec-Fetch-Dest': 'empty',
+                'Sec-Fetch-Mode': 'cors',
+                'Sec-Fetch-Site': 'same-origin',
+            }
+        });
+
+        if (!data.mods || !data.mods.listItems) return [];
+
+        return data.mods.listItems.slice(0, 15).map(item => ({
             name: item.name,
-            price: `Rp${parseInt(item.price || 0).toLocaleString('id-ID')}`,
+            price: item.priceShow || item.price,
             rating: item.ratingScore || 'N/A',
             sold: item.itemSoldCntShow || '0',
-            location: item.location || '',
-            image: item.image || '',
-            link: `https://www.lazada.co.id${item.itemUrl}`
+            location: item.location || 'Indonesia',
+            image: item.image || item.thumbs?.[0]?.image || '',
+            link: item.itemUrl ? `https://www.lazada.co.id${item.itemUrl}` : ''
         }));
-    } catch (e) { return []; }
+    } catch (e) {
+        console.error("Lazada Error:", e.message);
+        return [];
+    }
 }
 
 // ==========================================
