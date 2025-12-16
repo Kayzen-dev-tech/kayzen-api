@@ -16,6 +16,6 @@
     "canvas": "^2.11.2"
   },
   "engines": {
-    "node": "20.x"
+    "node": "24.x"
   }
 }
