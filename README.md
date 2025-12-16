@@ -139,8 +139,8 @@ Tabel di bawah ini berisi rincian endpoint yang bisa kamu gunakan di bot kamu.
 └── /public              # 🗂️ File Statis (Gambar/CSS)
     ├── /css
     └── /images
-
+```
 <div align="center">
-<p>Dibuat dengan ❤️ oleh <b>Kayzen Izumi</b></p>
+<p>Dibuat dengan oleh <b>Kayzen Izumi</b></p>
 <p>Jangan lupa kasih ⭐ Star jika repo ini bermanfaat!</p>
 </div>
