@@ -1,133 +1,146 @@
 <div align="center">
 
-```text
-  _  __                         
- | |/ /__ _ _   _ _______ _ __  
- | ' // _` | | | |_  / _ \ '_ \ 
- | . \ (_| | |_| |/ /  __/ | | |
- |_|\_\__,_|\__, /___\___|_| |_|
-            |___/               
+<a href="https://git.io/typing-svg">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=30&pause=1000&color=00D2FF&center=true&vCenter=true&width=500&lines=Kayzen+Izumi+API;Simple.+Fast.+Powerful.;Best+Rest+API+for+Bot+Devs" alt="Typing SVG" />
+</a>
 
-🚀 Kayzen Izumi API
-Simple, Fast, and Powerful REST API for Bot Automation
-<p>
-<a href="#-fitur-unggulan">Fitur</a> •
-<a href="#-instalasi">Instalasi</a> •
-<a href="#-daftar-endpoint">Endpoints</a> •
-<a href="#-struktur-folder">Struktur</a>
+<p align="center">
+    <b>Layanan RESTful API Gratis untuk Automasi WhatsApp, Telegram, & Discord Bot.</b><br>
+    Dilengkapi dengan Dokumentasi Interaktif & Fitur Scraping Real-time.
 </p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Node.js-18.x-339933?style=for-the-badge&logo=nodedotjs" />
+  <img src="https://img.shields.io/badge/Express.js-4.x-000000?style=for-the-badge&logo=express" />
+  <img src="https://img.shields.io/badge/Deploy-Koyeb-121212?style=for-the-badge&logo=koyeb&logoColor=white" />
+</p>
+
+<p align="center">
+  <a href="#-daftar-endpoint-lengkap">Lihat Endpoint</a> •
+  <a href="#-instalasi">Cara Install</a> •
+  <a href="#-struktur-folder">Struktur File</a>
+</p>
+
+<hr>
+
 </div>
-📜 Deskripsi
-Kayzen API adalah layanan RESTful API gratis yang dibangun menggunakan Node.js dan Express. Proyek ini dirancang untuk memudahkan developer bot (WhatsApp/Discord/Telegram) dalam mengambil data scraping, media downloader, dan informasi real-time tanpa ribet.
-Dilengkapi dengan halaman dokumentasi interaktif yang memiliki fitur Pop-up Preview untuk Video, Audio, dan Gambar.
-✨ Fitur Unggulan
-Berikut adalah kategori fitur yang tersedia di API ini:
-📥 Downloader
-TikTok No Watermark: Download video TikTok bersih tanpa logo + Audio.
-YouTube Search: Cari video YouTube dan dapatkan link streaming.
-⛩️ Anime & Manga
-Search Anime: Cari info detail anime dari MyAnimeList.
-Search Manga: Cari komik/manga favorit.
-Character Search: Info karakter wibu (Husbu/Waifu).
-Top Anime: Daftar anime rating tertinggi saat ini.
-🛠️ Tools & Maker
-Brat Generator: Buat meme teks di papan putih (ala Charli XCX).
-ASCII Art: Ubah teks menjadi seni kode ASCII.
-IP Lookup: Cek detail lokasi dari IP Address.
-🕵️ Stalker
-GitHub Stalk: Intip profil, repo, dan bio user GitHub.
-Reddit Stalk: Cek karma, akun, dan avatar user Reddit.
-NPM Stalk: Cek info paket library Node.js.
-🧩 Random & Info
-Waifu & Neko: Gambar anime random (SFW).
-Wallpaper HD: Cari wallpaper PC/HP resolusi tinggi.
-Gempa Terkini: Info gempa real-time + Peta Guncangan (BMKG).
-Wikipedia: Cari artikel dan ringkasan edukasi (Bahasa Indonesia).
-💻 Instalasi
-Ingin menjalankan API ini di komputermu sendiri? Ikuti langkah ini:
 
-1. Clone Repository
-git clone [https://github.com/UsernameKamu/kayzen-api.git](https://github.com/UsernameKamu/kayzen-api.git)
-cd kayzen-api
+## ✨ Fitur Unggulan
 
-2. Install Dependencies
-npm install
+Berikut adalah fitur-fitur yang tersedia, dikelompokkan dengan ikon kategori:
 
-3. Siapkan Aset Gambar
-Pastikan folder public/images/ berisi file berikut agar halaman depan tidak error:
-profile.jpg (Foto Profil)
-banner.jpg (Background Banner)
-brat.jpg (Template untuk fitur Maker)
-slide1.jpg s/d slide15.jpg (Untuk Slider Cosplayer)
+### ![Downloader](https://img.shields.io/badge/DOWNLOADER-Media-FF0000?style=for-the-badge&logo=youtube&logoColor=white)
+* **TikTok No Watermark:** Download video TikTok bersih tanpa logo + Audio MP3.
+* **YouTube Search:** Cari video YouTube dan dapatkan link streaming.
 
-4. Jalankan Server
-npm start
+### ![Anime](https://img.shields.io/badge/WIBU_AREA-Anime_&_Manga-FF69B4?style=for-the-badge&logo=myanimelist&logoColor=white)
+* **Search Anime & Manga:** Cari info detail anime/komik dari MyAnimeList.
+* **Character Search:** Info lengkap karakter wibu (Husbu/Waifu).
+* **Top Anime:** Daftar anime dengan rating tertinggi saat ini.
 
-Akses di http://localhost:3000
+### ![Tools](https://img.shields.io/badge/TOOLS-Maker_&_Util-4B0082?style=for-the-badge&logo=codesandbox&logoColor=white)
+* **Brat Generator:** Buat meme teks di papan putih viral (ala Charli XCX).
+* **ASCII Art:** Ubah teks biasa menjadi seni kode ASCII.
+* **IP Lookup:** Cek detail lokasi dari IP Address.
+
+### ![Stalk](https://img.shields.io/badge/STALKER-Github_&_Sosmed-181717?style=for-the-badge&logo=github&logoColor=white)
+* **GitHub Stalk:** Intip profil, repository, dan bio user GitHub.
+* **Reddit Stalk:** Cek karma, akun, dan avatar user Reddit.
+* **NPM Stalk:** Cek info paket library Node.js.
+
+### ![Info](https://img.shields.io/badge/INFO-News_&_Random-FFA500?style=for-the-badge&logo=google-news&logoColor=white)
+* **Gempa Terkini:** Info gempa real-time + Peta Guncangan (Data BMKG).
+* **Waifu & Neko:** Generate gambar anime random (SFW).
+* **Wallpaper HD:** Cari wallpaper PC/HP resolusi tinggi.
+
+---
+
+## 💻 Instalasi
+
+Jalankan API ini di komputer lokal atau server kamu sendiri:
+
+1.  **Clone Repository**
+    ```bash
+    git clone [https://github.com/UsernameKamu/kayzen-api.git](https://github.com/UsernameKamu/kayzen-api.git)
+    cd kayzen-api
+    ```
+
+2.  **Install Dependencies**
+    ```bash
+    npm install
+    ```
+
+3.  **Setup Aset (Wajib)**
+    Pastikan folder `public/images/` berisi file berikut:
+    * `profile.jpg` (Foto Profil)
+    * `banner.jpg` (Banner Background)
+    * `brat.jpg` (Template Maker)
+    * `slide1.jpg` s/d `slide15.jpg` (Slider)
+
+4.  **Jalankan Server**
+    ```bash
+    npm start
+    ```
+
+---
 
 ## 🔗 Daftar Endpoint Lengkap
 
-Berikut adalah daftar lengkap endpoint yang tersedia di API ini:
+Tabel di bawah ini berisi rincian endpoint yang bisa kamu gunakan di bot kamu.
 
 ### 📥 Download & Media
-| Method | Endpoint | Deskripsi | Parameter |
-| :--- | :--- | :--- | :--- |
-| `GET` | `/api/download/tiktok` | Download Video TikTok (No WM) & Audio | `?url=link_tiktok` |
-| `GET` | `/api/download/youtube` | Search & Download Video YouTube | `?q=judul_lagu` |
+| Method | Endpoint | Parameter | Deskripsi |
+| :---: | :--- | :--- | :--- |
+| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/download/tiktok` | `?url=` | Download Video TikTok (No WM) |
+| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/download/youtube` | `?q=` | Search Video YouTube |
 
 ### ⛩️ Anime & Manga
-| Method | Endpoint | Deskripsi | Parameter |
-| :--- | :--- | :--- | :--- |
-| `GET` | `/api/anime/search` | Cari Detail Anime (MyAnimeList) | `?q=nama_anime` |
-| `GET` | `/api/anime/manga` | Cari Detail Manga | `?q=nama_manga` |
-| `GET` | `/api/anime/character` | Cari Karakter Anime | `?q=nama_karakter` |
-| `GET` | `/api/anime/top` | List Top Anime Rating Tertinggi | *(Tanpa Parameter)* |
-
-### 🕵️ Stalker
-| Method | Endpoint | Deskripsi | Parameter |
-| :--- | :--- | :--- | :--- |
-| `GET` | `/api/stalk/github` | Stalk Profil GitHub User | `?username=user_git` |
-| `GET` | `/api/stalk/reddit` | Stalk Profil Reddit User | `?username=user_reddit` |
-| `GET` | `/api/stalk/npm` | Cek Info Paket NPM (Node.js) | `?package=nama_paket` |
+| Method | Endpoint | Parameter | Deskripsi |
+| :---: | :--- | :--- | :--- |
+| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/anime/search` | `?q=` | Cari Detail Anime (MAL) |
+| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/anime/manga` | `?q=` | Cari Detail Manga |
+| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/anime/character` | `?q=` | Cari Karakter Anime |
+| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/anime/top` | *-* | Top Anime Rating Tertinggi |
 
 ### 🛠️ Tools & Maker
-| Method | Endpoint | Deskripsi | Parameter |
-| :--- | :--- | :--- | :--- |
-| `GET` | `/api/maker/brat` | Buat Meme Text "Brat" | `?text=tulisan_kamu` |
-| `GET` | `/api/tools/ascii` | Ubah Teks jadi ASCII Art | `?text=tulisan_kamu` |
-| `GET` | `/api/tools/ip-lookup` | Cek Info Lokasi Server IP | *(Tanpa Parameter)* |
+| Method | Endpoint | Parameter | Deskripsi |
+| :---: | :--- | :--- | :--- |
+| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/maker/brat` | `?text=` | Buat Meme Text "Brat" |
+| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/tools/ascii` | `?text=` | Convert Teks ke ASCII |
+| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/tools/ip-lookup` | *-* | Cek Info Lokasi Server IP |
+
+### 🕵️ Stalker
+| Method | Endpoint | Parameter | Deskripsi |
+| :---: | :--- | :--- | :--- |
+| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/stalk/github` | `?username=` | Stalk Profil GitHub |
+| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/stalk/reddit` | `?username=` | Stalk Profil Reddit |
+| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/stalk/npm` | `?package=` | Cek Info Paket NPM |
 
 ### 🧩 Random & Info
-| Method | Endpoint | Deskripsi | Parameter |
-| :--- | :--- | :--- | :--- |
-| `GET` | `/api/random/waifu` | Gambar Waifu Random (SFW) | *(Tanpa Parameter)* |
-| `GET` | `/api/random/neko` | Gambar Anime Neko Random | *(Tanpa Parameter)* |
-| `GET` | `/api/search/wallpaper` | Cari Wallpaper HD | `?q=keyword` |
-| `GET` | `/api/info/gempa` | Info Gempa Terkini BMKG | *(Tanpa Parameter)* |
-| `GET` | `/api/search/wiki` | Cari Artikel Wikipedia Indonesia | `?q=pertanyaan` |
+| Method | Endpoint | Parameter | Deskripsi |
+| :---: | :--- | :--- | :--- |
+| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/random/waifu` | *-* | Gambar Waifu (SFW) |
+| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/random/neko` | *-* | Gambar Neko (SFW) |
+| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/search/wallpaper` | `?q=` | Cari Wallpaper HD |
+| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/info/gempa` | *-* | Info Gempa BMKG |
+| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/search/wiki` | `?q=` | Wikipedia Indonesia |
 
-📂 Struktur Folder
+---
+
+## 📂 Struktur Folder
+
+```bash
 /kayzen-api
-│
-├── index.js             # Logic Server Utama
-├── package.json         # Config Project
-├── /views               # Tampilan Website
-│   ├── home.ejs         # Homepage Keren
-│   └── docs.ejs         # Dokumentasi Pintar
-│
-└── /public              # File Statis
+├── index.js             # 🧠 Logic Server Utama
+├── package.json         # 📦 Config Dependencies
+├── /views               # 🎨 Tampilan HTML/EJS
+│   ├── home.ejs         # Homepage UI
+│   └── docs.ejs         # Dokumentasi UI
+└── /public              # 🗂️ File Statis (Gambar/CSS)
     ├── /css
-    │   └── style.css    # Styling Website
-    └── /images          # Tempat simpan Foto/Gambar
+    └── /images
 
-🚀 Deploy ke Koyeb
-API ini sudah dikonfigurasi agar Auto-Deploy di Koyeb.
-Upload kode ini ke GitHub.
-Login ke Koyeb.
-Create App -> Pilih GitHub -> Pilih Repo ini.
-Tunggu hingga status Healthy.
-Selesai! API kamu sudah online.
 <div align="center">
 <p>Dibuat dengan ❤️ oleh <b>Kayzen Izumi</b></p>
-<p>&copy; 2025 All Rights Reserved.</p>
+<p>Jangan lupa kasih ⭐ Star jika repo ini bermanfaat!</p>
 </div>
