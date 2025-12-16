@@ -14,7 +14,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// --- HELPER ---
 function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
     const words = text.split(' ');
     let line = '';
@@ -25,50 +24,51 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
             ctx.fillText(line, x, y);
             line = words[n] + ' ';
             y += lineHeight;
-        } else { line = testLine; }
+        } else {
+            line = testLine;
+        }
     }
     ctx.fillText(line, x, y);
 }
 
-// --- SCRAPER BARU (WIDIPE & AGATZ) ---
-
 async function pinterestDl(url) {
     try {
         const { data } = await axios.get(`https://widipe.com/download/pindl?url=${url}`);
-        if (!data.status) return { error: "Gagal download" };
+        if (!data.status) return { error: "Failed" };
         return { url: data.result.url, type: data.result.media_type };
-    } catch (e) { return { error: "Server Error" }; }
+    } catch (e) { return { error: "Error" }; }
 }
 
 async function igStalk(username) {
     try {
         const { data } = await axios.get(`https://api.agatz.xyz/api/stalkig?username=${username}`);
-        if (data.status !== 200) return { error: "User not found" };
+        if (data.status !== 200) return { error: "Not found" };
         return data.data;
-    } catch (e) { return { error: "User not found" }; }
+    } catch (e) { return { error: "Error" }; }
 }
 
 async function igDownload(url) {
     try {
         const { data } = await axios.get(`https://widipe.com/download/igdl?url=${url}`);
-        if (!data.status) return { error: "Gagal download" };
+        if (!data.status) return { error: "Failed" };
         return data.result; 
-    } catch (e) { return { error: "Gagal download" }; }
+    } catch (e) { return { error: "Error" }; }
 }
 
-// --- SCRAPER LAINNYA ---
 async function tiktokSearch(query) {
     try {
         const { data } = await axios.post("https://www.tikwm.com/api/feed/search", new URLSearchParams({ keywords: query, count: 10, cursor: 0, web: 1, hd: 1 }));
         return data.data ? data.data.videos : [];
     } catch (e) { return []; }
 }
+
 async function tiktokStalk(username) {
     try {
         const { data } = await axios.post("https://www.tikwm.com/api/user/info", new URLSearchParams({ unique_id: username }));
-        return data.data ? data.data : { error: "User not found" };
-    } catch (e) { return { error: "User not found" }; }
+        return data.data ? data.data : { error: "Not found" };
+    } catch (e) { return { error: "Not found" }; }
 }
+
 async function pinterestSearch(query) {
     try {
         const { data } = await axios.get(`https://www.pinterest.com/search/pins/?q=${query}`);
@@ -88,11 +88,6 @@ async function pinterestSearch(query) {
     } catch (e) { return []; }
 }
 
-// ... (Scraper Anime, Manga, Character, TopAnime, Github, Reddit, NPM, Steam, Wattpad, Wallpaper, Gempa, Wiki, Waifu, Ascii - MASIH SAMA SEPERTI SEBELUMNYA)
-// Agar kode tidak kepanjangan, saya singkat bagian yang tidak berubah. 
-// Pastikan Scraper lama tetap ada. Jika hilang, copas dari kode sebelumnya.
-// Di bawah ini saya tulis ulang fungsi pendeknya:
-
 async function scrapeAnime(q){try{const{data}=await axios.get(`https://myanimelist.net/anime.php?q=${q}`);const $=cheerio.load(data);const r=[];$('.list table tr').each((i,e)=>{if(i>0){const t=$(e).find('strong').text().trim();const img=$(e).find('img').attr('data-src')||$(e).find('img').attr('src');const d=$(e).find('div.pt4').text().trim();if(t)r.push({title:t,desc:d,img})}});return r.slice(0,5)}catch(e){return[]}}
 async function scrapeManga(q){try{const{data}=await axios.get(`https://myanimelist.net/manga.php?q=${q}`);const $=cheerio.load(data);const r=[];$('.list table tr').each((i,e)=>{if(i>0){const t=$(e).find('strong').text().trim();const img=$(e).find('img').attr('data-src')||$(e).find('img').attr('src');const d=$(e).find('div.pt4').text().trim();if(t)r.push({title:t,desc:d,img})}});return r.slice(0,5)}catch(e){return[]}}
 async function scrapeCharacter(q){try{const{data}=await axios.get(`https://myanimelist.net/character.php?q=${q}`);const $=cheerio.load(data);const r=[];$('table').each((i,e)=>{const img=$(e).find('img').attr('data-src')||$(e).find('img').attr('src');const n=$(e).find('td').eq(1).find('strong').text().trim();if(n)r.push({name:n,img})});return r.slice(0,5)}catch(e){return[]}}
@@ -108,14 +103,9 @@ async function scrapeWiki(q){try{const{data}=await axios.get(`https://id.m.wikip
 async function getWaifu(t){try{const{data}=await axios.get(t==='nsfw'?'https://api.waifu.im/search?is_nsfw=true':'https://api.waifu.im/search');return data.images[0]}catch(e){return null}}
 async function makeAscii(t){try{const{data}=await axios.get(`https://artii.herokuapp.com/make?text=${t}`);return{ascii:data}}catch(e){return{error:"Failed"}}}
 
-
-// --- ROUTES ---
 app.get('/', (req, res) => res.render('home'));
 app.get('/docs', (req, res) => res.render('docs'));
 
-// === API ENDPOINTS ===
-
-// Media & Download
 app.get('/api/download/youtube', async (req, res) => { const q = req.query.q; if(!q) return res.json({status:false}); try{const r=await ytSearch(q);res.json({status:true,creator:"Kayzen",data:r.videos.slice(0,5)})}catch(e){res.json({status:false})} });
 app.get('/api/download/tiktok', async (req, res) => { const u = req.query.url; if(!u) return res.json({status:false}); try{const {data}=await axios.get(`https://www.tikwm.com/api/?url=${u}`);if(data.code===0)res.json({status:true,creator:"Kayzen",data:{title:data.data.title,video:data.data.play,audio:data.data.music}});else res.json({status:false})}catch(e){res.json({status:false})} });
 app.get('/api/download/instagram', async (req, res) => { const u = req.query.url; if(!u) return res.json({status:false}); const r = await igDownload(u); res.json({status:true,creator:"Kayzen",data:r}); });
@@ -123,7 +113,6 @@ app.get('/api/download/pinterest', async (req, res) => { const u = req.query.url
 app.get('/api/search/tiktok', async (req, res) => { const q = req.query.q; if(!q) return res.json({status:false}); const r = await tiktokSearch(q); res.json({status:true,creator:"Kayzen",data:r}); });
 app.get('/api/search/pinterest', async (req, res) => { const q = req.query.q; if(!q) return res.json({status:false}); const r = await pinterestSearch(q); res.json({status:true,creator:"Kayzen",data:r}); });
 
-// Stalk
 app.get('/api/stalk/github', async (req, res) => { const u=req.query.username; if(!u) return res.json({status:false}); const r=await githubStalk(u); res.json({status:true,creator:"Kayzen",data:r}); });
 app.get('/api/stalk/reddit', async (req, res) => { const u=req.query.username; if(!u) return res.json({status:false}); const r=await redditStalk(u); if(r.avatar)r.image=r.avatar; res.json({status:true,creator:"Kayzen",data:r}); });
 app.get('/api/stalk/npm', async (req, res) => { const p=req.query.package; if(!p) return res.json({status:false}); const r=await npmStalk(p); res.json({status:true,creator:"Kayzen",data:r}); });
@@ -132,13 +121,11 @@ app.get('/api/stalk/wattpad', async (req, res) => { const u=req.query.username; 
 app.get('/api/stalk/instagram', async (req, res) => { const u=req.query.username; if(!u) return res.json({status:false}); const r=await igStalk(u); if(r&&r.avatar_url)r.image=r.avatar_url; res.json({status:true,creator:"Kayzen",data:r}); });
 app.get('/api/stalk/tiktok', async (req, res) => { const u=req.query.username; if(!u) return res.json({status:false}); const r=await tiktokStalk(u); if(r.user&&r.user.avatar)r.image=r.user.avatar; res.json({status:true,creator:"Kayzen",data:r}); });
 
-// Anime
 app.get('/api/anime/search', async (req, res) => { const q=req.query.q; const r=await scrapeAnime(q); res.json({status:true,creator:"Kayzen",data:r}); });
 app.get('/api/anime/manga', async (req, res) => { const q=req.query.q; const r=await scrapeManga(q); res.json({status:true,creator:"Kayzen",data:r}); });
 app.get('/api/anime/character', async (req, res) => { const q=req.query.q; const r=await scrapeCharacter(q); res.json({status:true,creator:"Kayzen",data:r}); });
 app.get('/api/anime/top', async (req, res) => { const r=await scrapeTopAnime(); res.json({status:true,creator:"Kayzen",data:r}); });
 
-// Tools & Maker
 app.get('/api/tools/ascii', async (req, res) => { const t=req.query.text; const r=await makeAscii(t); res.json({status:true,creator:"Kayzen",data:r}); });
 app.get('/api/tools/ip-lookup', async (req, res) => { try{const{data}=await axios.get('http://ip-api.com/json/');res.json({status:true,creator:"Kayzen",data:data})}catch(e){res.json({status:false})} });
 app.get('/api/maker/brat', async (req, res) => { 
@@ -155,7 +142,6 @@ app.get('/api/maker/brat', async (req, res) => {
     } catch (e) { res.json({ status: false, message: "brat.jpg missing" }); } 
 });
 
-// Random & Info
 app.get('/api/random/waifu', async (req, res) => { const r=await getWaifu('sfw'); res.json({status:true,creator:"Kayzen",data:r}); });
 app.get('/api/random/neko', async (req, res) => { try{const{data}=await axios.get("https://nekos.best/api/v2/neko");res.json({status:true,creator:"Kayzen",data:data.results[0]})}catch(e){res.json({status:false})} });
 app.get('/api/search/wallpaper', async (req, res) => { const q=req.query.q; if(!q) return res.json({status:false}); const r=await scrapeWallpaper(q); if(r.length===0) return res.json({status:false}); res.json({status:true,creator:"Kayzen",data:{image:r[Math.floor(Math.random()*r.length)]}}); });
@@ -166,3 +152,4 @@ if (require.main === module) {
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 }
 module.exports = app;
+        
