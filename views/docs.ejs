@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Docs - Kayzen</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="docs-body">
+
+    <header class="docs-header">
+        <h1><i class="fas fa-book"></i> Dokumentasi API</h1>
+        <a href="/" class="back-link">Kembali ke Home</a>
+    </header>
+
+    <div class="container">
+        
+        <div class="category">
+            <h2><i class="fas fa-download"></i> 1. Download</h2>
+            <div class="endpoint" onclick="testApi('/api/download/youtube?q=dj+anime')">
+                <span class="method">GET</span> /api/download/youtube <span class="badge">Query: q</span>
+            </div>
+            <div class="endpoint" onclick="testApi('/api/download/tiktok?url=https://www.tiktok.com/@omahi.tiktok/video/7434538902507818245')">
+                <span class="method">GET</span> /api/download/tiktok <span class="badge">Query: url</span>
+            </div>
+        </div>
+
+        <div class="category">
+            <h2><i class="fas fa-dice"></i> 2. Random</h2>
+            <div class="endpoint" onclick="testApi('/api/random/waifu')">
+                <span class="method">GET</span> /api/random/waifu
+            </div>
+            <div class="endpoint" onclick="testApi('/api/random/neko')">
+                <span class="method">GET</span> /api/random/neko
+            </div>
+             <div class="endpoint" onclick="testApi('/api/search/wallpaper?q=naruto')">
+                <span class="method">GET</span> /api/search/wallpaper <span class="badge">Query: q</span>
+            </div>
+        </div>
+
+        <div class="category">
+            <h2><i class="fas fa-tools"></i> 3. Tools / Maker</h2>
+            <div class="endpoint" onclick="testApi('/api/maker/brat?text=Halo+Kayzen')">
+                <span class="method">GET</span> /api/maker/brat <span class="badge">Query: text</span>
+            </div>
+            <div class="endpoint" onclick="testApi('/api/tools/ascii?text=Kayzen')">
+                <span class="method">GET</span> /api/tools/ascii <span class="badge">Query: text</span>
+            </div>
+             <div class="endpoint" onclick="testApi('/api/tools/ip-lookup')">
+                <span class="method">GET</span> /api/tools/ip-lookup
+            </div>
+        </div>
+
+        <div class="category">
+            <h2><i class="fas fa-eye"></i> 4. Stalk</h2>
+            <div class="endpoint" onclick="testApi('/api/stalk/github?username=kayzen')">
+                <span class="method">GET</span> /api/stalk/github <span class="badge">Query: username</span>
+            </div>
+            <div class="endpoint" onclick="testApi('/api/stalk/reddit?username=spez')">
+                <span class="method">GET</span> /api/stalk/reddit <span class="badge">Query: username</span>
+            </div>
+            <div class="endpoint" onclick="testApi('/api/stalk/npm?package=express')">
+                <span class="method">GET</span> /api/stalk/npm <span class="badge">Query: package</span>
+            </div>
+        </div>
+
+        <div class="category">
+            <h2><i class="fas fa-tv"></i> 5. Anime & Manga</h2>
+            <div class="endpoint" onclick="testApi('/api/anime/search?q=naruto')">
+                <span class="method">GET</span> /api/anime/search <span class="badge">Query: q</span>
+            </div>
+            <div class="endpoint" onclick="testApi('/api/anime/manga?q=one+piece')">
+                <span class="method">GET</span> /api/anime/manga <span class="badge">Query: q</span>
+            </div>
+            <div class="endpoint" onclick="testApi('/api/anime/character?q=luffy')">
+                <span class="method">GET</span> /api/anime/character <span class="badge">Query: q</span>
+            </div>
+            <div class="endpoint" onclick="testApi('/api/anime/top')">
+                <span class="method">GET</span> /api/anime/top <span class="badge">No Query</span>
+            </div>
+        </div>
+
+        <div class="category">
+            <h2><i class="fas fa-newspaper"></i> 6. Info & News</h2>
+            <div class="endpoint" onclick="testApi('/api/info/gempa')">
+                <span class="method">GET</span> /api/info/gempa <span class="badge">BMKG</span>
+            </div>
+            <div class="endpoint" onclick="testApi('/api/search/wiki?q=Indonesia')">
+                <span class="method">GET</span> /api/search/wiki <span class="badge">Query: q</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="responseModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h3>Result Preview</h3>
+            
+            <div id="mediaPreview" style="margin-bottom: 15px; text-align: center; display: none;">
+                <img id="previewImage" src="" style="max-width: 100%; border-radius: 8px; display: none; margin: 0 auto; border: 1px solid #444;">
+                <video id="previewVideo" controls style="max-width: 100%; width: 100%; border-radius: 8px; display: none;"></video>
+                <audio id="previewAudio" controls style="width: 100%; margin-top: 10px; display: none;"></audio>
+            </div>
+
+            <pre id="jsonOutput">Loading...</pre>
+        </div>
+    </div>
+
+    <script>
+        function testApi(url) {
+            const modal = document.getElementById('responseModal');
+            const jsonOut = document.getElementById('jsonOutput');
+            const mediaDiv = document.getElementById('mediaPreview');
+            const imgEl = document.getElementById('previewImage');
+            const vidEl = document.getElementById('previewVideo');
+            const audEl = document.getElementById('previewAudio');
+
+            modal.style.display = 'flex';
+            jsonOut.textContent = 'Fetching data...';
+            mediaDiv.style.display = 'none';
+            imgEl.style.display = 'none';
+            vidEl.style.display = 'none';
+            audEl.style.display = 'none';
+            vidEl.src = ""; audEl.src = "";
+
+            fetch(url)
+                .then(response => {
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.includes("image")) {
+                        return response.blob().then(blob => ({ isImageBlob: true, blob }));
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (!data.isImageBlob) {
+                        jsonOut.textContent = JSON.stringify(data, null, 2);
+                    } else {
+                        jsonOut.textContent = "Image Blob Received (Binary)";
+                    }
+
+                    mediaDiv.style.display = 'block';
+
+                    if (data.isImageBlob) {
+                        imgEl.src = URL.createObjectURL(data.blob);
+                        imgEl.style.display = 'block';
+                    } else if (data.data && data.data.video_nowm) {
+                        vidEl.src = data.data.video_nowm;
+                        vidEl.style.display = 'block';
+                        if (data.data.music) {
+                            audEl.src = data.data.music;
+                            audEl.style.display = 'block';
+                        }
+                    } else if (data.data) {
+                        let imgUrl = null;
+                        if (data.data.url) imgUrl = data.data.url;
+                        else if (data.data.image) imgUrl = data.data.image;
+                        else if (data.data.shakemap) imgUrl = data.data.shakemap;
+                        else if (typeof data.data === 'string' && data.data.startsWith('http')) imgUrl = data.data;
+
+                        if (imgUrl && (imgUrl.match(/\.(jpeg|jpg|gif|png)$/) != null || imgUrl.includes('images') || imgUrl.includes('Shakemap') || imgUrl.includes('upload') || imgUrl.includes('external-preview'))) {
+                            imgEl.src = imgUrl;
+                            imgEl.style.display = 'block';
+                        }
+                    }
+                })
+                .catch(err => { jsonOut.textContent = 'Error: ' + err; });
+        }
+
+        function closeModal() {
+            document.getElementById('responseModal').style.display = 'none';
+            document.getElementById('previewVideo').pause();
+            document.getElementById('previewAudio').pause();
+        }
+    </script>
+</body>
+</html>
