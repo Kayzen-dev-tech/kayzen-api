@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayzen Izumi API</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="hero">
+        <div class="banner-bg"></div>
+        <div class="profile-container">
+            <img src="/images/profile.jpg" alt="Kayzen Izumi" class="profile-pic">
+            <h1>Kayzen Izumi</h1>
+            <p class="tagline">Developer & Bot Enthusiast</p>
+            <div class="buttons">
+                <a href="/docs" class="btn">Buka Dokumentasi</a>
+                <a href="#about" class="btn btn-outline">About Me</a>
+            </div>
+        </div>
+    </div>
+    <div class="slider-container">
+        <h2>Cosplay Gallery</h2>
+        <div class="slider-wrapper">
+            <div class="slider-track">
+                <% for(let i=1; i<=15; i++) { %>
+                    <div class="slide"><img src="/images/slide<%= i %>.jpg" alt="Slide <%= i %>"></div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <div class="info-section" id="about">
+        <div class="card">
+            <h3><i class="fas fa-user"></i> About Kayzen Izumi</h3>
+            <p>Halo, saya Kayzen Izumi. Seorang pengembang yang berfokus pada JavaScript dan Bot Automation.</p>
+        </div>
+        <div class="card">
+            <h3><i class="fas fa-code"></i> About Web Ini</h3>
+            <p>Web API ini dibangun sebagai layanan RESTful gratis yang menyediakan berbagai fitur scraping.</p>
+        </div>
+    </div>
+    <footer><p>&copy; 2025 Kayzen Izumi.</p></footer>
+</body>
+</html>
