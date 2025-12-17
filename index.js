@@ -3,6 +3,8 @@ const cors = require('cors');
 const path = require('path');
 const axios = require('axios');
 const cheerio = require('cheerio');
+const fs = require('fs');
+const crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -149,60 +151,94 @@ async function scrapeImgEditor(urlInput, prompt) {
 }
 
 async function scrapeWallpaper(query) {
-    try {
-        const { data } = await axios.get(`https://unsplash.com/id/s/foto/${query}`, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Android 10; Mobile; rv:109.0) Gecko/109.0 Firefox/114.0',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-                'Referer': 'https://unsplash.com/'
-            }
+  try {
+    const { data } = await axios.get(`https://unsplash.com/id/s/foto/${query}`, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Android 10; Mobile; rv:109.0) Gecko/109.0 Firefox/114.0',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+        'Referer': 'https:                
+      }
+    });
+    const $ = cheerio.load(data);
+    let wallpapers = [];
+
+                                             
+    $('//unsplash.com/'
+      }
+    });
+    const $ = cheerio.load(data);
+    let wallpapers = [];
+
+    // Try to get images from figure elements
+    $('figure[itemprop="image"] img').each((i, el) => {
+      const image = $(el).attr('src');
+      if (image) {
+        wallpapers.push({
+          image: image.split('?')[0] + '?w=1080&q=80',
+          link: image
         });
-        const $ = cheerio.load(data);
-        let wallpapers = [];
-        $('figure[itemprop="image"] img').each((i, el) => {
-            const image = $(el).attr('src');
-            const rawSrc = $(el).attr('srcset') || image;
-            if (image) wallpapers.push({ image: image.split('?')[0] + '?w=1080&q=80', link: image });
-        });
-        if(wallpapers.length === 0) {
-             $('img').each((i, el) => {
-                const src = $(el).attr('src');
-                if(src && src.includes('images.unsplash.com')) wallpapers.push({ image: src, link: src });
-             });
+      }
+    });
+
+                                                              
+    if (wallpapers.length === 0) {
+      $('// If no images found, try to get images from img elements
+    if (wallpapers.length === 0) {
+      $('img').each((i, el) => {
+        const src = $(el).attr('src');
+        if (src && src.includes('images.unsplash.com')) {
+          wallpapers.push({
+            image: src,
+            link: src
+          });
         }
-        return wallpapers;
-    } catch (e) {
-        return [];
+      });
     }
+
+    return wallpapers;
+  } catch (e) {
+    console.error(e);
+    return [];
+  }
 }
 
 async function scrapeLagu(query) {
-    try {
-        const { data } = await axios.get(`https://www.azlyrics.com/search/?q=${encodeURIComponent(query)}`, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Android 10; Mobile; rv:109.0) Gecko/109.0 Firefox/114.0',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-                'Referer': 'https://www.azlyrics.com/'
-            }
-        });
-        const $ = cheerio.load(data);
-        let items = [];
-        $('.table table tr').each((i, el) => {
-            const judulLagu = $(el).find('td').eq(1).text().trim();
-            const penyanyi = $(el).find('td').eq(0).text().trim();
-            const link = $(el).find('td').eq(1).find('a').attr('href');
-            if(judulLagu && link) {
-                items.push({
-                    judulLagu,
-                    penyanyi,
-                    link: `https://www.azlyrics.com${link}`
-                });
-            }
-        });
-        return items.slice(0, 15);
-    } catch (e) {
-        return [];
-    }
+  try {
+    const { data } = await axios.get(`https:                                                             
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Android 10; Mobile; rv:109.0) Gecko/109.0 Firefox/114.0',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+        'Referer': 'https:                    
+      }
+    });
+    const $ = cheerio.load(data);
+    let items = [];
+    $('.table table tr').each((i, el) => {
+      const judulLagu = $(el).find('td').eq(1).text().trim();
+      const penyanyi = $(el).find('td').eq(0).text().trim();
+      const link = $(el).find('td').eq(1).find('a').attr('href');
+      if(judulLagu && link) {
+        items.push({ judulLagu, penyanyi, link: `//www.azlyrics.com/search/?q=${encodeURIComponent(query)}`, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Android 10; Mobile; rv:109.0) Gecko/109.0 Firefox/114.0',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+        'Referer': 'https://www.azlyrics.com/'
+      }
+    });
+    const $ = cheerio.load(data);
+    let items = [];
+    $('.table table tr').each((i, el) => {
+      const judulLagu = $(el).find('td').eq(1).text().trim();
+      const penyanyi = $(el).find('td').eq(0).text().trim();
+      const link = $(el).find('td').eq(1).find('a').attr('href');
+      if(judulLagu && link) {
+        items.push({ judulLagu, penyanyi, link: `https://www.azlyrics.com${link}` });
+      }
+    });
+    return items.slice(0, 15);
+  } catch (e) {
+    return [];
+  }
 }
 
 async function generateLyrics(prompt) { 
@@ -234,10 +270,54 @@ async function scrapeIG(url) {
 async function getWaifu(){try{const{data}=await axios.get('https://api.waifu.im/search');return data.images[0]}catch(e){return null}}
 async function scrapeAnime(q){try{const{data}=await axios.get(`https://myanimelist.net/anime.php?q=${q}`);const $=cheerio.load(data);const r=[];$('.list table tr').each((i,e)=>{if(i>0){const t=$(e).find('strong').text().trim();const img=$(e).find('img').attr('data-src')||$(e).find('img').attr('src');if(t)r.push({title:t,img})}});return r.slice(0,5)}catch(e){return[]}}
 async function scrapeManga(q){try{const{data}=await axios.get(`https://myanimelist.net/manga.php?q=${q}`);const $=cheerio.load(data);const r=[];$('.list table tr').each((i,e)=>{if(i>0){const t=$(e).find('strong').text().trim();const img=$(e).find('img').attr('data-src')||$(e).find('img').attr('src');if(t)r.push({title:t,img})}});return r.slice(0,5)}catch(e){return[]}}
-async function scrapeCharacter(q){try{const{data}=await axios.get(`https://myanimelist.net/character.php?q=${q}`);const $=cheerio.load(data);const r=[];$('table').each((i,e)=>{const img=$(e).find('img').attr('data-src')||$(e).find('img').attr('src');const n=$(e).find('td').eq(1).find('strong').text().trim();if(n)r.push({name:n,img})});return r.slice(0,5)}catch(e){return[]}}
+async function scrapeCharacter(q) {
+  try {
+    const { data } = await axios.get(`https://www.animecharactersdatabase.com/characters.php?search=${q}`, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Android 10; Mobile; rv:109.0) Gecko) Firefox/114.0',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+        'Referer': 'https:                                   
+      }
+    });
+    const $ = cheerio.load(data);
+    const r = [];
+    $('//www.animecharactersdatabase.com/'
+      }
+    });
+    const $ = cheerio.load(data);
+    const r = [];
+    $('table tr').each((i, e) => {
+      const img = $(e).find('img').attr('data-src') || $(e).find('img').attr('src');
+      const n = $(e).find('td').eq(1).find('a').text().trim();
+      if (n) {
+        r.push({ name: n, img });
+      }
+    });
+    return r.slice(0, 5);
+  } catch (e) {
+    return [];
+  }
+}
 async function scrapeTopAnime(){try{const{data}=await axios.get(`https://myanimelist.net/topanime.php`);const $=cheerio.load(data);const r=[];$('.ranking-list').each((i,e)=>{const t=$(e).find('.detail .hoverinfo_trigger').text().trim();const s=$(e).find('.score .text').text();const img=$(e).find('img').attr('data-src')||$(e).find('img').attr('src');if(t)r.push({title:t,score:s,img})});return r.slice(0,5)}catch(e){return[]}}
 async function scrapeGempa(){try{const{data}=await axios.get("https://data.bmkg.go.id/DataMKG/TEWS/autogempa.xml");const $=cheerio.load(data,{xmlMode:true});const g=$('Infogempa').find('gempa');return{tanggal:g.find('Tanggal').text(),jam:g.find('Jam').text(),wilayah:g.find('Wilayah').text(),magnitude:g.find('Magnitude').text(),shakemap:"https://data.bmkg.go.id/DataMKG/TEWS/"+g.find('Shakemap').text()}}catch(e){return{error:"Error"}}}
 
+async function scrapeVidey(file) {
+ try {
+ const visitorId = crypto.randomUUID();
+ const url = `https://videy.co/api/upload?visitorId=${visitorId}`;
+ const headers = {
+ 'Content-Type': 'video/mp4',
+ 'Content-Length': fs.statSync(file).size,
+ 'Accept': 'application/json',
+ 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'
+ };
+ const buffer = fs.readFileSync(file);
+ const { data } = await axios.post(url, buffer, { headers });
+ return data;
+ } catch (e) {
+ return null;
+ }
+}
 
 // --- ROUTES ---
 
@@ -281,6 +361,13 @@ app.get('/api/maker/editor', async (req, res) => {
     const r = await scrapeImgEditor(url, prompt); 
     if(!r) return res.json({status:false, message:"Gagal/Timeout (Coba gambar lain/server sibuk)"});
     res.json({status:true, creator:"Kayzen", data:{url:r}}); 
+});
+
+app.use(express.json({ limit: '50mb' }));
+app.post('/api/tools/upload-videy', async (req, res) => {
+ const buffer = req.body.buffer;
+ const r = await scrapeVidey(buffer);
+ res.json({ status: !!r, creator: 'Kayzen', data:{video:r}});
 });
 
 if (require.main === module) {
