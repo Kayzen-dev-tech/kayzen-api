@@ -63,7 +63,7 @@
             </div>
             <div class="endpoint-box">
                 <div class="endpoint-title"><span class="method">GET</span> /api/tools/lirik-lagu <span class="badge" style="background:#25D366">Original</span></div>
-                <div class="input-group"> <input type="text" id="lyric_real" class="input-field" placeholder="Cari Lirik Lagu (Lirik.my)"><button class="btn-send" onclick="sendReq('/api/tools/lirik-lagu','q','lyric_real')"><i class="fas fa-music"></i></button></div>
+                <div class="input-group"> <input type="text" id="lyric_real" class="input-field" placeholder="Cari Lirik Lagu (Azlyrics)"><button class="btn-send" onclick="sendReq('/api/tools/lirik-lagu','q','lyric_real')"><i class="fas fa-music"></i></button></div>
             </div>
             <div class="endpoint-box">
                 <div class="endpoint-title"><span class="method">GET</span> /api/maker/editor <span class="badge" style="background:#00d2ff">AI Edit</span></div>
@@ -148,7 +148,8 @@
                                     sl.appendChild(img);
                                 });
                             } else {
-                                im.src = res.media[0]; im.style.display='block';
+                                im.src = res.media[0];
+                                im.style.display='block';
                             }
                         }
                         else if(src && typeof src === 'string') {
