@@ -116,52 +116,87 @@
         </div>
     </div>
 
-    <script>
-        function sendReq(u,p,i){ const v=document.getElementById(i).value; if(!v)return alert("Isi dulu!"); testApi(`${u}?${p}=${encodeURIComponent(v)}`); }
-        
+        <script>
+        function sendReq(u, p, i) {
+            const v = document.getElementById(i).value;
+            if (!v) return alert("Isi kolom input terlebih dahulu!");
+            testApi(`${u}?${p}=${encodeURIComponent(v)}`);
+        }
+
         function sendEditReq() {
             const u = document.getElementById('edit_url').value;
             const p = document.getElementById('edit_prompt').value;
-            if(!u || !p) return alert("Isi URL Gambar dan Prompt!");
+            if (!u || !p) return alert("Isi URL Gambar dan Prompt!");
             testApi(`/api/maker/editor?url=${encodeURIComponent(u)}&prompt=${encodeURIComponent(p)}`);
         }
-        
-        function sendReq(url, type, id) {
-  const file = document.getElementById(id).files[0];
-  const formData = new FormData();
-  formData.append('file', file);
 
-  try {
-    const response = await fetch(url, {
-      method: 'POST',
-      body: formData,
-    });
-    const data = await response.json();
-    // Lakukan sesuatu dengan data
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-        function testApi(url){
-            const m=document.getElementById('responseModal'),j=document.getElementById('jsonOutput'),md=document.getElementById('mediaPreview'),im=document.getElementById('previewImage'),vi=document.getElementById('previewVideo'),sl=document.getElementById('sliderContainer');
-            m.style.display='flex'; j.textContent='Fetching...'; md.style.display='none'; im.style.display='none'; vi.style.display='none'; sl.style.display='none'; sl.innerHTML=""; vi.src="";
+        async function uploadFile(url, id) {
+            const fileInput = document.getElementById(id);
+            if (!fileInput.files[0]) return alert("Pilih file terlebih dahulu!");
             
-            fetch(url).then(r=>{ const ct=r.headers.get("content-type"); if(ct&&ct.includes("image")) return r.blob().then(b=>({blob:b,isBlob:true})); return r.json(); })
-            .then(d=>{
-                if(d.isBlob){ j.textContent="Image Blob"; im.src=URL.createObjectURL(d.blob); im.style.display='block'; md.style.display='block'; }
-                else { 
-                    j.textContent=JSON.stringify(d,null,2); 
-                    if(d.data){
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const m = document.getElementById('responseModal');
+            const j = document.getElementById('jsonOutput');
+            m.style.display = 'flex';
+            j.textContent = 'Uploading...';
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    body: formData,
+                });
+                const data = await response.json();
+                j.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                console.error(error);
+                j.textContent = "Error: " + error;
+            }
+        }
+
+        function testApi(url) {
+            const m = document.getElementById('responseModal'),
+                  j = document.getElementById('jsonOutput'),
+                  md = document.getElementById('mediaPreview'),
+                  im = document.getElementById('previewImage'),
+                  vi = document.getElementById('previewVideo'),
+                  sl = document.getElementById('sliderContainer');
+            
+            m.style.display = 'flex';
+            j.textContent = 'Fetching...';
+            md.style.display = 'none';
+            im.style.display = 'none';
+            vi.style.display = 'none';
+            sl.style.display = 'none';
+            sl.innerHTML = "";
+            vi.src = "";
+
+            fetch(url).then(r => {
+                const ct = r.headers.get("content-type");
+                if (ct && ct.includes("image")) return r.blob().then(b => ({ blob: b, isBlob: true }));
+                return r.json();
+            })
+            .then(d => {
+                if (d.isBlob) {
+                    j.textContent = "Image Blob";
+                    im.src = URL.createObjectURL(d.blob);
+                    im.style.display = 'block';
+                    md.style.display = 'block';
+                } else {
+                    j.textContent = JSON.stringify(d, null, 2);
+                    if (d.data) {
                         const res = d.data;
-                        let src = res.url || res.image || res.video || (Array.isArray(res)?res[0]?.imageUrl:null) || (Array.isArray(res)?res[0]:null);
-                        
-                        if(res.media && Array.isArray(res.media)) {
-                            md.style.display='block';
-                            if(res.type === 'video') {
-                                vi.src = res.media[0]; vi.style.display='block';
+                        let src = res.url || res.image || res.video || (Array.isArray(res) ? res[0]?.imageUrl : null) || (Array.isArray(res) ? res[0] : null);
+
+                        if (res.media && Array.isArray(res.media)) {
+                            md.style.display = 'block';
+                            if (res.type === 'video') {
+                                vi.src = res.media[0];
+                                vi.style.display = 'block';
                             } else if (res.type === 'slide') {
-                                sl.style.display='flex';
+                                sl.style.display = 'flex';
                                 res.media.forEach(m => {
                                     const img = document.createElement('img');
                                     img.src = m;
@@ -172,19 +207,26 @@
                                 });
                             } else {
                                 im.src = res.media[0];
-                                im.style.display='block';
+                                im.style.display = 'block';
                             }
-                        }
-                        else if(src && typeof src === 'string') {
-                            md.style.display='block';
-                            if(src.match(/\.(mp4)/)) { vi.src=src; vi.style.display='block'; }
-                            else { im.src=src; im.style.display='block'; }
+                        } else if (src && typeof src === 'string') {
+                            md.style.display = 'block';
+                            if (src.match(/\.(mp4)/)) {
+                                vi.src = src;
+                                vi.style.display = 'block';
+                            } else {
+                                im.src = src;
+                                im.style.display = 'block';
+                            }
                         }
                     }
                 }
-            }).catch(e=>{j.textContent="Error: "+e});
+            }).catch(e => { j.textContent = "Error: " + e });
         }
-        function closeModal(){document.getElementById('responseModal').style.display='none';}
+
+        function closeModal() {
+            document.getElementById('responseModal').style.display = 'none';
+        }
     </script>
 </body>
 </html>
