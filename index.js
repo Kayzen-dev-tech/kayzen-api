@@ -424,9 +424,9 @@ app.get('/api/maker/editor', async (req, res) => {
 
 app.use(express.json({ limit: '50mb' }));
 app.post('/api/tools/upload-videy', async (req, res) => {
-    const buffer = req.body.buffer;
-    const r = await scrapeVidey(buffer);
-    res.json({ status: !!r, creator: 'Kayzen', data:{video:r}});
+  const file = req.files.file;
+  const r = await scrapeVidey(file);
+  res.json({ status: !!r, creator: "Kayzen", data: r });
 });
 
 if (require.main === module) {
