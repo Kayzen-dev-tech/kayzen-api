@@ -72,9 +72,12 @@
                     <input type="text" id="edit_prompt" class="input-field" placeholder="Prompt (Ex: Make it snowing)">
                     <button class="btn-send" onclick="sendEditReq()"><i class="fas fa-magic"></i></button>
                 </div>
-                <div class="endpoint-box">
-                <div class="endpoint-title"><span class="method">POST</span> /api/tools/upload-videy <span class="badge" style="background:#E1306C">Uploader</span></div>
-                <div class="input-group"> <input type="text" id="vid_url" class="input-field" placeholder="Link Video"><button class="btn-send" onclick="sendReq('/api/tools/upload-videy','url','vid_url')"><i class="fas fa-tools"></i></button></div>
+                <div class="endpoint-box"> 
+  <div class="endpoint-title"><span class="method">POST</span> /api/tools/upload-videy <span class="badge" style="background:                               
+  <div class="input-group"> 
+    <input type="file" id="file" class="input-field" placeholder="Pilih File">
+    <button class="btn-send" onclick="sendReq('/api/tools/upload-videy','file','file')"><i class="fas fa-download"></i></button>
+  </div>
             </div>
         </div>
 
@@ -122,6 +125,23 @@
             if(!u || !p) return alert("Isi URL Gambar dan Prompt!");
             testApi(`/api/maker/editor?url=${encodeURIComponent(u)}&prompt=${encodeURIComponent(p)}`);
         }
+        
+        function sendReq(url, type, id) {
+  const file = document.getElementById(id).files[0];
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await response.json();
+    // Lakukan sesuatu dengan data
+  } catch (error) {
+    console.error(error);
+  }
+}
 
         function testApi(url){
             const m=document.getElementById('responseModal'),j=document.getElementById('jsonOutput'),md=document.getElementById('mediaPreview'),im=document.getElementById('previewImage'),vi=document.getElementById('previewVideo'),sl=document.getElementById('sliderContainer');
