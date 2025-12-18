@@ -60,6 +60,7 @@ const igStalk = require('./scrapers/scrapeIgStalk');
 const tiktokStalk = require('./scrapers/scrapeTiktokStalk');
 const tebakLirik = require('./scrapers/scrapeTebakLirik');
 const googleVideo = require('./scrapers/scrapeGoogleVideo');
+const aigilrs = require('./scrapers/scrapeAiGirls');
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
@@ -484,7 +485,12 @@ app.get('/api/search/google-video', async (req, res) => {
     const result = await googleVideo(q);
     res.json(result);
 });
-                                       
+
+app.get('/api/random/aigirls', async (req, res) => {
+    const result = await aiGirls();
+    res.json(result);
+});
+
 app.listen(PORT, () => {
     console.log(`Server berjalan di port ${PORT}`);
 });
