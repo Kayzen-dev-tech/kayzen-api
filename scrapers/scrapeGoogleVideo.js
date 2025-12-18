@@ -3,7 +3,7 @@ const cheerio = require('cheerio');
 
 async function googleVideo(query) {
     try {
-        const { data } = await axios.get("https://www.google.com/search", {
+        const { data } = await axios.get("https://www.chrome.com/search", {
             params: {
                 q: query,
                 tbm: "vid", 
