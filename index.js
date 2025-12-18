@@ -1,436 +1,482 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const axios = require('axios');
-const cheerio = require('cheerio');
-const fs = require('fs');
-const crypto = require('crypto');
+const multer = require('multer');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const upload = multer({ storage: multer.memoryStorage() });
+
 app.use(cors());
-app.use(express.static(path.join(__dirname, 'public')));
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+app.use(express.json());
+app.use(express.static('public'));
 
-// --- FUNGSI SCRAPING ---
+const dramadash = require('./scrapers/scrapeDramadash');
+const imgeditor = require('./scrapers/scrapeImgeditor');
+const identifyAnime = require('./scrapers/scrapeAnimeFinder');
+const channelTalk = require('./scrapers/scrapeChannelstalk');
+const dramabox = require('./scrapers/scrapeDramabox');
+const igdown = require('./scrapers/scrapeIgdown');
+const itch = require('./scrapers/scrapeItch');
+const { deepimg } = require('./scrapers/scrapeDeepimg');
+const scrapeLagu = require('./scrapers/scrapeLagu');
+const bing = require('./scrapers/scrapeBing');
+const lirik = require('./scrapers/scrapeLirik');
+const pinterest = require('./scrapers/scrapePinterest');
+const randomAnime = require('./scrapers/scrapeRandomAnime');
+const removeBg = require('./scrapers/scrapeRemoveBg');
+const melolo = require('./scrapers/scrapeMelolo');
+const pixnova = require('./scrapers/scrapePixnova');
+const magicstudio = require('./scrapers/scrapeMagicStudio');
+const lyricsGen = require('./scrapers/scrapeLyricsGenerator');
+const muslimai = require('./scrapers/scrapeMuslimai');
+const mediafire = require('./scrapers/scrapeMediafiredown');
+const tempmail = require('./scrapers/scrapeTempmail');
+const twitterStalk = require('./scrapers/scrapeTwitterstalk');
+const ytdown = require('./scrapers/scrapeYtdown');
+const removerWm = require('./scrapers/scrapeRemover');
+const videy = require('./scrapers/scrapeVidey');
+const tiktokDl = require('./scrapers/scrapeTiktok');
+const jadwalSholat = require('./scrapers/scrapeJadwalSholat');
+const hubble = require('./scrapers/scrapeHubble');
+const nanoBanana = require('./scrapers/scrapeNanoBanana');
+const dailymotion = require('./scrapers/scrapeDailymotion');
+const googleImg = require('./scrapers/scrapeGoogleImage');
+const scriptblox = require('./scrapers/scrapeScriptblox');
+const imageToAscii = require('./scrapers/scrapeImageToAscii');
+const pngimg = require('./scrapers/scrapePngimg');
+const kajian = require('./scrapers/scrapeKajian');
+const lingvanex = require('./scrapers/scrapeLingvanex');
+const metaAi = require('./scrapers/scrapeMetaAi');
+const tinyjpg = require('./scrapers/scrapeTinyjpg');
+const spotify = require('./scrapers/scrapeSpotify');
+const appleMusic = require('./scrapers/scrapeAppleMusic');
+const top4top = require('./scrapers/scrapeTop4top');
+const spotifyDl = require('./scrapers/scrapeSpotifyDl');
+const umamusume = require('./scrapers/scrapeUmamusume');
+const saveTwitter = require('./scrapers/scrapeSaveTwitter');
+const igStalk = require('./scrapers/scrapeIgStalk');
+const tiktokStalk = require('./scrapers/scrapeTiktokStalk');
+const tebakLirik = require('./scrapers/scrapeTebakLirik');
 
-async function pinterestSearch(query) {
-    const defaultCookie = '_pinterest_sess=Twv...; csrftoken=...';
-    const modifiedQuery = `${query} ${Math.floor(Math.random() * 10000)}`;
-    const url = 'https://id.pinterest.com/resource/BaseSearchResource/get/';
-    const headers = {
-        'accept': 'application/json, text/javascript, */*, q=0.01',
-        'referer': 'https://id.pinterest.com/',
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-        'cookie': defaultCookie,
-        'x-pinterest-appstate': 'active',
-    };
-    const postData = new URLSearchParams();
-    postData.append('source_url', `/search/pins/?q=${encodeURIComponent(modifiedQuery)}&rs=typed`);
-    postData.append('data', JSON.stringify({
-        options: {
-            query: modifiedQuery,
-            scope: 'pins',
-            page_size: 40,
-            rs: 'typed',
-            redux_normalize_feed: true
-        },
-        context: {}
-    }));
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.get('/docs', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'docs.html'));
+});
+
+app.get('/api/dramadash/home', async (req, res) => {
+    const result = await dramadash.home();
+    res.json(result);
+});
+
+app.get('/api/dramadash/detail', async (req, res) => {
+    const { id } = req.query;
+    const result = await dramadash.detail(id);
+    res.json(result);
+});
+
+app.get('/api/dramadash/search', async (req, res) => {
+    const { q } = req.query;
+    const result = await dramadash.search(q);
+    res.json(result);
+});
+
+app.get('/api/dramadash/episode', async (req, res) => {
+    const { id, eps } = req.query;
+    const result = await dramadash.episode(id, eps);
+    res.json(result);
+});
+
+app.post('/api/imgeditor/create', upload.single('image'), async (req, res) => {
     try {
-        const { data } = await axios.post(url, postData, { headers });
-        const results = data?.resource_response?.data?.results || [];
-        return results.sort(() => Math.random() - 0.5).map(pin => ({
-            id: pin.id,
-            title: pin.grid_title || pin.description || pin.accessibility_text || "Pinterest Image",
-            image: pin.images?.['736x']?.url || pin.images?.['474x']?.url || pin.images?.orig?.url,
-            video: pin.story_pin_data?.pages?.[0]?.blocks?.[0]?.video?.video_list?.V_HLSV3_MOBILE?.url || null,
-        })).filter(x => x.image);
+        if (!req.file) return res.status(400).json({ error: 'File image diperlukan' });
+        const { prompt, styleId, mode } = req.body;
+        const result = await imgeditor.create(req.file.buffer, req.file.originalname, prompt, { styleId, mode });
+        res.json(result);
     } catch (e) {
-        return [];
+        res.status(500).json({ error: e.message });
     }
-}
+});
 
-async function scrapeLazada(query) {
+app.post('/api/anime/identify', upload.single('image'), async (req, res) => {
     try {
-        const encodedQuery = encodeURIComponent(query);
-        const url = `https://www.lazada.co.id/catalog/?q=${encodedQuery}`;
-        const { data } = await axios.get(url, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-                'Accept-Language': 'en-US,en;q=0.9,id;q=0.8',
-                'Referer': 'https://www.lazada.co.id/',
-                'Cache-Control': 'max-age=0'
-            }
-        });
-
-        const $ = cheerio.load(data);
-        let items = [];
-
-        $('script').each((i, el) => {
-            const txt = $(el).html() || "";
-            if (txt.includes('window.pageData=')) {
-                try {
-                    let jsonStr = txt.split('window.pageData=')[1].split(';')[0];
-                    const json = JSON.parse(jsonStr);
-                    const list = json?.mods?.listItems || [];
-                    items = list.map(item => ({
-                        name: item.name,
-                        price: item.priceShow || item.price,
-                        rating: item.ratingScore || 'N/A',
-                        location: item.location || 'Indonesia',
-                        image: item.image || item.thumbs?.[0]?.image || 'https://via.placeholder.com/150',
-                        link: item.itemUrl ? `https://www.lazada.co.id${item.itemUrl}` : '#'
-                    }));
-                } catch (e) {
-                    console.error(e);
-                }
-            }
-        });
-
-        return items.slice(0, 15);
+        if (!req.file) return res.status(400).json({ error: 'File image diperlukan' });
+        const result = await identifyAnime(req.file.buffer, req.file.originalname);
+        res.json(result);
     } catch (e) {
-        console.error(e);
-        return [];
+        res.status(500).json({ error: e.message });
     }
-}
+});
 
-async function scrapeImgEditor(urlInput, prompt) {
+app.get('/api/channel/info', async (req, res) => {
+    const { url } = req.query;
+    const result = await channelTalk(url);
+    res.json(result);
+});
+
+app.get('/api/dramabox/home', async (req, res) => {
+    const result = await dramabox.home();
+    res.json(result);
+});
+
+app.get('/api/dramabox/search', async (req, res) => {
+    const { q } = req.query;
+    const result = await dramabox.search(q);
+    res.json(result);
+});
+
+app.get('/api/dramabox/detail', async (req, res) => {
+    const { id } = req.query;
+    const result = await dramabox.detail(id);
+    res.json(result);
+});
+
+app.get('/api/dramabox/stream', async (req, res) => {
+    const { id, eps } = req.query;
+    const result = await dramabox.stream(id, eps);
+    res.json(result);
+});
+
+app.get('/api/ig/download', async (req, res) => {
+    const { url } = req.query;
+    const result = await igdown(url);
+    res.json(result);
+});
+
+app.get('/api/itch/search', async (req, res) => {
+    const { q } = req.query;
+    const result = await itch.search(q);
+    res.json(result);
+});
+
+app.get('/api/itch/detail', async (req, res) => {
+    const { url } = req.query;
+    const result = await itch.detail(url);
+    res.json(result);
+});
+
+app.get('/api/deepimg/generate', async (req, res) => {
+    const { prompt, style } = req.query;
+    const result = await deepimg(prompt, style);
+    res.json(result);
+});
+
+app.get('/api/lyrics/search', async (req, res) => {
+    const { q } = req.query;
+    const result = await scrapeLagu(q);
+    res.json(result);
+});
+
+app.get('/api/bing/search', async (req, res) => {
+    const { q } = req.query;
+    const result = await bing.search(q);
+    res.json(result);
+});
+
+app.get('/api/bing/images', async (req, res) => {
+    const { q } = req.query;
+    const result = await bing.images(q);
+    res.json(result);
+});
+
+app.get('/api/bing/videos', async (req, res) => {
+    const { q } = req.query;
+    const result = await bing.videos(q);
+    res.json(result);
+});
+
+app.get('/api/lirik/search', async (req, res) => {
+    const { q } = req.query;
+    const result = await lirik(q);
+    res.json(result);
+});
+
+app.get('/api/pinterest/search', async (req, res) => {
+    const { q } = req.query;
+    const result = await pinterest(q);
+    res.json(result);
+});
+
+app.get('/api/anime/random', async (req, res) => {
+    const { type } = req.query;
+    let result;
+    if (type === 'neko') result = await randomAnime.neko();
+    else if (type === 'loli') result = await randomAnime.loli();
+    else result = await randomAnime.waifu();
+    res.json({ url: result });
+});
+
+app.post('/api/tools/removebg', upload.single('image'), async (req, res) => {
     try {
-        const response = await axios.get(urlInput, { responseType: 'arraybuffer' });
-        const buffer = Buffer.from(response.data, 'binary');
+        if (!req.file) return res.status(400).json({ error: 'File image diperlukan' });
+        const result = await removeBg(req.file.buffer, req.file.originalname);
+        res.json(result);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
 
-        const info = await axios.post("https://imgeditor.co/api/get-upload-url", {
-            fileName: "image.jpg", contentType: "image/jpeg", fileSize: buffer.length
-        }).then(r => r.data);
+app.get('/api/novel/melolo/search', async (req, res) => {
+    const { q } = req.query;
+    const result = await melolo.search(q);
+    res.json(result);
+});
 
-        await axios.put(info.uploadUrl, buffer, { headers: { "Content-Type": "image/jpeg" } });
+app.get('/api/novel/melolo/detail', async (req, res) => {
+    const { id } = req.query;
+    const result = await melolo.detail(id);
+    res.json(result);
+});
 
-        const gen = await axios.post("https://imgeditor.co/api/generate-image", {
-            prompt: prompt, styleId: "realistic", mode: "image", imageUrl: info.publicUrl, imageUrls: [info.publicUrl], numImages: 1, outputFormat: "png", model: "nano-banana"
-        }).then(r => r.data);
+app.get('/api/novel/melolo/stream', async (req, res) => {
+    const { id } = req.query;
+    const result = await melolo.stream(id);
+    res.json(result);
+});
 
-        for (let i = 0; i < 30; i++) { 
-            await new Promise(r => setTimeout(r, 2000)); 
-            const status = await axios.get(`https://imgeditor.co/api/generate-image/status?taskId=${gen.taskId}`).then(r => r.data);
-            if (status.status === "completed") return status.imageUrl;
-            if (status.status === "failed") return null;
+app.post('/api/ai/pixnova/swap-image', upload.fields([{ name: 'target', maxCount: 1 }, { name: 'face', maxCount: 1 }]), async (req, res) => {
+    try {
+        if (!req.files || !req.files['target'] || !req.files['face']) {
+            return res.status(400).json({ error: 'Membutuhkan file target dan face' });
         }
-        return null; 
-    } catch (e) { return null; }
-}
+        const target = req.files['target'][0];
+        const face = req.files['face'][0];
+        const result = await pixnova.swapImage(target.buffer, target.originalname, face.buffer, face.originalname);
+        res.json({ result });
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
 
-async function scrapeWallpaper(query) {
+app.post('/api/ai/pixnova/baby', upload.fields([{ name: 'father', maxCount: 1 }, { name: 'mother', maxCount: 1 }]), async (req, res) => {
     try {
-        const { data } = await axios.get(`https://unsplash.com/id/s/foto/${query}`, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Android 10; Mobile; rv:109.0) Gecko/109.0 Firefox/114.0',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-                'Referer': 'https://unsplash.com/'
-            }
-        });
-        const $ = cheerio.load(data);
-        let wallpapers = [];
-
-        // Try to get images from figure elements
-        $('figure[itemprop="image"] img').each((i, el) => {
-            const image = $(el).attr('src');
-            if (image) {
-                wallpapers.push({
-                    image: image.split('?')[0] + '?w=1080&q=80',
-                    link: image
-                });
-            }
-        });
-
-        // If no images found, try to get images from img elements
-        if (wallpapers.length === 0) {
-            $('img').each((i, el) => {
-                const src = $(el).attr('src');
-                if (src && src.includes('images.unsplash.com')) {
-                    wallpapers.push({
-                        image: src,
-                        link: src
-                    });
-                }
-            });
+        if (!req.files || !req.files['father'] || !req.files['mother']) {
+            return res.status(400).json({ error: 'Membutuhkan file father dan mother' });
         }
-
-        return wallpapers;
+        const { gender } = req.body;
+        const father = req.files['father'][0];
+        const mother = req.files['mother'][0];
+        const result = await pixnova.generateBaby(father.buffer, father.originalname, mother.buffer, mother.originalname, gender || 'boy');
+        res.json({ result });
     } catch (e) {
-        console.error(e);
-        return [];
+        res.status(500).json({ error: e.message });
     }
-}
+});
 
-async function scrapeLagu(query) {
+app.get('/api/ai/magicstudio', async (req, res) => {
+    const { prompt } = req.query;
+    const result = await magicstudio(prompt);
+    res.json(result);
+});
+
+app.get('/api/ai/lyrics-generator', async (req, res) => {
+    const { prompt } = req.query;
+    const result = await lyricsGen(prompt);
+    res.json({ lyrics: result });
+});
+
+app.get('/api/muslim/ask', async (req, res) => {
+    const { q } = req.query;
+    const result = await muslimai(q);
+    res.json(result);
+});
+
+app.get('/api/download/mediafire', async (req, res) => {
+    const { url } = req.query;
+    const result = await mediafire(url);
+    res.json(result);
+});
+
+app.get('/api/tempmail/create', async (req, res) => {
+    const result = await tempmail.create();
+    res.json(result);
+});
+
+app.get('/api/tempmail/inbox', async (req, res) => {
+    const { token } = req.query;
+    const result = await tempmail.cekInbox(token);
+    res.json(result);
+});
+
+app.get('/api/stalk/twitter', async (req, res) => {
+    const { username } = req.query;
+    const result = await twitterStalk(username);
+    res.json(result);
+});
+
+app.get('/api/download/youtube', async (req, res) => {
+    const { url } = req.query;
+    const result = await ytdown(url);
+    res.json(result);
+});
+
+app.get('/api/tools/remover', async (req, res) => {
+    const { url } = req.query;
+    const result = await removerWm(url);
+    res.json(result);
+});
+
+app.post('/api/upload/videy', upload.single('file'), async (req, res) => {
     try {
-        const { data } = await axios.get(`https://www.azlyrics.com/search/?q=${encodeURIComponent(query)}`, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Android 10; Mobile; rv:109.0) Gecko/109.0 Firefox/114.0',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-                'Referer': 'https://www.azlyrics.com/'
-            }
-        });
-        const $ = cheerio.load(data);
-        let items = [];
-        $('.table table tr').each((i, el) => {
-            const judulLagu = $(el).find('td').eq(1).text().trim();
-            const penyanyi = $(el).find('td').eq(0).text().trim();
-            const link = $(el).find('td').eq(1).find('a').attr('href');
-            if(judulLagu && link) {
-                items.push({ judulLagu, penyanyi, link: `https://www.azlyrics.com${link}` });
-            }
-        });
-        return items.slice(0, 15);
-    } catch (e) {
-        return [];
-    }
-}
-
-async function generateLyrics(prompt) { 
-    try {
-        const { data } = await axios.post('https://lyricsgenerator.com/api/completion', { prompt }); 
-        return data; 
-    } catch (e) { 
-        return "Lirik tidak dapat dibuat (Server Error/Limit)."; 
-    } 
-}
-
-async function scrapeIG(url) { 
-    try { 
-        const { data } = await axios.get(`https://media.mollygram.com/?url=${encodeURIComponent(url)}`); 
-        if (!data.html) return null; 
-        const $ = cheerio.load(data.html); 
-        const imgs = []; 
-        $("#download_content img").each((i, el) => { 
-            const src = $(el).attr("src"); 
-            if(src) imgs.push(src); 
-        }); 
-        const vid = $("video source").attr("src"); 
-        if(vid) return { type: "video", media: [vid] }; 
-        if(imgs.length > 0) return { type: imgs.length > 1 ? "slide" : "image", media: imgs }; 
-        return null; 
-    } catch (e) { return null; } 
-}
-
-async function getWaifu() {
-    try {
-        const {data} = await axios.get('https://api.waifu.im/search');
-        return data.images[0];
-    } catch (e) {
-        return null;
-    }
-}
-
-async function scrapeAnime(q) {
-    try {
-        const {data} = await axios.get(`https://myanimelist.net/anime.php?q=${q}`);
-        const $ = cheerio.load(data);
-        const r = [];
-        $('.list table tr').each((i, e) => {
-            if(i > 0) {
-                const t = $(e).find('strong').text().trim();
-                const img = $(e).find('img').attr('data-src') || $(e).find('img').attr('src');
-                if(t) r.push({title:t, img});
-            }
-        });
-        return r.slice(0, 5);
-    } catch (e) {
-        return [];
-    }
-}
-
-async function scrapeManga(q) {
-    try {
-        const {data} = await axios.get(`https://myanimelist.net/manga.php?q=${q}`);
-        const $ = cheerio.load(data);
-        const r = [];
-        $('.list table tr').each((i, e) => {
-            if(i > 0) {
-                const t = $(e).find('strong').text().trim();
-                const img = $(e).find('img').attr('data-src') || $(e).find('img').attr('src');
-                if(t) r.push({title:t, img});
-            }
-        });
-        return r.slice(0, 5);
-    } catch (e) {
-        return [];
-    }
-}
-
-async function scrapeCharacter(q) {
-    try {
-        const { data } = await axios.get(`https://www.animecharactersdatabase.com/characters.php?search=${q}`, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Android 10; Mobile; rv:109.0) Gecko/109.0 Firefox/114.0',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-                'Referer': 'https://www.animecharactersdatabase.com/'
-            }
-        });
-        const $ = cheerio.load(data);
-        const r = [];
-        $('table tr').each((i, e) => {
-            const img = $(e).find('img').attr('data-src') || $(e).find('img').attr('src');
-            const n = $(e).find('td').eq(1).find('a').text().trim();
-            if (n) {
-                r.push({ name: n, img });
-            }
-        });
-        return r.slice(0, 5);
-    } catch (e) {
-        return [];
-    }
-}
-
-async function scrapeTopAnime() {
-    try {
-        const {data} = await axios.get(`https://myanimelist.net/topanime.php`);
-        const $ = cheerio.load(data);
-        const r = [];
-        $('.ranking-list').each((i, e) => {
-            const t = $(e).find('.detail .hoverinfo_trigger').text().trim();
-            const s = $(e).find('.score .text').text();
-            const img = $(e).find('img').attr('data-src') || $(e).find('img').attr('src');
-            if(t) r.push({title:t, score:s, img});
-        });
-        return r.slice(0, 5);
-    } catch (e) {
-        return [];
-    }
-}
-
-async function scrapeGempa() {
-    try {
-        const {data} = await axios.get("https://data.bmkg.go.id/DataMKG/TEWS/autogempa.xml");
-        const $ = cheerio.load(data, {xmlMode: true});
-        const g = $('Infogempa').find('gempa');
-        return {
-            tanggal: g.find('Tanggal').text(),
-            jam: g.find('Jam').text(),
-            wilayah: g.find('Wilayah').text(),
-            magnitude: g.find('Magnitude').text(),
-            shakemap: "https://data.bmkg.go.id/DataMKG/TEWS/" + g.find('Shakemap').text()
+        if (!req.file) return res.status(400).json({ error: 'File video atau image diperlukan' });
+        const fileData = {
+            data: req.file.buffer,
+            name: req.file.originalname
         };
+        const result = await videy(fileData);
+        res.json(result);
     } catch (e) {
-        return {error: "Error"};
+        res.status(500).json({ error: e.message });
     }
-}
+});
 
-async function scrapeVidey(file) {
+app.get('/api/download/tiktok', async (req, res) => {
+    const { url } = req.query;
+    const result = await tiktokDl(url);
+    res.json(result);
+});
+
+app.get('/api/muslim/jadwalsholat', async (req, res) => {
+    const { kota } = req.query;
+    const result = await jadwalSholat(kota);
+    res.json(result);
+});
+
+app.get('/api/search/hubble', async (req, res) => {
+    const { q } = req.query;
+    const result = await hubble(q);
+    res.json(result);
+});
+
+app.get('/api/ai/nanobanana', async (req, res) => {
+    const { prompt } = req.query;
+    const result = await nanoBanana(prompt);
+    res.json(result);
+});
+
+app.get('/api/download/dailymotion', async (req, res) => {
+    const { url } = req.query;
+    const result = await dailymotion(url);
+    res.json(result);
+});
+
+app.get('/api/search/google-image', async (req, res) => {
+    const { q } = req.query;
+    const result = await googleImg(q);
+    res.json(result);
+});
+
+app.get('/api/search/scriptblox', async (req, res) => {
+    const { q, page } = req.query;
+    const result = await scriptblox(q, page);
+    res.json(result);
+});
+
+app.post('/api/tools/imagetoascii', upload.single('image'), async (req, res) => {
     try {
-        const visitorId = crypto.randomUUID();
-        const url = `https://videy.co/api/upload?visitorId=${visitorId}`;
-        const headers = {
-            'Content-Type': 'video/mp4',
-            'Content-Length': fs.statSync(file).size,
-            'Accept': 'application/json',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'
-        };
-        const buffer = fs.readFileSync(file);
-        const { data } = await axios.post(url, buffer, { headers });
-        return data;
+        if (!req.file) return res.status(400).json({ error: 'File image diperlukan' });
+        const result = await imageToAscii(req.file.buffer, req.file.originalname);
+        res.json(result);
     } catch (e) {
-        return null;
+        res.status(500).json({ error: e.message });
     }
-}
-
-// --- ROUTES ---
-
-app.get('/', (req, res) => res.render('home'));
-app.get('/docs', (req, res) => res.render('docs'));
-
-app.get('/api/anime/search', async (req, res) => { 
-    const r = await scrapeAnime(req.query.q); 
-    res.json({status:true, creator:"Kayzen", data:r}); 
 });
 
-app.get('/api/anime/manga', async (req, res) => { 
-    const r = await scrapeManga(req.query.q); 
-    res.json({status:true, creator:"Kayzen", data:r}); 
+app.get('/api/search/pngimg', async (req, res) => {
+    const { q } = req.query;
+    const result = await pngimg(q);
+    res.json(result);
 });
 
-app.get('/api/anime/character', async (req, res) => { 
-    const r = await scrapeCharacter(req.query.q); 
-    res.json({status:true, creator:"Kayzen", data:r}); 
+app.get('/api/muslim/kajian', async (req, res) => {
+    const { q } = req.query;
+    const result = await kajian(q);
+    res.json(result);
 });
 
-app.get('/api/anime/top', async (req, res) => { 
-    const r = await scrapeTopAnime(); 
-    res.json({status:true, creator:"Kayzen", data:r}); 
+app.get('/api/translate/sunda', async (req, res) => {
+    const { text } = req.query;
+    const result = await lingvanex(text);
+    res.json(result);
 });
 
-app.get('/api/random/waifu', async (req, res) => { 
-    const r = await getWaifu(); 
-    res.json({status:true, creator:"Kayzen", data:r}); 
+app.get('/api/ai/meta-ai', async (req, res) => {
+    const { prompt } = req.query;
+    const result = await metaAi(prompt);
+    res.json(result);
 });
 
-app.get('/api/random/neko', async (req, res) => { 
+app.post('/api/tools/tinyjpg', upload.single('image'), async (req, res) => {
     try {
-        const {data} = await axios.get("https://nekos.best/api/v2/neko");
-        res.json({status:true, creator:"Kayzen", data:data.results[0]});
+        if (!req.file) return res.status(400).json({ error: 'File image diperlukan' });
+        const result = await tinyjpg(req.file.buffer, req.file.originalname);
+        res.json(result);
     } catch (e) {
-        res.json({status:false});
+        res.status(500).json({ error: e.message });
     }
 });
 
-app.get('/api/info/gempa', async (req, res) => { 
-    const r = await scrapeGempa(); 
-    if(r.shakemap) r.image = r.shakemap; 
-    res.json({status:true, creator:"Kayzen", data:r}); 
+app.get('/api/search/spotify', async (req, res) => {
+    const { q } = req.query;
+    const result = await spotify(q);
+    res.json(result);
 });
 
-app.get('/api/download/instagram', async (req, res) => { 
-    const r = await scrapeIG(req.query.url); 
-    res.json({status:!!r, creator:"Kayzen", data:r}); 
+app.get('/api/download/apple-music', async (req, res) => {
+    const { url } = req.query;
+    const result = await appleMusic(url);
+    res.json(result);
 });
 
-app.get('/api/tools/lyrics', async (req, res) => { 
-    const r = await generateLyrics(req.query.q); 
-    res.json({status:true, creator:"Kayzen", data:r}); 
+app.post('/api/upload/top4top', upload.single('file'), async (req, res) => {
+    try {
+        if (!req.file) return res.status(400).json({ error: 'File image diperlukan' });
+        const result = await top4top(req.file.buffer, req.file.originalname);
+        res.json(result);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
 });
 
-app.get('/api/search/pinterest', async (req, res) => { 
-    const r = await pinterestSearch(req.query.q); 
-    res.json({status:true, creator:"Kayzen", data:r}); 
+app.get('/api/download/spotify', async (req, res) => {
+    const { url } = req.query;
+    const result = await spotifyDl(url);
+    res.json(result);
 });
 
-app.get('/api/search/lazada', async (req, res) => { 
-    const r = await scrapeLazada(req.query.q); 
-    res.json({status:true, creator:"Kayzen", data:r}); 
+app.get('/api/anime/umamusume', async (req, res) => {
+    const { slug } = req.query;
+    const result = await umamusume(slug);
+    res.json(result);
 });
 
-app.get('/api/search/wallpaper', async (req, res) => { 
-    const r = await scrapeWallpaper(req.query.q);
-    const img = (r && r.length > 0) ? r[Math.floor(Math.random() * r.length)] : { image: null };
-    res.json({status:true, creator:"Kayzen", data: img }); 
+app.get('/api/download/twitter-dl', async (req, res) => {
+    const { url } = req.query;
+    const result = await saveTwitter(url);
+    res.json(result);
 });
 
-app.get('/api/tools/lirik-lagu', async (req, res) => { 
-    const r = await scrapeLagu(req.query.q); 
-    res.json({status:!!r, creator:"Kayzen", data:{lyrics:r}}); 
+app.get('/api/stalk/ig', async (req, res) => {
+    const { username } = req.query;
+    const result = await igStalk(username);
+    res.json(result);
 });
 
-app.get('/api/maker/editor', async (req, res) => { 
-    const { url, prompt } = req.query;
-    if (!url || !prompt) return res.json({ status: false, message: "Isi url dan prompt" });
-    const r = await scrapeImgEditor(url, prompt); 
-    if(!r) return res.json({status:false, message:"Gagal/Timeout (Coba gambar lain/server sibuk)"});
-    res.json({status:true, creator:"Kayzen", data:{url:r}}); 
+app.get('/api/stalk/tiktok', async (req, res) => {
+    const { username } = req.query;
+    const result = await tiktokStalk(username);
+    res.json(result);
 });
 
-app.use(express.json({ limit: '50mb' }));
-app.post('/api/tools/upload-videy', async (req, res) => {
-  const file = req.files.file;
-  const r = await scrapeVidey(file);
-  res.json({ status: !!r, creator: "Kayzen", data: r });
+app.get('/api/game/tebaklirik', async (req, res) => {
+    const result = await tebakLirik();
+    res.json(result);
 });
 
-if (require.main === module) {
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-}
-
-module.exports = app;
+app.listen(PORT, () => {
+    console.log(`Server berjalan di port ${PORT}`);
+});
