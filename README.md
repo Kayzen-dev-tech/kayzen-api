@@ -1,118 +1,121 @@
+<p align="center">
+<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=30&pause=1000&color=333333&background=FFFFFF00&center=true&vCenter=true&width=435&lines=KAYZEN+IZUMI+API;Rest+API+All+In+One;Built+For+Developers;Free+to+Use" alt="Typing SVG" />
+</p>
+
+<p align="center">
+  <a href="https://nodejs.org"><img src="https://img.shields.io/badge/Node.js-18.x-339933?style=for-the-badge&logo=nodedotjs" alt="NodeJS"></a>
+  <a href="https://expressjs.com"><img src="https://img.shields.io/badge/Express.js-4.x-000000?style=for-the-badge&logo=express" alt="Express"></a>
+  <a href="#"><img src="https://img.shields.io/badge/Scraper-Cheerio-e34f26?style=for-the-badge&logo=html5" alt="Cheerio"></a>
+  <a href="#"><img src="https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge" alt="Status"></a>
+</p>
+
 <div align="center">
-
-<a href="https://git.io/typing-svg">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=30&pause=1000&color=00D2FF&center=true&vCenter=true&width=500&lines=Kayzen+Izumi+API;Simple.+Fast.+Powerful.;Best+Rest+API+for+Bot+Devs" alt="Typing SVG" />
-</a>
-
-<p align="center">
-    <b>Layanan RESTful API Gratis untuk Automasi WhatsApp, Telegram, & Discord Bot.</b><br>
-    Dilengkapi dengan Dokumentasi Interaktif, AI Tools, & E-Commerce Scraping.
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Node.js-20.x-339933?style=for-the-badge&logo=nodedotjs" />
-  <img src="https://img.shields.io/badge/Express.js-4.x-000000?style=for-the-badge&logo=express" />
-  <img src="https://img.shields.io/badge/Status-Active-2ea44f?style=for-the-badge" />
-</p>
-
-<p align="center">
-  <a href="#-daftar-endpoint-lengkap">Lihat Endpoint</a> •
-  <a href="#-instalasi">Cara Install</a> •
-  <a href="#-struktur-folder">Struktur File</a>
-</p>
-
-<hr>
-
+<pre>
+██╗  ██╗ █████╗ ██╗   ██╗███████╗███████╗███╗   ██╗
+██║ ██╔╝██╔══██╗╚██╗ ██╔╝╚══███╔╝██╔════╝████╗  ██║
+█████╔╝ ███████║ ╚████╔╝   ███╔╝ █████╗  ██╔██╗ ██║
+██╔═██╗ ██╔══██║  ╚██╔╝   ███╔╝  ██╔══╝  ██║╚██╗██║
+██║  ██╗██║  ██║   ██║   ███████╗███████╗██║ ╚████║
+╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚══════╝╚═╝  ╚═══╝
+</pre>
 </div>
 
-## ✨ Fitur Unggulan
+---
 
-Berikut adalah fitur-fitur terbaru yang tersedia di Kayzen API:
+## 📝 Deskripsi
 
-### ![Downloader](https://img.shields.io/badge/DOWNLOADER-Media-FF0000?style=for-the-badge&logo=youtube&logoColor=white)
-* **Instagram Downloader:** Download Post, Reels, dan Slide (Carousel).
-* **Pinterest Search:** Cari gambar aesthetic dengan mudah.
-* **Videy Upload:** Upload video ke server Videy (Buffer support).
-
-### ![Shop](https://img.shields.io/badge/SHOP-E--Commerce-orange?style=for-the-badge&logo=shopee&logoColor=white)
-* **Lazada Search:** Scraping data produk, harga, dan rating dari Lazada.
-
-### ![AI](https://img.shields.io/badge/AI-Artificial_Intelligence-00d2ff?style=for-the-badge&logo=openai&logoColor=white)
-* **Image Editor AI:** Ubah gambar menggunakan prompt teks.
-* **Lyrics Generator:** Buat lirik lagu otomatis berdasarkan topik.
-
-### ![Tools](https://img.shields.io/badge/TOOLS-Maker_&_Util-4B0082?style=for-the-badge&logo=codesandbox&logoColor=white)
-* **Lirik Lagu:** Cari lirik lagu lengkap dari database.
-* **Anime Info:** Info lengkap anime, manga, dan karakter.
+**Kayzen API** adalah Rest API *All-in-One* yang menyediakan berbagai layanan scraping, downloader, dan tools AI. Dibangun menggunakan **Express.js** dengan struktur kode yang modular dan mudah dikembangkan. Cocok untuk kebutuhan bot WhatsApp, Telegram, atau Web App.
 
 ---
 
-## 💻 Instalasi
+## 🚀 Daftar Fitur
 
-1.  **Clone Repository**
-    ```bash
-    git clone [https://github.com/UsernameKamu/kayzen-api.git](https://github.com/UsernameKamu/kayzen-api.git)
-    cd kayzen-api
-    ```
+Berikut adalah status layanan yang tersedia.
 
-2.  **Install Dependencies**
-    ```bash
-    npm install
-    ```
+### 📥 **Downloader & Media**
+| Status | Ikon | Fitur | Method | Deskripsi |
+| :---: | :---: | :--- | :---: | :--- |
+| ✅ | 🎵 | **Spotify Downloader** | `GET` | Download audio dari Spotify URL |
+| ✅ | 🍏 | **Apple Music** | `GET` | Download audio dari Apple Music |
+| ✅ | 🎬 | **TikTok No WM** | `GET` | Download video TikTok tanpa watermark |
+| ✅ | 📸 | **Instagram** | `GET` | Download Post/Reels Instagram |
+| ✅ | 🐦 | **Twitter/X** | `GET` | Download video dari Twitter |
+| ✅ | ▶️ | **YouTube** | `GET` | Download Video & Audio YouTube |
+| ✅ | 📺 | **DailyMotion** | `GET` | Download video DailyMotion |
+| ✅ | ☁️ | **MediaFire** | `GET` | Download file dari MediaFire |
 
-3.  **Jalankan Server**
-    ```bash
-    npm start
-    ```
+### 🔍 **Search & Stalking**
+| Status | Ikon | Fitur | Method | Deskripsi |
+| :---: | :---: | :--- | :---: | :--- |
+| ✅ | 🎧 | **Spotify Search** | `GET` | Cari lagu/playlist di Spotify |
+| ✅ | 🕵️ | **IG Stalk** | `GET` | Informasi profil Instagram lengkap |
+| ✅ | 🕺 | **TikTok Stalk** | `GET` | Informasi & statistik TikTok user |
+| ✅ | 🐦 | **Twitter Stalk** | `GET` | Stalking profil Twitter |
+| ✅ | 🏇 | **Umamusume** | `GET` | Info karakter Umamusume |
+| ✅ | 🎭 | **Drama Search** | `GET` | Cari Drama Asia (Dramadash) |
+| ✅ | 📖 | **Novel Search** | `GET` | Cari Novel (Melolo) |
 
----
+### 🛠️ **Tools & AI**
+| Status | Ikon | Fitur | Method | Deskripsi |
+| :---: | :---: | :--- | :---: | :--- |
+| ✅ | 🤖 | **Meta AI** | `GET` | Chat AI model Llama 3 70B |
+| ✅ | 🔡 | **Image to ASCII** | `POST` | Convert gambar jadi teks ASCII |
+| ✅ | 🖼️ | **Remove BG** | `POST` | Hapus background foto |
+| ✅ | 👶 | **Baby Generator** | `POST` | Prediksi wajah bayi dari 2 foto |
+| ✅ | 🎼 | **Lyrics Gen** | `GET` | Buat lirik lagu otomatis |
 
-## 🔗 Daftar Endpoint Lengkap
+### 🎮 **Games & Fun**
+| Status | Ikon | Fitur | Method | Deskripsi |
+| :---: | :---: | :--- | :---: | :--- |
+| ✅ | 🎤 | **Tebak Lirik** | `GET` | Game kuis tebak lirik lagu |
 
-### 📥 Media & Download
-| Method | Endpoint | Parameter | Deskripsi |
-| :---: | :--- | :--- | :--- |
-| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/download/instagram` | `?url=` | Download IG Post/Reels |
-| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/search/pinterest` | `?q=` | Cari Gambar Pinterest |
-| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/search/wallpaper` | `?q=` | Cari Wallpaper HD |
-| ![POST](https://img.shields.io/badge/POST-FFA500?style=flat-square) | `/api/tools/upload-videy` | `buffer` (JSON Body) | Upload Video ke Videy |
-
-### 🛒 E-Commerce
-| Method | Endpoint | Parameter | Deskripsi |
-| :---: | :--- | :--- | :--- |
-| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/search/lazada` | `?q=` | Cari Produk Lazada |
-
-### 🛠️ Tools & AI
-| Method | Endpoint | Parameter | Deskripsi |
-| :---: | :--- | :--- | :--- |
-| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/maker/editor` | `?url=&prompt=` | Edit Gambar dengan AI |
-| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/tools/lyrics` | `?q=` | Generate Lirik AI |
-| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/tools/lirik-lagu` | `?q=` | Cari Lirik Lagu (Original) |
-
-### ⛩️ Anime & Manga
-| Method | Endpoint | Parameter | Deskripsi |
-| :---: | :--- | :--- | :--- |
-| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/anime/search` | `?q=` | Cari Anime (MAL) |
-| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/anime/manga` | `?q=` | Cari Manga (MAL) |
-| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/anime/character` | `?q=` | Cari Karakter Anime |
-| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/anime/top` | *-* | Top Anime Rating |
-
-### 🧩 Random & Info
-| Method | Endpoint | Parameter | Deskripsi |
-| :---: | :--- | :--- | :--- |
-| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/random/waifu` | *-* | Gambar Waifu Random |
-| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/random/neko` | *-* | Gambar Neko Random |
-| ![GET](https://img.shields.io/badge/GET-2ea44f?style=flat-square) | `/api/info/gempa` | *-* | Info Gempa BMKG |
+### 📤 **Uploader**
+| Status | Ikon | Fitur | Method | Deskripsi |
+| :---: | :---: | :--- | :---: | :--- |
+| ✅ | 📹 | **Videy.co** | `POST` | Upload file video/image sementara |
+| ✅ | 📂 | **Top4Top** | `POST` | Upload file ke Top4top.io |
 
 ---
 
-## 📂 Struktur Folder
+## 📦 Instalasi
 
-```bash
-/kayzen-api
-├── index.js             # Logic Server
-├── package.json         # Config Dependencies
-├── /views               # Tampilan UI
-│   ├── home.ejs
-│   └── docs.ejs
-└── /public              # File Statis
+Pastikan **Node.js** sudah terinstall.
+
+1. **Clone Project**
+   ```bash
+   git clone [https://github.com/username/kayzen-api.git](https://github.com/username/kayzen-api.git)
+   cd kayzen-api
+
+ * Install Module
+   npm install
+
+🏃‍♂️ Menjalankan Server
+ * Mode Development (Auto-restart saat edit file):
+   npm run dev
+
+ * Mode Production:
+   npm start
+
+> Akses dokumentasi di: http://localhost:3000/docs
+> 
+📂 Struktur Folder
+kayzen-api/
+├── node_modules/     # Dependencies
+├── public/           # File statis (HTML/CSS)
+│   ├── index.html    # Halaman Home
+│   └── docs.html     # Halaman Dokumentasi API
+│   ├── images/       # Folder Slide Images
+│   ├── bini1.jpg       # s/d bini5.jpg
+│   └── slide1.jpg      # s/d slide15.jpg
+├── scrapers/         # Logika Scraping
+│   ├── scrapeSpotify.js
+│   ├── scrapeIgStalk.js
+│   ├── scrapeTebakLirik.js
+│   └── ... (lainnya)
+├── index.js          # Main Server (Routes)
+├── package.json      # Konfigurasi Project
+└── README.md         # Dokumentasi Project
+
+<p align="center">
+Created by <b>Kayzen</b>
+</p>
