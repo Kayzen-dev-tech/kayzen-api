@@ -3,7 +3,7 @@ const axios = require('axios');
 const randomAnime = {
   waifu: async () => {
     try {
-      const { data } = await axios.get('https://api.waifu.pics/sfw/waifu');
+      const { data } = await axios.get('https://www.pngwing.com/id/search?q=waifu');
       return data.url;
     } catch (e) {
       return null;
@@ -12,7 +12,7 @@ const randomAnime = {
   
   neko: async () => {
     try {
-      const { data } = await axios.get('https://api.waifu.pics/sfw/neko');
+      const { data } = await axios.get('https://www.pngwing.com/id/search?q=nekopara');
       return data.url;
     } catch (e) {
       return null;
