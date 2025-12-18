@@ -67,6 +67,7 @@
             <a href="#stalk" class="list-group-item list-group-item-action border-0 rounded mb-1">Stalking</a>
             <a href="#uploader" class="list-group-item list-group-item-action border-0 rounded mb-1">Uploader</a>
             <a href="#search" class="list-group-item list-group-item-action border-0 rounded mb-1">Search</a>
+            <a href="#random" class="list-group-item list-group-item-action border-0 rounded mb-1">Random Images</a>
             <a href="#anime" class="list-group-item list-group-item-action border-0 rounded mb-1">Anime</a>
         </div>
     </div>
@@ -125,6 +126,17 @@
         <div class="endpoint-card card-get"><span class="method get">GET</span> <code>/api/search/google-image?q=query</code></div>
         <div class="endpoint-card card-get"><span class="method get">GET</span> <code>/api/search/google-video?q=query</code></div>
 
+        <h3 id="random" class="mt-5">Random Images</h3>
+<div class="endpoint-card card-get">
+    <span class="method get">GET</span> <code>/api/random/ai-girls</code>
+    <p class="small text-muted mt-1">Get single random AI generated girl image</p>
+</div>
+
+<div class="endpoint-card card-get">
+    <span class="method get">GET</span> <code>/api/random/ai-girls/multiple?count=5</code>
+    <p class="small text-muted mt-1">Get multiple random images (1-20)</p>
+                                                </div>
+                
         <h3 id="anime" class="mt-5">Anime</h3>
         <div class="endpoint-card card-get">
             <span class="method get">GET</span> <code>/api/anime/random?type=waifu</code>
