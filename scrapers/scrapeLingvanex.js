@@ -4,7 +4,7 @@ async function lingvanex(text) {
   if (!text) return { error: "Teks wajib diisi" };
 
   try {
-    const url = 'https://api-free.lingvanex.com/language/translate/v2';
+    const url = 'https://lingvanex.com/translation/';
     
     const payload = {
         platform: 'api',
@@ -17,7 +17,7 @@ async function lingvanex(text) {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         'Origin': 'https://lingvanex.com',
-        'Referer': 'https://lingvanex.com/translation/english-to-sundanese',
+        'Referer': 'https://lingvanex.com/translation/indonesia-ke-bahasa-sunda',
         'Content-Type': 'application/json'
       }
     });
