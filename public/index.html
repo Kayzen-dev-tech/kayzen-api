@@ -11,7 +11,7 @@
     <style>
         :root {
             --primary-color: #00d4ff;
-            --secondary-color: #ff69b4; /* Pink untuk Bini */
+            --secondary-color: #ff69b4;
             --bg-dark: #121212;
             --bg-card: #1f1f1f;
         }
@@ -78,15 +78,42 @@
             border-color: var(--secondary-color);
         }
 
-        /* --- Carousel --- */
-        .carousel-item img {
-            height: 500px;
-            object-fit: cover;
+        /* Container Carousel */
+        .carousel-item {
+            height: 500px; /* Tinggi tetap untuk desktop */
+            background-color: #000; /* Background hitam agar rapi */
             border-radius: 15px;
+            overflow: hidden; /* Mencegah gambar keluar dari border radius */
         }
+        
+        /* Gambar di dalam Carousel */
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border: none;
+        }
+
+        /* Responsif untuk HP */
+        @media (max-width: 768px) {
+            .carousel-item {
+                height: 350px; /* Tinggi disesuaikan untuk layar kecil */
+            }
+            .banner-image {
+                height: 200px;
+            }
+            .profile-image {
+                width: 150px;
+                height: 150px;
+                margin-top: -75px;
+            }
+        }
+
         .carousel-caption {
             background: rgba(0,0,0,0.6);
             border-radius: 10px;
+            padding: 10px;
+            bottom: 20px;
         }
 
         /* --- Social Buttons --- */
@@ -184,7 +211,7 @@
                     <p class="small text-secondary">
                         Kayzen API adalah layanan Rest API All-in-One yang menyediakan fitur scraper (Spotify, IG, TikTok, dll), Tools AI, dan fitur Islami secara gratis untuk para developer.
                     </p>
-                    <a href="/docs" class="btn btn-outline-info btn-sm mt-2 rounded-pill">🚀 Dokumentasi Api</a>
+                    <a href="/docs" class="btn btn-outline-info btn-sm mt-2 rounded-pill">Lihat Fitur</a>
                 </div>
             </div>
             
@@ -276,7 +303,7 @@
             const div = document.createElement('div');
             div.className = i === 1 ? 'carousel-item active' : 'carousel-item';
             div.innerHTML = `
-                <img src="images/bini${i}.jpg" class="d-block w-100" alt="My Bini ${i}" style="border: 2px solid #ff69b4;">
+                <img src="images/bini${i}.jpg" class="d-block w-100" alt="My Bini ${i}">
                 <div class="carousel-caption d-none d-md-block">
                     <h5 style="color: #ff69b4;">My Bini #${i}</h5>
                 </div>
