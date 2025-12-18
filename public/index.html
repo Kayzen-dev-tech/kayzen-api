@@ -30,7 +30,7 @@
             object-fit: cover; 
             border-radius: 15px; 
             border: 2px solid #00d4ff; 
-            background-color: #333; /* Warna abu-abu jika gambar loading/rusak */
+            background-color: #333;
         }
         
         .bini-card img { 
@@ -197,7 +197,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // --- LOGIC CAROUSEL COSPLAYER ---
         const cosplayerContainer = document.getElementById('cosplayerSlides');
         const totalCosplayer = 15; 
         
@@ -206,7 +205,6 @@
             // Element pertama harus aktif
             div.className = i === 1 ? 'carousel-item active' : 'carousel-item';
             
-            // Saya hapus onerror yang menyembunyikan gambar, supaya kamu bisa lihat ikon errornya
             div.innerHTML = `
                 <img src="images/slide${i}.jpg" 
                      class="d-block w-100" 
