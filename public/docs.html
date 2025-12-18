@@ -2,20 +2,24 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Kayzen API Docs & Tester</title>
+    <title>Kayzen API Docs</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body { background-color: #f4f6f9; color: #333; }
         .sidebar { height: 100vh; position: fixed; top: 0; left: 0; width: 250px; background: #fff; padding: 20px; overflow-y: auto; border-right: 1px solid #ddd; }
         .content { margin-left: 260px; padding: 40px; }
-        .endpoint-card { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #e9ecef; }
-        .method { font-weight: bold; padding: 5px 10px; border-radius: 4px; font-size: 0.8rem; margin-right: 10px; display: inline-block; width: 80px; text-align: center; }
+        .endpoint-card { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .method { font-weight: bold; padding: 5px 10px; border-radius: 4px; font-size: 0.8rem; margin-right: 10px; }
         .get { background: #e7f5ff; color: #007bff; }
         .post { background: #e8f5e9; color: #28a745; }
-        .path { font-family: monospace; font-size: 1.1em; font-weight: 600; color: #d63384; }
-        .response-area { background: #2d2d2d; color: #00ff00; padding: 15px; border-radius: 5px; margin-top: 15px; display: none; white-space: pre-wrap; font-family: monospace; max-height: 300px; overflow-y: auto; }
-        .input-group-text { width: 120px; }
-        h5 { margin-top: 40px; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+        pre { background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 5px; }
+        h5 { margin-top: 20px; color: #555; font-weight: bold; }
+        .try-it-btn { margin-top: 10px; }
+        .param-input { margin-top: 10px; margin-bottom: 5px; }
+        .result-box { background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 5px; margin-top: 10px; max-height: 400px; overflow-y: auto; display: none; }
+        .url-display { background: #f8f9fa; padding: 10px; border-radius: 5px; margin-top: 10px; word-break: break-all; font-family: monospace; font-size: 0.9rem; }
+        .copy-btn { margin-left: 10px; }
+        .file-input-group { margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -28,7 +32,7 @@
             <a href="#dramabox" class="list-group-item list-group-item-action">Dramabox</a>
             <a href="#downloader" class="list-group-item list-group-item-action">Downloader</a>
             <a href="#tools" class="list-group-item list-group-item-action">Tools & AI</a>
-            <a href="#muslim" class="list-group-item list-group-item-action">Muslim</a>
+            <a href="#muslim" class="list-group-item list-group-item-action">Muslim Features</a>
             <a href="#stalk" class="list-group-item list-group-item-action">Stalking</a>
             <a href="#game" class="list-group-item list-group-item-action">Game</a>
             <a href="#tempmail" class="list-group-item list-group-item-action">Tempmail</a>
@@ -38,254 +42,553 @@
     </div>
 
     <div class="content">
-        <h1>Dokumentasi API Interaktif</h1>
-        <p class="lead">Silakan masukkan parameter dan klik tombol Test untuk mencoba.</p>
+        <h1>Dokumentasi API</h1>
+        <p class="lead">Daftar endpoint lengkap Kayzen API dengan fitur Try It Out.</p>
 
-        <h5 id="dramadash">Dramadash</h5>
+        <h3 id="dramadash" class="mt-5">Dramadash</h3>
         
-        <div class="endpoint-card" data-method="GET" data-url="/api/dramadash/home">
-            <span class="method get">GET</span> <span class="path">/api/dramadash/home</span>
-            <div class="mt-3">
-                <button class="btn btn-primary btn-sm" onclick="sendRequest(this)">Test Endpoint</button>
-            </div>
-            <div class="response-area"></div>
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/dramadash/home</code>
+            <p class="mt-2">Dapatkan daftar drama di halaman home</p>
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApi('/api/dramadash/home', 'dramadash-home')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrl('/api/dramadash/home')">Copy URL</button>
+            <div class="result-box" id="result-dramadash-home"></div>
         </div>
 
-        <div class="endpoint-card" data-method="GET" data-url="/api/dramadash/search">
-            <span class="method get">GET</span> <span class="path">/api/dramadash/search</span>
-            <div class="mt-2">
-                <div class="input-group mb-2">
-                    <span class="input-group-text">q (query)</span>
-                    <input type="text" class="form-control param-input" name="q" placeholder="Contoh: love">
-                </div>
-                <button class="btn btn-primary btn-sm" onclick="sendRequest(this)">Test Endpoint</button>
-            </div>
-            <div class="response-area"></div>
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/dramadash/search</code>
+            <p class="mt-2">Cari drama</p>
+            <input type="text" class="form-control param-input" id="param-dramadash-search-q" placeholder="Masukkan query pencarian">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/dramadash/search', {q: document.getElementById('param-dramadash-search-q').value}, 'dramadash-search')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/dramadash/search', {q: document.getElementById('param-dramadash-search-q').value})">Copy URL</button>
+            <div class="result-box" id="result-dramadash-search"></div>
         </div>
 
-        <div class="endpoint-card" data-method="GET" data-url="/api/dramadash/detail">
-            <span class="method get">GET</span> <span class="path">/api/dramadash/detail</span>
-            <div class="mt-2">
-                <div class="input-group mb-2">
-                    <span class="input-group-text">id</span>
-                    <input type="text" class="form-control param-input" name="id" placeholder="ID Drama">
-                </div>
-                <button class="btn btn-primary btn-sm" onclick="sendRequest(this)">Test Endpoint</button>
-            </div>
-            <div class="response-area"></div>
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/dramadash/detail</code>
+            <p class="mt-2">Detail drama</p>
+            <input type="text" class="form-control param-input" id="param-dramadash-detail-id" placeholder="Masukkan ID drama">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/dramadash/detail', {id: document.getElementById('param-dramadash-detail-id').value}, 'dramadash-detail')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/dramadash/detail', {id: document.getElementById('param-dramadash-detail-id').value})">Copy URL</button>
+            <div class="result-box" id="result-dramadash-detail"></div>
         </div>
 
-        <h5 id="downloader">Downloader</h5>
-
-        <div class="endpoint-card" data-method="GET" data-url="/api/download/tiktok">
-            <span class="method get">GET</span> <span class="path">/api/download/tiktok</span>
-            <div class="mt-2">
-                <div class="input-group mb-2">
-                    <span class="input-group-text">url</span>
-                    <input type="text" class="form-control param-input" name="url" placeholder="Link TikTok">
-                </div>
-                <button class="btn btn-primary btn-sm" onclick="sendRequest(this)">Test Endpoint</button>
-            </div>
-            <div class="response-area"></div>
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/dramadash/episode</code>
+            <p class="mt-2">Stream episode drama</p>
+            <input type="text" class="form-control param-input" id="param-dramadash-episode-id" placeholder="Masukkan ID drama">
+            <input type="number" class="form-control param-input" id="param-dramadash-episode-eps" placeholder="Nomor episode">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/dramadash/episode', {id: document.getElementById('param-dramadash-episode-id').value, eps: document.getElementById('param-dramadash-episode-eps').value}, 'dramadash-episode')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/dramadash/episode', {id: document.getElementById('param-dramadash-episode-id').value, eps: document.getElementById('param-dramadash-episode-eps').value})">Copy URL</button>
+            <div class="result-box" id="result-dramadash-episode"></div>
         </div>
 
-        <div class="endpoint-card" data-method="GET" data-url="/api/download/youtube">
-            <span class="method get">GET</span> <span class="path">/api/download/youtube</span>
-            <div class="mt-2">
-                <div class="input-group mb-2">
-                    <span class="input-group-text">url</span>
-                    <input type="text" class="form-control param-input" name="url" placeholder="Link YouTube">
-                </div>
-                <button class="btn btn-primary btn-sm" onclick="sendRequest(this)">Test Endpoint</button>
-            </div>
-            <div class="response-area"></div>
-        </div>
-
-        <div class="endpoint-card" data-method="GET" data-url="/api/download/spotify">
-            <span class="method get">GET</span> <span class="path">/api/download/spotify</span>
-            <div class="mt-2">
-                <div class="input-group mb-2">
-                    <span class="input-group-text">url</span>
-                    <input type="text" class="form-control param-input" name="url" placeholder="Link Spotify">
-                </div>
-                <button class="btn btn-primary btn-sm" onclick="sendRequest(this)">Test Endpoint</button>
-            </div>
-            <div class="response-area"></div>
-        </div>
-
-        <h5 id="tools">Tools & AI</h5>
-
-        <div class="endpoint-card" data-method="GET" data-url="/api/ai/meta-ai">
-            <span class="method get">GET</span> <span class="path">/api/ai/meta-ai</span>
-            <div class="mt-2">
-                <div class="input-group mb-2">
-                    <span class="input-group-text">prompt</span>
-                    <input type="text" class="form-control param-input" name="prompt" placeholder="Tanya sesuatu ke AI">
-                </div>
-                <button class="btn btn-primary btn-sm" onclick="sendRequest(this)">Test Endpoint</button>
-            </div>
-            <div class="response-area"></div>
-        </div>
-
-        <div class="endpoint-card" data-method="POST" data-url="/api/tools/imagetoascii">
-            <span class="method post">POST</span> <span class="path">/api/tools/imagetoascii</span>
-            <p class="text-muted small mt-2">Convert Gambar ke ASCII (Upload)</p>
-            <div class="mt-2">
-                <div class="input-group mb-2">
-                    <input type="file" class="form-control file-input" name="image">
-                </div>
-                <button class="btn btn-success btn-sm" onclick="sendRequest(this)">Upload & Convert</button>
-            </div>
-            <div class="response-area"></div>
-        </div>
-
-        <div class="endpoint-card" data-method="POST" data-url="/api/tools/removebg">
-            <span class="method post">POST</span> <span class="path">/api/tools/removebg</span>
-            <p class="text-muted small mt-2">Hapus Background (Upload)</p>
-            <div class="mt-2">
-                <div class="input-group mb-2">
-                    <input type="file" class="form-control file-input" name="image">
-                </div>
-                <button class="btn btn-success btn-sm" onclick="sendRequest(this)">Upload & Remove BG</button>
-            </div>
-            <div class="response-area"></div>
-        </div>
-
-        <div class="endpoint-card" data-method="GET" data-url="/api/deepimg/generate">
-            <span class="method get">GET</span> <span class="path">/api/deepimg/generate</span>
-            <div class="mt-2">
-                <div class="input-group mb-2">
-                    <span class="input-group-text">prompt</span>
-                    <input type="text" class="form-control param-input" name="prompt" placeholder="Deskripsi gambar">
-                </div>
-                <div class="input-group mb-2">
-                    <span class="input-group-text">style</span>
-                    <input type="text" class="form-control param-input" name="style" value="Anime">
-                </div>
-                <button class="btn btn-primary btn-sm" onclick="sendRequest(this)">Test Endpoint</button>
-            </div>
-            <div class="response-area"></div>
-        </div>
-
-        <h5 id="muslim">Muslim Features</h5>
-
-        <div class="endpoint-card" data-method="GET" data-url="/api/muslim/jadwalsholat">
-            <span class="method get">GET</span> <span class="path">/api/muslim/jadwalsholat</span>
-            <div class="mt-2">
-                <div class="input-group mb-2">
-                    <span class="input-group-text">kota</span>
-                    <input type="text" class="form-control param-input" name="kota" placeholder="Contoh: jakarta">
-                </div>
-                <button class="btn btn-primary btn-sm" onclick="sendRequest(this)">Test Endpoint</button>
-            </div>
-            <div class="response-area"></div>
-        </div>
-
-        <h5 id="stalk">Stalking</h5>
-
-        <div class="endpoint-card" data-method="GET" data-url="/api/stalk/tiktok">
-            <span class="method get">GET</span> <span class="path">/api/stalk/tiktok</span>
-            <div class="mt-2">
-                <div class="input-group mb-2">
-                    <span class="input-group-text">username</span>
-                    <input type="text" class="form-control param-input" name="username" placeholder="Username TikTok">
-                </div>
-                <button class="btn btn-primary btn-sm" onclick="sendRequest(this)">Test Endpoint</button>
-            </div>
-            <div class="response-area"></div>
-        </div>
-
-        <h5 id="uploader">Uploader</h5>
+        <h3 id="dramabox" class="mt-5">Dramabox</h3>
         
-        <div class="endpoint-card" data-method="POST" data-url="/api/upload/videy">
-            <span class="method post">POST</span> <span class="path">/api/upload/videy</span>
-            <div class="mt-2">
-                <div class="input-group mb-2">
-                    <input type="file" class="form-control file-input" name="file">
-                </div>
-                <button class="btn btn-success btn-sm" onclick="sendRequest(this)">Upload to Videy</button>
-            </div>
-            <div class="response-area"></div>
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/dramabox/home</code>
+            <p class="mt-2">Dapatkan daftar drama di Dramabox</p>
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApi('/api/dramabox/home', 'dramabox-home')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrl('/api/dramabox/home')">Copy URL</button>
+            <div class="result-box" id="result-dramabox-home"></div>
         </div>
 
-        <h5 id="search">Search</h5>
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/dramabox/search</code>
+            <p class="mt-2">Cari drama di Dramabox</p>
+            <input type="text" class="form-control param-input" id="param-dramabox-search-q" placeholder="Masukkan query pencarian">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/dramabox/search', {q: document.getElementById('param-dramabox-search-q').value}, 'dramabox-search')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/dramabox/search', {q: document.getElementById('param-dramabox-search-q').value})">Copy URL</button>
+            <div class="result-box" id="result-dramabox-search"></div>
+        </div>
 
-        <div class="endpoint-card" data-method="GET" data-url="/api/search/google-image">
-            <span class="method get">GET</span> <span class="path">/api/search/google-image</span>
-            <div class="mt-2">
-                <div class="input-group mb-2">
-                    <span class="input-group-text">q (query)</span>
-                    <input type="text" class="form-control param-input" name="q" placeholder="Cari gambar apa?">
-                </div>
-                <button class="btn btn-primary btn-sm" onclick="sendRequest(this)">Test Endpoint</button>
-            </div>
-            <div class="response-area"></div>
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/dramabox/stream</code>
+            <p class="mt-2">Stream drama Dramabox</p>
+            <input type="text" class="form-control param-input" id="param-dramabox-stream-id" placeholder="Masukkan book ID">
+            <input type="number" class="form-control param-input" id="param-dramabox-stream-eps" placeholder="Nomor episode">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/dramabox/stream', {id: document.getElementById('param-dramabox-stream-id').value, eps: document.getElementById('param-dramabox-stream-eps').value}, 'dramabox-stream')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/dramabox/stream', {id: document.getElementById('param-dramabox-stream-id').value, eps: document.getElementById('param-dramabox-stream-eps').value})">Copy URL</button>
+            <div class="result-box" id="result-dramabox-stream"></div>
+        </div>
+
+        <h3 id="downloader" class="mt-5">Downloader</h3>
+        
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/download/dailymotion</code>
+            <p class="mt-2">Download DailyMotion Video</p>
+            <input type="text" class="form-control param-input" id="param-dailymotion-url" placeholder="Masukkan URL DailyMotion">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/download/dailymotion', {url: document.getElementById('param-dailymotion-url').value}, 'dailymotion')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/download/dailymotion', {url: document.getElementById('param-dailymotion-url').value})">Copy URL</button>
+            <div class="result-box" id="result-dailymotion"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/download/tiktok</code>
+            <p class="mt-2">Download TikTok (No Watermark)</p>
+            <input type="text" class="form-control param-input" id="param-tiktok-url" placeholder="Masukkan URL TikTok">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/download/tiktok', {url: document.getElementById('param-tiktok-url').value}, 'tiktok')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/download/tiktok', {url: document.getElementById('param-tiktok-url').value})">Copy URL</button>
+            <div class="result-box" id="result-tiktok"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/download/youtube</code>
+            <p class="mt-2">Download Video YouTube</p>
+            <input type="text" class="form-control param-input" id="param-youtube-url" placeholder="Masukkan URL YouTube">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/download/youtube', {url: document.getElementById('param-youtube-url').value}, 'youtube')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/download/youtube', {url: document.getElementById('param-youtube-url').value})">Copy URL</button>
+            <div class="result-box" id="result-youtube"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/ig/download</code>
+            <p class="mt-2">Download Instagram Video/Photo</p>
+            <input type="text" class="form-control param-input" id="param-ig-url" placeholder="Masukkan URL Instagram">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/ig/download', {url: document.getElementById('param-ig-url').value}, 'ig')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/ig/download', {url: document.getElementById('param-ig-url').value})">Copy URL</button>
+            <div class="result-box" id="result-ig"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/download/mediafire</code>
+            <p class="mt-2">Download dari Mediafire</p>
+            <input type="text" class="form-control param-input" id="param-mediafire-url" placeholder="Masukkan URL Mediafire">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/download/mediafire', {url: document.getElementById('param-mediafire-url').value}, 'mediafire')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/download/mediafire', {url: document.getElementById('param-mediafire-url').value})">Copy URL</button>
+            <div class="result-box" id="result-mediafire"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/itch/detail</code>
+            <p class="mt-2">Detail game Itch.io</p>
+            <input type="text" class="form-control param-input" id="param-itch-url" placeholder="Masukkan URL Itch.io">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/itch/detail', {url: document.getElementById('param-itch-url').value}, 'itch')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/itch/detail', {url: document.getElementById('param-itch-url').value})">Copy URL</button>
+            <div class="result-box" id="result-itch"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/download/apple-music</code>
+            <p class="mt-2">Download Apple Music</p>
+            <input type="text" class="form-control param-input" id="param-apple-url" placeholder="Masukkan URL Apple Music">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/download/apple-music', {url: document.getElementById('param-apple-url').value}, 'apple')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/download/apple-music', {url: document.getElementById('param-apple-url').value})">Copy URL</button>
+            <div class="result-box" id="result-apple"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/download/spotify</code>
+            <p class="mt-2">Download Spotify Music</p>
+            <input type="text" class="form-control param-input" id="param-spotify-url" placeholder="Masukkan URL Spotify">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/download/spotify', {url: document.getElementById('param-spotify-url').value}, 'spotify')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/download/spotify', {url: document.getElementById('param-spotify-url').value})">Copy URL</button>
+            <div class="result-box" id="result-spotify"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/download/twitter-dl</code>
+            <p class="mt-2">Download Twitter/X Video</p>
+            <input type="text" class="form-control param-input" id="param-twitter-url" placeholder="Masukkan URL Twitter">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/download/twitter-dl', {url: document.getElementById('param-twitter-url').value}, 'twitter')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/download/twitter-dl', {url: document.getElementById('param-twitter-url').value})">Copy URL</button>
+            <div class="result-box" id="result-twitter"></div>
+        </div>
+
+        <h3 id="tools" class="mt-5">Tools & AI</h3>
+        
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/ai/meta-ai</code>
+            <p class="mt-2">Meta AI (Model Llama 3 70B)</p>
+            <input type="text" class="form-control param-input" id="param-meta-prompt" placeholder="Masukkan prompt">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/ai/meta-ai', {prompt: document.getElementById('param-meta-prompt').value}, 'meta-ai')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/ai/meta-ai', {prompt: document.getElementById('param-meta-prompt').value})">Copy URL</button>
+            <div class="result-box" id="result-meta-ai"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/translate/sunda</code>
+            <p class="mt-2">Translate Indonesia ke Bahasa Sunda</p>
+            <input type="text" class="form-control param-input" id="param-sunda-text" placeholder="Masukkan teks Indonesia">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/translate/sunda', {text: document.getElementById('param-sunda-text').value}, 'sunda')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/translate/sunda', {text: document.getElementById('param-sunda-text').value})">Copy URL</button>
+            <div class="result-box" id="result-sunda"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method post">POST</span> <code>/api/tools/imagetoascii</code>
+            <p class="mt-2">Convert Gambar ke Teks ASCII (Upload file)</p>
+            <input type="file" class="form-control file-input-group" id="file-imagetoascii" accept="image/*">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="uploadFile('/api/tools/imagetoascii', 'file-imagetoascii', 'imagetoascii')">Try It</button>
+            <div class="result-box" id="result-imagetoascii"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method post">POST</span> <code>/api/tools/tinyjpg</code>
+            <p class="mt-2">Kompres Gambar (TinyJPG)</p>
+            <input type="file" class="form-control file-input-group" id="file-tinyjpg" accept="image/*">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="uploadFile('/api/tools/tinyjpg', 'file-tinyjpg', 'tinyjpg')">Try It</button>
+            <div class="result-box" id="result-tinyjpg"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/tools/remover</code>
+            <p class="mt-2">Hapus watermark teks dari gambar</p>
+            <input type="text" class="form-control param-input" id="param-remover-url" placeholder="Masukkan URL gambar">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/tools/remover', {url: document.getElementById('param-remover-url').value}, 'remover')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/tools/remover', {url: document.getElementById('param-remover-url').value})">Copy URL</button>
+            <div class="result-box" id="result-remover"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method post">POST</span> <code>/api/tools/removebg</code>
+            <p class="mt-2">Hapus background gambar</p>
+            <input type="file" class="form-control file-input-group" id="file-removebg" accept="image/*">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="uploadFile('/api/tools/removebg', 'file-removebg', 'removebg')">Try It</button>
+            <div class="result-box" id="result-removebg"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method post">POST</span> <code>/api/ai/pixnova/swap-image</code>
+            <p class="mt-2">Face Swap (Upload target & face)</p>
+            <input type="file" class="form-control file-input-group" id="file-swap-target" accept="image/*" placeholder="Target Image">
+            <input type="file" class="form-control file-input-group" id="file-swap-face" accept="image/*" placeholder="Face Image">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="uploadMultipleFiles('/api/ai/pixnova/swap-image', ['file-swap-target', 'file-swap-face'], ['target', 'face'], 'swap-image')">Try It</button>
+            <div class="result-box" id="result-swap-image"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method post">POST</span> <code>/api/anime/identify</code>
+            <p class="mt-2">Cari Anime dari Gambar</p>
+            <input type="file" class="form-control file-input-group" id="file-anime-identify" accept="image/*">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="uploadFile('/api/anime/identify', 'file-anime-identify', 'anime-identify')">Try It</button>
+            <div class="result-box" id="result-anime-identify"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/ai/lyrics-generator</code>
+            <p class="mt-2">Generate Lyrics</p>
+            <input type="text" class="form-control param-input" id="param-lyrics-prompt" placeholder="Masukkan topik lagu">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/ai/lyrics-generator', {prompt: document.getElementById('param-lyrics-prompt').value}, 'lyrics')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/ai/lyrics-generator', {prompt: document.getElementById('param-lyrics-prompt').value})">Copy URL</button>
+            <div class="result-box" id="result-lyrics"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/ai/magicstudio</code>
+            <p class="mt-2">Magic Studio AI Image Generator</p>
+            <input type="text" class="form-control param-input" id="param-magic-prompt" placeholder="Masukkan prompt">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/ai/magicstudio', {prompt: document.getElementById('param-magic-prompt').value}, 'magicstudio')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/ai/magicstudio', {prompt: document.getElementById('param-magic-prompt').value})">Copy URL</button>
+            <div class="result-box" id="result-magicstudio"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/deepimg/generate</code>
+            <p class="mt-2">Deep Image AI Generator</p>
+            <input type="text" class="form-control param-input" id="param-deepimg-prompt" placeholder="Masukkan prompt">
+            <input type="text" class="form-control param-input" id="param-deepimg-style" placeholder="Style (contoh: Anime)" value="Anime">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/deepimg/generate', {prompt: document.getElementById('param-deepimg-prompt').value, style: document.getElementById('param-deepimg-style').value}, 'deepimg')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/deepimg/generate', {prompt: document.getElementById('param-deepimg-prompt').value, style: document.getElementById('param-deepimg-style').value})">Copy URL</button>
+            <div class="result-box" id="result-deepimg"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/ai/nanobanana</code>
+            <p class="mt-2">Supawork Nano Banana AI Image Generator</p>
+            <input type="text" class="form-control param-input" id="param-nano-prompt" placeholder="Masukkan prompt">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/ai/nanobanana', {prompt: document.getElementById('param-nano-prompt').value}, 'nanobanana')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/ai/nanobanana', {prompt: document.getElementById('param-nano-prompt').value})">Copy URL</button>
+            <div class="result-box" id="result-nanobanana"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/anime/umamusume</code>
+            <p class="mt-2">Get Umamusume Character Info</p>
+            <input type="text" class="form-control param-input" id="param-umamusume-slug" placeholder="Masukkan character slug">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/anime/umamusume', {slug: document.getElementById('param-umamusume-slug').value}, 'umamusume')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/anime/umamusume', {slug: document.getElementById('param-umamusume-slug').value})">Copy URL</button>
+            <div class="result-box" id="result-umamusume"></div>
+        </div>
+
+        <h3 id="muslim" class="mt-5">Muslim Features</h3>
+        
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/muslim/jadwalsholat</code>
+            <p class="mt-2">Jadwal Sholat Bulanan</p>
+            <input type="text" class="form-control param-input" id="param-jadwal-kota" placeholder="Masukkan nama kota (contoh: jakarta)">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/muslim/jadwalsholat', {kota: document.getElementById('param-jadwal-kota').value}, 'jadwalsholat')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/muslim/jadwalsholat', {kota: document.getElementById('param-jadwal-kota').value})">Copy URL</button>
+            <div class="result-box" id="result-jadwalsholat"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/muslim/ask</code>
+            <p class="mt-2">Tanya jawab seputar Islam (MuslimAI)</p>
+            <input type="text" class="form-control param-input" id="param-muslim-q" placeholder="Masukkan pertanyaan">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/muslim/ask', {q: document.getElementById('param-muslim-q').value}, 'muslim-ask')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/muslim/ask', {q: document.getElementById('param-muslim-q').value})">Copy URL</button>
+            <div class="result-box" id="result-muslim-ask"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/muslim/kajian</code>
+            <p class="mt-2">Cari Kajian/Doa Harian/Audio (Kajian.net)</p>
+            <input type="text" class="form-control param-input" id="param-kajian-q" placeholder="Masukkan query (contoh: doa harian)">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/muslim/kajian', {q: document.getElementById('param-kajian-q').value}, 'kajian')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/muslim/kajian', {q: document.getElementById('param-kajian-q').value})">Copy URL</button>
+            <div class="result-box" id="result-kajian"></div>
+        </div>
+
+        <h3 id="stalk" class="mt-5">Stalking</h3>
+        
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/stalk/twitter</code>
+            <p class="mt-2">Stalking Profil Twitter/X</p>
+            <input type="text" class="form-control param-input" id="param-stalk-twitter" placeholder="Masukkan username (tanpa @)">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/stalk/twitter', {username: document.getElementById('param-stalk-twitter').value}, 'stalk-twitter')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/stalk/twitter', {username: document.getElementById('param-stalk-twitter').value})">Copy URL</button>
+            <div class="result-box" id="result-stalk-twitter"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/stalk/ig</code>
+            <p class="mt-2">Stalking Profil Instagram</p>
+            <input type="text" class="form-control param-input" id="param-stalk-ig" placeholder="Masukkan username (tanpa @)">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/stalk/ig', {username: document.getElementById('param-stalk-ig').value}, 'stalk-ig')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/stalk/ig', {username: document.getElementById('param-stalk-ig').value})">Copy URL</button>
+            <div class="result-box" id="result-stalk-ig"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/stalk/tiktok</code>
+            <p class="mt-2">Stalking Profil TikTok</p>
+            <input type="text" class="form-control param-input" id="param-stalk-tiktok" placeholder="Masukkan username (tanpa @)">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/stalk/tiktok', {username: document.getElementById('param-stalk-tiktok').value}, 'stalk-tiktok')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/stalk/tiktok', {username: document.getElementById('param-stalk-tiktok').value})">Copy URL</button>
+            <div class="result-box" id="result-stalk-tiktok"></div>
+        </div>
+
+        <h3 id="game" class="mt-5">Game</h3>
+        
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/game/tebaklirik</code>
+            <p class="mt-2">Game Tebak Lirik Lagu</p>
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApi('/api/game/tebaklirik', 'tebaklirik')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrl('/api/game/tebaklirik')">Copy URL</button>
+            <div class="result-box" id="result-tebaklirik"></div>
+        </div>
+
+        <h3 id="tempmail" class="mt-5">Tempmail</h3>
+        
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/tempmail/create</code>
+            <p class="mt-2">Buat email sementara baru. Simpan token dari respon ini.</p>
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApi('/api/tempmail/create', 'tempmail-create')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrl('/api/tempmail/create')">Copy URL</button>
+            <div class="result-box" id="result-tempmail-create"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/tempmail/inbox</code>
+            <p class="mt-2">Cek kotak masuk email</p>
+            <input type="text" class="form-control param-input" id="param-tempmail-token" placeholder="Masukkan token">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/tempmail/inbox', {token: document.getElementById('param-tempmail-token').value}, 'tempmail-inbox')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/tempmail/inbox', {token: document.getElementById('param-tempmail-token').value})">Copy URL</button>
+            <div class="result-box" id="result-tempmail-inbox"></div>
+        </div>
+
+        <h3 id="uploader" class="mt-5">Uploader</h3>
+        
+        <div class="endpoint-card">
+            <span class="method post">POST</span> <code>/api/upload/videy</code>
+            <p class="mt-2">Upload video/gambar ke Videy.co</p>
+            <input type="file" class="form-control file-input-group" id="file-videy">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="uploadFile('/api/upload/videy', 'file-videy', 'videy')">Try It</button>
+            <div class="result-box" id="result-videy"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method post">POST</span> <code>/api/upload/top4top</code>
+            <p class="mt-2">Upload file ke Top4top.io</p>
+            <input type="file" class="form-control file-input-group" id="file-top4top">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="uploadFile('/api/upload/top4top', 'file-top4top', 'top4top')">Try It</button>
+            <div class="result-box" id="result-top4top"></div>
+        </div>
+
+        <h3 id="search" class="mt-5">Search</h3>
+        
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/search/pngimg</code>
+            <p class="mt-2">Cari Gambar PNG Transparan</p>
+            <input type="text" class="form-control param-input" id="param-pngimg-q" placeholder="Masukkan query pencarian">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/search/pngimg', {q: document.getElementById('param-pngimg-q').value}, 'pngimg')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/search/pngimg', {q: document.getElementById('param-pngimg-q').value})">Copy URL</button>
+            <div class="result-box" id="result-pngimg"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/search/scriptblox</code>
+            <p class="mt-2">Cari Script Roblox (ScriptBlox)</p>
+            <input type="text" class="form-control param-input" id="param-scriptblox-q" placeholder="Masukkan query pencarian">
+            <input type="number" class="form-control param-input" id="param-scriptblox-page" placeholder="Page (default: 1)" value="1">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/search/scriptblox', {q: document.getElementById('param-scriptblox-q').value, page: document.getElementById('param-scriptblox-page').value}, 'scriptblox')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/search/scriptblox', {q: document.getElementById('param-scriptblox-q').value, page: document.getElementById('param-scriptblox-page').value})">Copy URL</button>
+            <div class="result-box" id="result-scriptblox"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/search/google-image</code>
+            <p class="mt-2">Cari Gambar Google</p>
+            <input type="text" class="form-control param-input" id="param-google-image-q" placeholder="Masukkan query pencarian">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/search/google-image', {q: document.getElementById('param-google-image-q').value}, 'google-image')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/search/google-image', {q: document.getElementById('param-google-image-q').value})">Copy URL</button>
+            <div class="result-box" id="result-google-image"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/search/hubble</code>
+            <p class="mt-2">Cari Gambar Teleskop Hubble</p>
+            <input type="text" class="form-control param-input" id="param-hubble-q" placeholder="Masukkan query pencarian">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/search/hubble', {q: document.getElementById('param-hubble-q').value}, 'hubble')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/search/hubble', {q: document.getElementById('param-hubble-q').value})">Copy URL</button>
+            <div class="result-box" id="result-hubble"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/bing/search</code>
+            <p class="mt-2">Cari dengan Bing</p>
+            <input type="text" class="form-control param-input" id="param-bing-q" placeholder="Masukkan query pencarian">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/bing/search', {q: document.getElementById('param-bing-q').value}, 'bing')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/bing/search', {q: document.getElementById('param-bing-q').value})">Copy URL</button>
+            <div class="result-box" id="result-bing"></div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="method get">GET</span> <code>/api/search/spotify</code>
+            <p class="mt-2">Cari Lagu/Playlist Spotify</p>
+            <input type="text" class="form-control param-input" id="param-search-spotify-q" placeholder="Masukkan query pencarian">
+            <button class="btn btn-primary btn-sm try-it-btn" onclick="tryApiWithParams('/api/search/spotify', {q: document.getElementById('param-search-spotify-q').value}, 'search-spotify')">Try It</button>
+            <button class="btn btn-secondary btn-sm copy-btn" onclick="copyUrlWithParams('/api/search/spotify', {q: document.getElementById('param-search-spotify-q').value})">Copy URL</button>
+            <div class="result-box" id="result-search-spotify"></div>
         </div>
 
     </div>
 
     <script>
-        async function sendRequest(btn) {
-            const card = btn.closest('.endpoint-card');
-            const method = card.getAttribute('data-method');
-            const baseUrl = card.getAttribute('data-url');
-            const responseArea = card.querySelector('.response-area');
-            const inputs = card.querySelectorAll('.param-input');
-            const files = card.querySelectorAll('.file-input');
+        function tryApi(endpoint, resultId) {
+            const resultBox = document.getElementById('result-' + resultId);
+            resultBox.style.display = 'block';
+            resultBox.innerHTML = 'Loading...';
+            
+            fetch(endpoint)
+                .then(response => response.json())
+                .then(data => {
+                    resultBox.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                })
+                .catch(error => {
+                    resultBox.innerHTML = '<pre style="color: #ff6b6b;">Error: ' + error.message + '</pre>';
+                });
+        }
 
-            responseArea.style.display = 'block';
-            responseArea.textContent = 'Processing...';
+        function tryApiWithParams(endpoint, params, resultId) {
+            const resultBox = document.getElementById('result-' + resultId);
+            resultBox.style.display = 'block';
+            resultBox.innerHTML = 'Loading...';
+            
+            const queryString = new URLSearchParams(params).toString();
+            const url = endpoint + '?' + queryString;
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    resultBox.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                })
+                .catch(error => {
+                    resultBox.innerHTML = '<pre style="color: #ff6b6b;">Error: ' + error.message + '</pre>';
+                });
+        }
 
-            try {
-                let fetchUrl = baseUrl;
-                let options = {
-                    method: method
-                };
-
-                if (method === 'GET') {
-                    const params = new URLSearchParams();
-                    inputs.forEach(input => {
-                        if (input.value.trim() !== '') {
-                            params.append(input.name, input.value);
-                        }
-                    });
-                    const queryString = params.toString();
-                    if (queryString) fetchUrl += `?${queryString}`;
-                } 
-                else if (method === 'POST') {
-                    const formData = new FormData();
-                    
-                    inputs.forEach(input => {
-                        if (input.value) formData.append(input.name, input.value);
-                    });
-
-                    files.forEach(input => {
-                        if (input.files.length > 0) {
-                            formData.append(input.name, input.files[0]);
-                        }
-                    });
-
-                    options.body = formData;
-                }
-
-                const res = await fetch(fetchUrl, options);
-                
-                let resultText;
-                const contentType = res.headers.get("content-type");
-                
-                if (contentType && contentType.indexOf("application/json") !== -1) {
-                    const json = await res.json();
-                    resultText = JSON.stringify(json, null, 2);
-                } else {
-                    resultText = await res.text();
-                }
-
-                responseArea.textContent = resultText;
-
-            } catch (error) {
-                responseArea.textContent = 'Error: ' + error.message;
+        function uploadFile(endpoint, fileInputId, resultId) {
+            const fileInput = document.getElementById(fileInputId);
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Please select a file first!');
+                return;
             }
+
+            const resultBox = document.getElementById('result-' + resultId);
+            resultBox.style.display = 'block';
+            resultBox.innerHTML = 'Uploading...';
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch(endpoint, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                resultBox.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            })
+            .catch(error => {
+                resultBox.innerHTML = '<pre style="color: #ff6b6b;">Error: ' + error.message + '</pre>';
+            });
+        }
+
+        function uploadMultipleFiles(endpoint, fileInputIds, fieldNames, resultId) {
+            const formData = new FormData();
+            let hasFiles = false;
+
+            fileInputIds.forEach((inputId, index) => {
+                const fileInput = document.getElementById(inputId);
+                const file = fileInput.files[0];
+                
+                if (file) {
+                    formData.append(fieldNames[index], file);
+                    hasFiles = true;
+                }
+            });
+
+            if (!hasFiles) {
+                alert('Please select all required files!');
+                return;
+            }
+
+            const resultBox = document.getElementById('result-' + resultId);
+            resultBox.style.display = 'block';
+            resultBox.innerHTML = 'Uploading...';
+
+            fetch(endpoint, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                resultBox.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            })
+            .catch(error => {
+                resultBox.innerHTML = '<pre style="color: #ff6b6b;">Error: ' + error.message + '</pre>';
+            });
+        }
+
+        function copyUrl(endpoint) {
+            const fullUrl = window.location.origin + endpoint;
+            navigator.clipboard.writeText(fullUrl).then(() => {
+                alert('URL copied to clipboard!');
+            });
+        }
+
+        function copyUrlWithParams(endpoint, params) {
+            const queryString = new URLSearchParams(params).toString();
+            const fullUrl = window.location.origin + endpoint + '?' + queryString;
+            navigator.clipboard.writeText(fullUrl).then(() => {
+                alert('URL copied to clipboard!');
+            });
         }
     </script>
+
 </body>
 </html>
