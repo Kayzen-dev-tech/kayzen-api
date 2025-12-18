@@ -2,233 +2,288 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Kayzen API Docs</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayzen API Docs & Tester</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background-color: #f4f6f9; color: #333; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        
-        /* Sidebar Styles */
-        .sidebar { height: 100vh; position: fixed; top: 0; left: 0; width: 260px; background: #fff; padding: 20px; overflow-y: auto; border-right: 1px solid #ddd; z-index: 1000; }
+        body { background-color: #f4f6f9; color: #333; }
+        .sidebar { height: 100vh; position: fixed; top: 0; left: 0; width: 250px; background: #fff; padding: 20px; overflow-y: auto; border-right: 1px solid #ddd; }
         .content { margin-left: 260px; padding: 40px; }
-        
-        /* Card Styles */
-        .endpoint-card { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-left: 5px solid #ddd; transition: 0.2s; }
-        .endpoint-card:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        
-        /* Methods Colors */
-        .method { font-weight: bold; padding: 5px 10px; border-radius: 4px; font-size: 0.8rem; margin-right: 10px; text-transform: uppercase; width: 60px; text-align: center; display: inline-block; }
-        .get { background: #e7f5ff; color: #007bff; border: 1px solid #b3d7ff; }
-        .post { background: #e8f5e9; color: #28a745; border: 1px solid #c3e6cb; }
-        
-        .endpoint-card.card-get { border-left-color: #007bff; }
-        .endpoint-card.card-post { border-left-color: #28a745; }
-
-        /* Url Code */
-        code { color: #d63384; font-size: 0.95rem; word-break: break-all; }
-        
-        /* Interactive Elements */
-        .input-group-custom { margin-top: 15px; }
-        .form-control-sm { border-radius: 20px; }
-        .btn-try { border-radius: 20px; padding: 5px 20px; font-size: 0.9rem; }
-        
-        /* Response Box */
-        .response-box { 
-            background: #1e1e1e; 
-            color: #00d4ff; 
-            padding: 15px; 
-            border-radius: 8px; 
-            margin-top: 15px; 
-            display: none; /* Hidden by default */
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.85rem;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .sidebar { width: 100%; height: auto; position: relative; border-bottom: 1px solid #ddd; }
-            .content { margin-left: 0; padding: 20px; }
-        }
+        .endpoint-card { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #e9ecef; }
+        .method { font-weight: bold; padding: 5px 10px; border-radius: 4px; font-size: 0.8rem; margin-right: 10px; display: inline-block; width: 80px; text-align: center; }
+        .get { background: #e7f5ff; color: #007bff; }
+        .post { background: #e8f5e9; color: #28a745; }
+        .path { font-family: monospace; font-size: 1.1em; font-weight: 600; color: #d63384; }
+        .response-area { background: #2d2d2d; color: #00ff00; padding: 15px; border-radius: 5px; margin-top: 15px; display: none; white-space: pre-wrap; font-family: monospace; max-height: 300px; overflow-y: auto; }
+        .input-group-text { width: 120px; }
+        h5 { margin-top: 40px; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <h4 class="mb-4 fw-bold text-primary"><i class="fas fa-code"></i> Kayzen API</h4>
-        <a href="/" class="d-block mb-3 text-decoration-none text-secondary"><i class="fas fa-arrow-left"></i> Kembali ke Home</a>
-        <div class="list-group list-group-flush">
-            <a href="#dramadash" class="list-group-item list-group-item-action border-0 rounded mb-1">Drama & Movie</a>
-            <a href="#downloader" class="list-group-item list-group-item-action border-0 rounded mb-1">Downloader</a>
-            <a href="#tools" class="list-group-item list-group-item-action border-0 rounded mb-1">Tools & AI</a>
-            <a href="#muslim" class="list-group-item list-group-item-action border-0 rounded mb-1">Muslim Features</a>
-            <a href="#stalk" class="list-group-item list-group-item-action border-0 rounded mb-1">Stalking</a>
-            <a href="#uploader" class="list-group-item list-group-item-action border-0 rounded mb-1">Uploader</a>
-            <a href="#search" class="list-group-item list-group-item-action border-0 rounded mb-1">Search</a>
+        <h4 class="mb-4">Kayzen API</h4>
+        <a href="/" class="d-block mb-3 text-decoration-none">← Kembali ke Home</a>
+        <div class="list-group">
+            <a href="#dramadash" class="list-group-item list-group-item-action">Dramadash</a>
+            <a href="#dramabox" class="list-group-item list-group-item-action">Dramabox</a>
+            <a href="#downloader" class="list-group-item list-group-item-action">Downloader</a>
+            <a href="#tools" class="list-group-item list-group-item-action">Tools & AI</a>
+            <a href="#muslim" class="list-group-item list-group-item-action">Muslim</a>
+            <a href="#stalk" class="list-group-item list-group-item-action">Stalking</a>
+            <a href="#game" class="list-group-item list-group-item-action">Game</a>
+            <a href="#tempmail" class="list-group-item list-group-item-action">Tempmail</a>
+            <a href="#uploader" class="list-group-item list-group-item-action">Uploader</a>
+            <a href="#search" class="list-group-item list-group-item-action">Search</a>
         </div>
     </div>
 
     <div class="content">
-        <h1 class="fw-bold">Dokumentasi API & Playground</h1>
-        <p class="lead text-secondary">Klik tombol "Try" untuk mencoba API langsung di halaman ini.</p>
+        <h1>Dokumentasi API Interaktif</h1>
+        <p class="lead">Silakan masukkan parameter dan klik tombol Test untuk mencoba.</p>
 
-        <h3 id="dramadash" class="mt-5">Drama & Movie</h3>
-        <div class="endpoint-card card-get"><span class="method get">GET</span> <code>/api/dramadash/home</code></div>
-        <div class="endpoint-card card-get"><span class="method get">GET</span> <code>/api/dramadash/search?q=query</code></div>
-        <div class="endpoint-card card-get"><span class="method get">GET</span> <code>/api/dramadash/detail?id=drama_id</code></div>
+        <h5 id="dramadash">Dramadash</h5>
         
-        <h3 id="downloader" class="mt-5">Downloader</h3>
-        <div class="endpoint-card card-get"><span class="method get">GET</span> <code>/api/download/tiktok?url=tiktok_url</code><p class="small text-muted mt-1">No Watermark</p></div>
-        <div class="endpoint-card card-get"><span class="method get">GET</span> <code>/api/download/youtube?url=yt_url</code></div>
-        <div class="endpoint-card card-get"><span class="method get">GET</span> <code>/api/ig/download?url=instagram_url</code></div>
-        <div class="endpoint-card card-get"><span class="method get">GET</span> <code>/api/download/spotify?url=music_url</code></div>
-        <div class="endpoint-card card-get"><span class="method get">GET</span> <code>/api/download/twitter-dl?url=twitter_url</code></div>
+        <div class="endpoint-card" data-method="GET" data-url="/api/dramadash/home">
+            <span class="method get">GET</span> <span class="path">/api/dramadash/home</span>
+            <div class="mt-3">
+                <button class="btn btn-primary btn-sm" onclick="sendRequest(this)">Test Endpoint</button>
+            </div>
+            <div class="response-area"></div>
+        </div>
 
-        <h3 id="tools" class="mt-5">Tools & AI</h3>
-        <div class="endpoint-card card-get"><span class="method get">GET</span> <code>/api/ai/meta-ai?prompt=text</code></div>
-        <div class="endpoint-card card-get"><span class="method get">GET</span> <code>/api/translate/sunda?text=kalimat</code></div>
+        <div class="endpoint-card" data-method="GET" data-url="/api/dramadash/search">
+            <span class="method get">GET</span> <span class="path">/api/dramadash/search</span>
+            <div class="mt-2">
+                <div class="input-group mb-2">
+                    <span class="input-group-text">q (query)</span>
+                    <input type="text" class="form-control param-input" name="q" placeholder="Contoh: love">
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="sendRequest(this)">Test Endpoint</button>
+            </div>
+            <div class="response-area"></div>
+        </div>
+
+        <div class="endpoint-card" data-method="GET" data-url="/api/dramadash/detail">
+            <span class="method get">GET</span> <span class="path">/api/dramadash/detail</span>
+            <div class="mt-2">
+                <div class="input-group mb-2">
+                    <span class="input-group-text">id</span>
+                    <input type="text" class="form-control param-input" name="id" placeholder="ID Drama">
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="sendRequest(this)">Test Endpoint</button>
+            </div>
+            <div class="response-area"></div>
+        </div>
+
+        <h5 id="downloader">Downloader</h5>
+
+        <div class="endpoint-card" data-method="GET" data-url="/api/download/tiktok">
+            <span class="method get">GET</span> <span class="path">/api/download/tiktok</span>
+            <div class="mt-2">
+                <div class="input-group mb-2">
+                    <span class="input-group-text">url</span>
+                    <input type="text" class="form-control param-input" name="url" placeholder="Link TikTok">
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="sendRequest(this)">Test Endpoint</button>
+            </div>
+            <div class="response-area"></div>
+        </div>
+
+        <div class="endpoint-card" data-method="GET" data-url="/api/download/youtube">
+            <span class="method get">GET</span> <span class="path">/api/download/youtube</span>
+            <div class="mt-2">
+                <div class="input-group mb-2">
+                    <span class="input-group-text">url</span>
+                    <input type="text" class="form-control param-input" name="url" placeholder="Link YouTube">
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="sendRequest(this)">Test Endpoint</button>
+            </div>
+            <div class="response-area"></div>
+        </div>
+
+        <div class="endpoint-card" data-method="GET" data-url="/api/download/spotify">
+            <span class="method get">GET</span> <span class="path">/api/download/spotify</span>
+            <div class="mt-2">
+                <div class="input-group mb-2">
+                    <span class="input-group-text">url</span>
+                    <input type="text" class="form-control param-input" name="url" placeholder="Link Spotify">
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="sendRequest(this)">Test Endpoint</button>
+            </div>
+            <div class="response-area"></div>
+        </div>
+
+        <h5 id="tools">Tools & AI</h5>
+
+        <div class="endpoint-card" data-method="GET" data-url="/api/ai/meta-ai">
+            <span class="method get">GET</span> <span class="path">/api/ai/meta-ai</span>
+            <div class="mt-2">
+                <div class="input-group mb-2">
+                    <span class="input-group-text">prompt</span>
+                    <input type="text" class="form-control param-input" name="prompt" placeholder="Tanya sesuatu ke AI">
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="sendRequest(this)">Test Endpoint</button>
+            </div>
+            <div class="response-area"></div>
+        </div>
+
+        <div class="endpoint-card" data-method="POST" data-url="/api/tools/imagetoascii">
+            <span class="method post">POST</span> <span class="path">/api/tools/imagetoascii</span>
+            <p class="text-muted small mt-2">Convert Gambar ke ASCII (Upload)</p>
+            <div class="mt-2">
+                <div class="input-group mb-2">
+                    <input type="file" class="form-control file-input" name="image">
+                </div>
+                <button class="btn btn-success btn-sm" onclick="sendRequest(this)">Upload & Convert</button>
+            </div>
+            <div class="response-area"></div>
+        </div>
+
+        <div class="endpoint-card" data-method="POST" data-url="/api/tools/removebg">
+            <span class="method post">POST</span> <span class="path">/api/tools/removebg</span>
+            <p class="text-muted small mt-2">Hapus Background (Upload)</p>
+            <div class="mt-2">
+                <div class="input-group mb-2">
+                    <input type="file" class="form-control file-input" name="image">
+                </div>
+                <button class="btn btn-success btn-sm" onclick="sendRequest(this)">Upload & Remove BG</button>
+            </div>
+            <div class="response-area"></div>
+        </div>
+
+        <div class="endpoint-card" data-method="GET" data-url="/api/deepimg/generate">
+            <span class="method get">GET</span> <span class="path">/api/deepimg/generate</span>
+            <div class="mt-2">
+                <div class="input-group mb-2">
+                    <span class="input-group-text">prompt</span>
+                    <input type="text" class="form-control param-input" name="prompt" placeholder="Deskripsi gambar">
+                </div>
+                <div class="input-group mb-2">
+                    <span class="input-group-text">style</span>
+                    <input type="text" class="form-control param-input" name="style" value="Anime">
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="sendRequest(this)">Test Endpoint</button>
+            </div>
+            <div class="response-area"></div>
+        </div>
+
+        <h5 id="muslim">Muslim Features</h5>
+
+        <div class="endpoint-card" data-method="GET" data-url="/api/muslim/jadwalsholat">
+            <span class="method get">GET</span> <span class="path">/api/muslim/jadwalsholat</span>
+            <div class="mt-2">
+                <div class="input-group mb-2">
+                    <span class="input-group-text">kota</span>
+                    <input type="text" class="form-control param-input" name="kota" placeholder="Contoh: jakarta">
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="sendRequest(this)">Test Endpoint</button>
+            </div>
+            <div class="response-area"></div>
+        </div>
+
+        <h5 id="stalk">Stalking</h5>
+
+        <div class="endpoint-card" data-method="GET" data-url="/api/stalk/tiktok">
+            <span class="method get">GET</span> <span class="path">/api/stalk/tiktok</span>
+            <div class="mt-2">
+                <div class="input-group mb-2">
+                    <span class="input-group-text">username</span>
+                    <input type="text" class="form-control param-input" name="username" placeholder="Username TikTok">
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="sendRequest(this)">Test Endpoint</button>
+            </div>
+            <div class="response-area"></div>
+        </div>
+
+        <h5 id="uploader">Uploader</h5>
         
-        <div class="endpoint-card card-post">
-            <span class="method post">POST</span> <code>/api/tools/imagetoascii</code>
-            <p class="small text-muted mt-1">Upload gambar untuk diubah ke ASCII</p>
-        </div>
-        
-        <div class="endpoint-card card-post">
-            <span class="method post">POST</span> <code>/api/tools/removebg</code>
-            <p class="small text-muted mt-1">Upload gambar untuk hapus background</p>
-        </div>
-
-        <h3 id="muslim" class="mt-5">Muslim Features</h3>
-        <div class="endpoint-card card-get"><span class="method get">GET</span> <code>/api/muslim/jadwalsholat?kota=jakarta</code></div>
-        <div class="endpoint-card card-get"><span class="method get">GET</span> <code>/api/muslim/ask?q=pertanyaan</code></div>
-
-        <h3 id="stalk" class="mt-5">Stalking</h3>
-        <div class="endpoint-card card-get"><span class="method get">GET</span> <code>/api/stalk/ig?username=user</code></div>
-        <div class="endpoint-card card-get"><span class="method get">GET</span> <code>/api/stalk/tiktok?username=user</code></div>
-        <div class="endpoint-card card-get"><span class="method get">GET</span> <code>/api/stalk/twitter?username=user</code></div>
-
-        <h3 id="uploader" class="mt-5">Uploader</h3>
-        <div class="endpoint-card card-post">
-            <span class="method post">POST</span> <code>/api/upload/videy</code>
-            <p class="small text-muted mt-1">Upload file ke Videy.co</p>
-        </div>
-        <div class="endpoint-card card-post">
-            <span class="method post">POST</span> <code>/api/upload/top4top</code>
-            <p class="small text-muted mt-1">Upload file ke Top4top</p>
+        <div class="endpoint-card" data-method="POST" data-url="/api/upload/videy">
+            <span class="method post">POST</span> <span class="path">/api/upload/videy</span>
+            <div class="mt-2">
+                <div class="input-group mb-2">
+                    <input type="file" class="form-control file-input" name="file">
+                </div>
+                <button class="btn btn-success btn-sm" onclick="sendRequest(this)">Upload to Videy</button>
+            </div>
+            <div class="response-area"></div>
         </div>
 
-        <h3 id="search" class="mt-5">Search</h3>
-        <div class="endpoint-card card-get"><span class="method get">GET</span> <code>/api/search/spotify?q=query</code></div>
-        <div class="endpoint-card card-get"><span class="method get">GET</span> <code>/api/search/google-image?q=query</code></div>
+        <h5 id="search">Search</h5>
+
+        <div class="endpoint-card" data-method="GET" data-url="/api/search/google-image">
+            <span class="method get">GET</span> <span class="path">/api/search/google-image</span>
+            <div class="mt-2">
+                <div class="input-group mb-2">
+                    <span class="input-group-text">q (query)</span>
+                    <input type="text" class="form-control param-input" name="q" placeholder="Cari gambar apa?">
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="sendRequest(this)">Test Endpoint</button>
+            </div>
+            <div class="response-area"></div>
+        </div>
+
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const cards = document.querySelectorAll('.endpoint-card');
+        async function sendRequest(btn) {
+            const card = btn.closest('.endpoint-card');
+            const method = card.getAttribute('data-method');
+            const baseUrl = card.getAttribute('data-url');
+            const responseArea = card.querySelector('.response-area');
+            const inputs = card.querySelectorAll('.param-input');
+            const files = card.querySelectorAll('.file-input');
 
-            cards.forEach((card, index) => {
-                const methodSpan = card.querySelector('.method');
-                const codeBlock = card.querySelector('code');
-                const fullUrlText = codeBlock.innerText;
-                const method = methodSpan.innerText.trim();
+            responseArea.style.display = 'block';
+            responseArea.textContent = 'Processing...';
 
-                const [endpoint, paramsString] = fullUrlText.split('?');
-                
-                const formContainer = document.createElement('div');
-                formContainer.className = 'input-group-custom';
-                
-                let inputsHtml = '';
-                const inputsList = [];
-
-                if (method === 'GET' && paramsString) {
-                    const params = paramsString.split('&');
-                    params.forEach(param => {
-                        const [key, placeholder] = param.split('=');
-                        const inputId = `input-${index}-${key}`;
-                        inputsList.push({ id: inputId, key: key });
-                        inputsHtml += `
-                            <div class="mb-2">
-                                <label class="small fw-bold text-secondary">${key}</label>
-                                <input type="text" id="${inputId}" class="form-control form-control-sm" placeholder="Masukkan ${key}...">
-                            </div>`;
-                    });
-                } 
-                else if (method === 'POST') {
-                    const inputId = `input-file-${index}`;
-                    inputsList.push({ id: inputId, key: 'file', type: 'file' });
-                    let fieldName = 'image';
-                    if(endpoint.includes('videy') || endpoint.includes('top4top')) fieldName = 'file';
-
-                    inputsHtml += `
-                        <div class="mb-2">
-                            <label class="small fw-bold text-secondary">Upload File (${fieldName})</label>
-                            <input type="file" id="${inputId}" class="form-control form-control-sm">
-                            <input type="hidden" id="field-name-${index}" value="${fieldName}">
-                        </div>`;
-                }
-
-                inputsHtml += `
-                    <button class="btn btn-primary btn-sm btn-try mt-2" onclick="executeRequest(${index}, '${method}', '${endpoint}')">
-                        <i class="fas fa-play me-1"></i> Test Endpoint
-                    </button>
-                    <div id="response-${index}" class="response-box">Waiting for response...</div>
-                `;
-
-                formContainer.innerHTML = inputsHtml;
-                card.appendChild(formContainer);
-            });
-        });
-
-        async function executeRequest(index, method, endpoint) {
-            const responseBox = document.getElementById(`response-${index}`);
-            responseBox.style.display = 'block';
-            responseBox.innerText = 'Loading...';
-            
             try {
-                let url = endpoint;
-                let body = null;
-                let headers = {};
+                let fetchUrl = baseUrl;
+                let options = {
+                    method: method
+                };
 
                 if (method === 'GET') {
-                    const inputs = document.querySelectorAll(`[id^='input-${index}-']`);
-                    const queryParams = [];
+                    const params = new URLSearchParams();
                     inputs.forEach(input => {
-                        if (input.value) {
-                            const key = input.id.split('-').pop(); 
-                            queryParams.push(`${key}=${encodeURIComponent(input.value)}`);
+                        if (input.value.trim() !== '') {
+                            params.append(input.name, input.value);
                         }
                     });
-                    if (queryParams.length > 0) {
-                        url += '?' + queryParams.join('&');
-                    }
+                    const queryString = params.toString();
+                    if (queryString) fetchUrl += `?${queryString}`;
                 } 
-                
                 else if (method === 'POST') {
-                    const fileInput = document.getElementById(`input-file-${index}`);
-                    const fieldName = document.getElementById(`field-name-${index}`).value;
+                    const formData = new FormData();
                     
-                    if (fileInput.files.length > 0) {
-                        const formData = new FormData();
-                        formData.append(fieldName, fileInput.files[0]);
-                        body = formData;
-                    } else {
-                        responseBox.innerText = 'Error: Pilih file terlebih dahulu!';
-                        return;
-                    }
+                    inputs.forEach(input => {
+                        if (input.value) formData.append(input.name, input.value);
+                    });
+
+                    files.forEach(input => {
+                        if (input.files.length > 0) {
+                            formData.append(input.name, input.files[0]);
+                        }
+                    });
+
+                    options.body = formData;
                 }
 
-                const res = await fetch(url, {
-                    method: method,
-                    body: body
-                });
+                const res = await fetch(fetchUrl, options);
+                
+                let resultText;
+                const contentType = res.headers.get("content-type");
+                
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    const json = await res.json();
+                    resultText = JSON.stringify(json, null, 2);
+                } else {
+                    resultText = await res.text();
+                }
 
-                const data = await res.json();
-                responseBox.innerText = JSON.stringify(data, null, 2);
+                responseArea.textContent = resultText;
 
             } catch (error) {
-                responseBox.innerText = 'Error: ' + error.message;
+                responseArea.textContent = 'Error: ' + error.message;
             }
         }
     </script>
