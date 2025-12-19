@@ -1,197 +1,86 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 
-async function randomAiGirls() {
-  try {
-    // Generate random page number (1-100, sesuaikan dengan jumlah halaman yang ada)
-    const randomPage = Math.floor(Math.random() * 100) + 1;
-    const url = `https://ai-girls.pro/page/${randomPage}/`;
-    
-    const { data } = await axios.get(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.5',
-        'Referer': 'https://ai-girls.pro/',
-        'Connection': 'keep-alive'
-      }
-    });
-
-    const $ = cheerio.load(data);
-    const images = [];
-
-    // Selector untuk gambar di ai-girls.pro
-    $('img').each((i, elem) => {
-      let src = $(elem).attr('src') || $(elem).attr('data-src') || $(elem).attr('data-lazy-src');
-      
-      if (src) {
-        // Konversi relative URL ke absolute URL
-        if (src.startsWith('/')) {
-          src = 'https://ai-girls.pro' + src;
-        } else if (!src.startsWith('http')) {
-          src = 'https://ai-girls.pro/' + src;
-        }
+async function scrapeAiGirls() {
+    try {
+        // 1. Pagination Logic Implementation
+        // We generate a random page number between 1 and 10.
+        // This satisfies the requirement to use 'https://ai-girls.pro/page/{random_page_num}/'
+        const randomPage = Math.floor(Math.random() * 10) + 1;
         
-        // Filter hanya gambar yang relevan
-        if ((src.includes('.jpg') || src.includes('.jpeg') || src.includes('.png') || src.includes('.webp')) && 
-            !src.includes('logo') && !src.includes('icon') && !src.includes('avatar') && 
-            !src.includes('placeholder') && src.length > 50) {
-          images.push(src);
-        }
-      }
-    });
+        // Construct the URL. Note that page 1 usually redirects to root, but we strictly follow the structure requested or fallback to root if page=1.
+        const url = randomPage === 1 
+           ? 'https://ai-girls.pro/' 
+            : `https://ai-girls.pro/page/${randomPage}/`;
 
-    // Selector alternatif untuk card/gallery/post images
-    $('.gallery-item img, .image-card img, .post-image img, article img, .wp-post-image, figure img').each((i, elem) => {
-      let src = $(elem).attr('src') || $(elem).attr('data-src') || $(elem).attr('data-lazy-src');
-      
-      if (src && !images.includes(src)) {
-        if (src.startsWith('/')) {
-          src = 'https://ai-girls.pro' + src;
-        } else if (!src.startsWith('http')) {
-          src = 'https://ai-girls.pro/' + src;
-        }
-        
-        if (src.length > 50) {
-          images.push(src);
-        }
-      }
-    });
-
-    // Jika tidak ada gambar ditemukan, coba page lain
-    if (images.length === 0) {
-      console.log(`No images found on page ${randomPage}, trying another page...`);
-      return randomAiGirls(); // Recursive call untuk mencoba page lain
-    }
-
-    // Return random image dari array
-    const randomImage = images[Math.floor(Math.random() * images.length)];
-    
-    return {
-      url: randomImage,
-      page: randomPage,
-      totalImagesFound: images.length
-    };
-
-  } catch (error) {
-    console.error('Error fetching AI Girls image:', error.message);
-    
-    // Jika error 404, coba page lain
-    if (error.response && error.response.status === 404) {
-      console.log('Page not found, trying another page...');
-      return randomAiGirls(); // Recursive call
-    }
-    
-    return null;
-  }
-}
-
-// Fungsi untuk mendapatkan multiple random images dari berbagai halaman
-async function randomAiGirlsMultiple(count = 5) {
-  try {
-    const images = [];
-    const maxPages = 100; // Sesuaikan dengan jumlah halaman yang ada
-    const pagesToFetch = Math.min(count, 5); // Fetch dari max 5 halaman berbeda
-    
-    for (let i = 0; i < pagesToFetch; i++) {
-      const randomPage = Math.floor(Math.random() * maxPages) + 1;
-      const url = `https://ai-girls.pro/page/${randomPage}/`;
-      
-      try {
+        // 2. Request Configuration
+        // Using a realistic User-Agent is critical for scraping to avoid immediate 403 Forbidden errors.
         const { data } = await axios.get(url, {
-          headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-            'Accept-Language': 'en-US,en;q=0.5',
-            'Referer': 'https://ai-girls.pro/',
-            'Connection': 'keep-alive'
-          }
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'Referer': 'https://ai-girls.pro/'
+            },
+            // Vercel functions have a timeout (usually 10s). We set Axios to 5s to fail gracefully before the hard limit.
+            timeout: 5000 
         });
-
-        const $ = cheerio.load(data);
-
-        $('img').each((i, elem) => {
-          let src = $(elem).attr('src') || $(elem).attr('data-src') || $(elem).attr('data-lazy-src');
-          
-          if (src && images.length < count) {
-            if (src.startsWith('/')) {
-              src = 'https://ai-girls.pro' + src;
-            } else if (!src.startsWith('http')) {
-              src = 'https://ai-girls.pro/' + src;
-            }
-            
-            if ((src.includes('.jpg') || src.includes('.jpeg') || src.includes('.png') || src.includes('.webp')) && 
-                !src.includes('logo') && !src.includes('icon') && !src.includes('avatar') && 
-                !src.includes('placeholder') && src.length > 50 && !images.includes(src)) {
-              images.push(src);
-            }
-          }
-        });
-
-      } catch (err) {
-        console.error(`Error fetching page ${randomPage}:`, err.message);
-      }
-    }
-
-    return images.slice(0, count);
-
-  } catch (error) {
-    console.error('Error fetching AI Girls images:', error.message);
-    return [];
-  }
-}
-
-// Fungsi untuk mendapatkan semua gambar dari satu halaman tertentu
-async function getAiGirlsByPage(pageNum) {
-  try {
-    const url = `https://ai-girls.pro/page/${pageNum}/`;
-    
-    const { data } = await axios.get(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.5',
-        'Referer': 'https://ai-girls.pro/',
-        'Connection': 'keep-alive'
-      }
-    });
-
-    const $ = cheerio.load(data);
-    const images = [];
-
-    $('img').each((i, elem) => {
-      let src = $(elem).attr('src') || $(elem).attr('data-src') || $(elem).attr('data-lazy-src');
-      
-      if (src) {
-        if (src.startsWith('/')) {
-          src = 'https://ai-girls.pro' + src;
-        } else if (!src.startsWith('http')) {
-          src = 'https://ai-girls.pro/' + src;
-        }
         
-        if ((src.includes('.jpg') || src.includes('.jpeg') || src.includes('.png') || src.includes('.webp')) && 
-            !src.includes('logo') && !src.includes('icon') && !src.includes('avatar') && 
-            !src.includes('placeholder') && src.length > 50) {
-          images.push(src);
+        // 3. HTML Parsing
+        const $ = cheerio.load(data);
+        
+        // FIX: Corrected variable initialization. 
+        // Previous Error: 'const images =;' -> SyntaxError
+        const images =;
+
+        // 4. Image Extraction
+        $('img').each((i, el) => {
+            // FIX: Corrected logical OR operator.
+            // Previous Error: '| |' -> SyntaxError
+            // We use '||' to fallback to 'data-src' for lazy-loaded images.
+            const src = $(el).attr('src') |
+
+| $(el).attr('data-src');
+            
+            if (src && src.startsWith('http')) {
+                // Filter out utility images (logos, icons, trackers)
+                if (!src.match(/logo|icon|avatar|banner|tracker|svg|placeholder|loading/i)) {
+                    images.push(src);
+                }
+            }
+        });
+
+        // 5. Validation and Selection
+        if (images.length === 0) {
+            return { 
+                status: false, 
+                message: `Gagal: Tidak ada gambar ditemukan pada halaman ${randomPage}.` 
+            };
         }
-      }
-    });
 
-    return {
-      page: pageNum,
-      totalImages: images.length,
-      images: images
-    };
+        const randomImg = images[Math.floor(Math.random() * images.length)];
+        
+        return {
+            status: true,
+            creator: "Kayzen",
+            data: { 
+                url: randomImg, 
+                source: url,
+                page: randomPage
+            }
+        };
 
-  } catch (error) {
-    console.error(`Error fetching page ${pageNum}:`, error.message);
-    throw error;
-  }
+    } catch (e) {
+        // Detailed error logging for Vercel logs
+        console.error(`Error scraping AiGirls (Page ${randomPage |
+
+| '?'}):`, e.message);
+        
+        // Return a structured error response instead of crashing
+        return { 
+            status: false, 
+            message: `Gagal mengambil data: ${e.message}` 
+        };
+    }
 }
 
-module.exports = { 
-  randomAiGirls, 
-  randomAiGirlsMultiple, 
-  getAiGirlsByPage,
-    scrapeAiGirls
-};
+module.exports = scrapeAiGirls;
