@@ -1,124 +1,197 @@
-/* 
- * Modul Scraper AI Girls (Revisi V2.0)
- * Target Asli: https://ai-girls.pro/ (DEAD/OFFLINE)
- * Target Baru: https://www.wallpaperflare.com/search?wallpaper=ai+girl
- * Alasan Migrasi: Domain asli tidak lagi dapat diakses. Migrasi ke repositori
- * wallpaper publik untuk mempertahankan ketersediaan layanan API.
- * 
- * Fitur Pembaruan:
- * 1. Rotasi User-Agent dinamis (simulasi).
- * 2. Selektor HTML yang lebih presisi.
- * 3. Timeout yang diperpanjang untuk mengakomodasi latensi jaringan.
- * 4. Penanganan error yang lebih deskriptif.
- */
-
 const axios = require('axios');
 const cheerio = require('cheerio');
 
-// Daftar User-Agent untuk menghindari pemblokiran statis
-const USER_AGENTS =;
+async function randomAiGirls() {
+  try {
+    // Generate random page number (1-100, sesuaikan dengan jumlah halaman yang ada)
+    const randomPage = Math.floor(Math.random() * 100) + 1;
+    const url = `https://ai-girls.pro/page/${randomPage}/`;
+    
+    const { data } = await axios.get(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Referer': 'https://ai-girls.pro/',
+        'Connection': 'keep-alive'
+      }
+    });
 
-async function scrapeAiGirls() {
-    try {
-        // Pemilihan User-Agent secara acak
-        const randomUserAgent = USER_AGENTS;
-        
-        // Konfigurasi target baru. Menggunakan query pencarian 'ai girl' untuk mendapatkan konten relevan.
-        // Opsi URL alternatif jika ini down: 'https://wallpapers.com/search/ai-girl'
-        const targetUrl = 'https://www.wallpaperflare.com/search?wallpaper=ai+girl';
+    const $ = cheerio.load(data);
+    const images = [];
 
-        // Konfigurasi request Axios
-        const response = await axios.get(targetUrl, {
-            headers: {
-                'User-Agent': randomUserAgent,
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-                'Accept-Language': 'en-US,en;q=0.9',
-                'Referer': 'https://www.google.com/', // Menyamarkan traffic seolah dari Google
-                'Connection': 'keep-alive'
-            },
-            timeout: 10000 // Timeout 10 detik, sesuai batas aman fungsi serverless Vercel
-        });
-
-        const $ = cheerio.load(response.data);
-        const images =;
-
-        // Strategi Ekstraksi:
-        // Situs wallpaper biasanya menggunakan Lazy Loading. URL asli sering berada di atribut 'data-src'.
-        // Kita menargetkan elemen list spesifik untuk menghindari mengambil icon/avatar.
-        
-        $('li.lazy-load-item').each((i, el) => {
-            const imgElement = $(el).find('img');
-            
-            // Prioritaskan data-src (resolusi pratinjau yang lebih baik) lalu src
-            const src = imgElement.attr('data-src') |
-
-| imgElement.attr('src');
-            
-            if (src && src.startsWith('http')) {
-                // Filter tambahan untuk memastikan bukan gambar placeholder
-                if (!src.includes('blank.gif') &&!src.includes('loader.svg')) {
-                    images.push(src);
-                }
-            }
-        });
-
-        // Mekanisme Fallback: Jika selektor spesifik gagal (karena perubahan struktur situs),
-        // coba selektor umum (mirip kode lama tapi dengan filter lebih ketat).
-        if (images.length === 0) {
-            console.warn("Selektor spesifik gagal, beralih ke selektor umum.");
-            $('img').each((i, el) => {
-                const src = $(el).attr('data-src') |
-
-| $(el).attr('src');
-                if (src && src.startsWith('http')) {
-                    // Filter kata kunci teknis yang menandakan gambar sistem/UI
-                    if (!src.match(/logo|icon|avatar|banner|tracker|svg|placeholder|pixel/i)) {
-                        // Coba filter berdasarkan dimensi jika atribut tersedia
-                        const width = $(el).attr('width');
-                        const height = $(el).attr('height');
-                        // Hanya ambil jika dimensi tidak ada (asumsi gambar utama) atau cukup besar
-                        if ((!width &&!height) |
-
-| (parseInt(width) > 300)) {
-                            images.push(src);
-                        }
-                    }
-                }
-            });
+    // Selector untuk gambar di ai-girls.pro
+    $('img').each((i, elem) => {
+      let src = $(elem).attr('src') || $(elem).attr('data-src') || $(elem).attr('data-lazy-src');
+      
+      if (src) {
+        // Konversi relative URL ke absolute URL
+        if (src.startsWith('/')) {
+          src = 'https://ai-girls.pro' + src;
+        } else if (!src.startsWith('http')) {
+          src = 'https://ai-girls.pro/' + src;
         }
-
-        // Penanganan kasus di mana tidak ada gambar ditemukan sama sekali
-        if (images.length === 0) {
-            return {
-                status: false,
-                message: "Gagal: Tidak ada gambar ditemukan. Struktur situs mungkin telah berubah total."
-            };
-        }
-
-        // Pemilihan acak dari kumpulan gambar yang berhasil diambil
-        const randomImg = images[Math.floor(Math.random() * images.length)];
-
-        // Mengembalikan format data sesuai kontrak API yang diharapkan oleh frontend
-        return {
-            status: true,
-            creator: "Kayzen",
-            data: {
-                url: randomImg,
-                source: "https://www.wallpaperflare.com", // Atribusi sumber yang jujur
-                note: "Domain asli (ai-girls.pro) offline, data dialihkan ke sumber alternatif."
-            }
-        };
-
-    } catch (e) {
-        // Log error untuk debugging server-side
-        console.error(` ${e.message}`);
         
-        // Respons yang aman untuk klien
-        return { 
-            status: false, 
-            message: `Terjadi kesalahan saat mengambil data: ${e.message}` 
-        };
+        // Filter hanya gambar yang relevan
+        if ((src.includes('.jpg') || src.includes('.jpeg') || src.includes('.png') || src.includes('.webp')) && 
+            !src.includes('logo') && !src.includes('icon') && !src.includes('avatar') && 
+            !src.includes('placeholder') && src.length > 50) {
+          images.push(src);
+        }
+      }
+    });
+
+    // Selector alternatif untuk card/gallery/post images
+    $('.gallery-item img, .image-card img, .post-image img, article img, .wp-post-image, figure img').each((i, elem) => {
+      let src = $(elem).attr('src') || $(elem).attr('data-src') || $(elem).attr('data-lazy-src');
+      
+      if (src && !images.includes(src)) {
+        if (src.startsWith('/')) {
+          src = 'https://ai-girls.pro' + src;
+        } else if (!src.startsWith('http')) {
+          src = 'https://ai-girls.pro/' + src;
+        }
+        
+        if (src.length > 50) {
+          images.push(src);
+        }
+      }
+    });
+
+    // Jika tidak ada gambar ditemukan, coba page lain
+    if (images.length === 0) {
+      console.log(`No images found on page ${randomPage}, trying another page...`);
+      return randomAiGirls(); // Recursive call untuk mencoba page lain
     }
+
+    // Return random image dari array
+    const randomImage = images[Math.floor(Math.random() * images.length)];
+    
+    return {
+      url: randomImage,
+      page: randomPage,
+      totalImagesFound: images.length
+    };
+
+  } catch (error) {
+    console.error('Error fetching AI Girls image:', error.message);
+    
+    // Jika error 404, coba page lain
+    if (error.response && error.response.status === 404) {
+      console.log('Page not found, trying another page...');
+      return randomAiGirls(); // Recursive call
+    }
+    
+    return null;
+  }
 }
 
-module.exports = scrapeAiGirls;
+// Fungsi untuk mendapatkan multiple random images dari berbagai halaman
+async function randomAiGirlsMultiple(count = 5) {
+  try {
+    const images = [];
+    const maxPages = 100; // Sesuaikan dengan jumlah halaman yang ada
+    const pagesToFetch = Math.min(count, 5); // Fetch dari max 5 halaman berbeda
+    
+    for (let i = 0; i < pagesToFetch; i++) {
+      const randomPage = Math.floor(Math.random() * maxPages) + 1;
+      const url = `https://ai-girls.pro/page/${randomPage}/`;
+      
+      try {
+        const { data } = await axios.get(url, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
+            'Referer': 'https://ai-girls.pro/',
+            'Connection': 'keep-alive'
+          }
+        });
+
+        const $ = cheerio.load(data);
+
+        $('img').each((i, elem) => {
+          let src = $(elem).attr('src') || $(elem).attr('data-src') || $(elem).attr('data-lazy-src');
+          
+          if (src && images.length < count) {
+            if (src.startsWith('/')) {
+              src = 'https://ai-girls.pro' + src;
+            } else if (!src.startsWith('http')) {
+              src = 'https://ai-girls.pro/' + src;
+            }
+            
+            if ((src.includes('.jpg') || src.includes('.jpeg') || src.includes('.png') || src.includes('.webp')) && 
+                !src.includes('logo') && !src.includes('icon') && !src.includes('avatar') && 
+                !src.includes('placeholder') && src.length > 50 && !images.includes(src)) {
+              images.push(src);
+            }
+          }
+        });
+
+      } catch (err) {
+        console.error(`Error fetching page ${randomPage}:`, err.message);
+      }
+    }
+
+    return images.slice(0, count);
+
+  } catch (error) {
+    console.error('Error fetching AI Girls images:', error.message);
+    return [];
+  }
+}
+
+// Fungsi untuk mendapatkan semua gambar dari satu halaman tertentu
+async function getAiGirlsByPage(pageNum) {
+  try {
+    const url = `https://ai-girls.pro/page/${pageNum}/`;
+    
+    const { data } = await axios.get(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Referer': 'https://ai-girls.pro/',
+        'Connection': 'keep-alive'
+      }
+    });
+
+    const $ = cheerio.load(data);
+    const images = [];
+
+    $('img').each((i, elem) => {
+      let src = $(elem).attr('src') || $(elem).attr('data-src') || $(elem).attr('data-lazy-src');
+      
+      if (src) {
+        if (src.startsWith('/')) {
+          src = 'https://ai-girls.pro' + src;
+        } else if (!src.startsWith('http')) {
+          src = 'https://ai-girls.pro/' + src;
+        }
+        
+        if ((src.includes('.jpg') || src.includes('.jpeg') || src.includes('.png') || src.includes('.webp')) && 
+            !src.includes('logo') && !src.includes('icon') && !src.includes('avatar') && 
+            !src.includes('placeholder') && src.length > 50) {
+          images.push(src);
+        }
+      }
+    });
+
+    return {
+      page: pageNum,
+      totalImages: images.length,
+      images: images
+    };
+
+  } catch (error) {
+    console.error(`Error fetching page ${pageNum}:`, error.message);
+    throw error;
+  }
+}
+
+module.exports = { 
+  randomAiGirls, 
+  randomAiGirlsMultiple, 
+  getAiGirlsByPage,
+    scrapeAiGirls
+};
