@@ -8,7 +8,7 @@ async function scrapeAiGirls() {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
                 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
             },
-            timeout: 5000
+            timeout: 5000 // Timeout 5 detik
         });
         
         const $ = cheerio.load(data);
@@ -26,12 +26,9 @@ async function scrapeAiGirls() {
             }
         });
 
-        if (images.length === 0) {
-            return { status: false, message: "Gagal mengambil gambar (Website mungkin memblokir bot)." };
-        }
+        if (images.length === 0) return { status: false, message: "Gagal: Tidak ada gambar ditemukan." };
 
         const randomImg = images[Math.floor(Math.random() * images.length)];
-
         return {
             status: true,
             creator: "Kayzen",
@@ -39,10 +36,10 @@ async function scrapeAiGirls() {
         };
 
     } catch (e) {
-        console.error("Error AiGirls:", e.message); // Cek ini di Vercel Logs
+        console.error("Error AiGirls:", e.message);
         return { 
             status: false, 
-            message: `Gagal mengambil data: ${e.message} (Mungkin IP Vercel diblokir)` 
+            message: `Gagal mengambil data: ${e.message}` 
         };
     }
 }
