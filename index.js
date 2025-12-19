@@ -60,7 +60,7 @@ const igStalk = require('./scrapers/scrapeIgStalk');
 const tiktokStalk = require('./scrapers/scrapeTiktokStalk');
 const tebakLirik = require('./scrapers/scrapeTebakLirik');
 const googleVideo = require('./scrapers/scrapeGoogleVideo');
-const aigilrs = require('./scrapers/scrapeAiGirls');
+const aiGirls = require('./scrapers/scrapeAiGirls'); 
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
