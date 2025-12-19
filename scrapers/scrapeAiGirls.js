@@ -7,7 +7,8 @@ async function scrapeAiGirls() {
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
                 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
-            }
+            },
+            timeout: 5000
         });
         
         const $ = cheerio.load(data);
@@ -33,15 +34,16 @@ async function scrapeAiGirls() {
 
         return {
             status: true,
-            creator: "Kayzen API",
-            data: {
-                url: randomImg,
-                source: "https://ai-girls.pro/"
-            }
+            creator: "Kayzen",
+            data: { url: randomImg, source: "https://ai-girls.pro/" }
         };
 
     } catch (e) {
-        return { status: false, message: e.message };
+        console.error("Error AiGirls:", e.message); // Cek ini di Vercel Logs
+        return { 
+            status: false, 
+            message: `Gagal mengambil data: ${e.message} (Mungkin IP Vercel diblokir)` 
+        };
     }
 }
 
