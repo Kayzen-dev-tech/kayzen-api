@@ -8,16 +8,14 @@ async function scrapeAiGirls() {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
                 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
             },
-            timeout: 5000 // Timeout 5 detik
+            timeout: 5000
         });
         
         const $ = cheerio.load(data);
-        const images =;
+        const images = [];
 
         $('img').each((i, el) => {
-            const src = $(el).attr('src') |
-
-| $(el).attr('data-src');
+            const src = $(el).attr('src') || $(el).attr('data-src');
             
             if (src && src.startsWith('http')) {
                 if (!src.match(/logo|icon|avatar|banner|tracker|svg/i)) {
