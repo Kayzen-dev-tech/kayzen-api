@@ -152,6 +152,7 @@
             border-radius: 10px;
             overflow-x: auto;
             margin: 15px 0;
+            position: relative;
         }
 
         .code-block pre {
@@ -181,34 +182,161 @@
             color: #fff;
         }
 
-        .example-section {
-            margin-top: 20px;
+        .try-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 25px;
+            border: 2px solid rgba(76, 175, 80, 0.3);
         }
 
-        .example-section h4 {
-            font-size: 1.2em;
-            margin-bottom: 10px;
-            color: #64B5F6;
+        .try-section h4 {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            color: #4CAF50;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 1.05em;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #4CAF50;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
         }
 
         .try-button {
             display: inline-block;
-            padding: 10px 25px;
+            padding: 12px 30px;
             background: #4CAF50;
             color: #fff;
             text-decoration: none;
             border-radius: 8px;
-            margin-top: 15px;
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
-            font-size: 1em;
+            font-size: 1.05em;
+            font-weight: bold;
         }
 
         .try-button:hover {
             background: #45a049;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .try-button:active {
+            transform: translateY(0);
+        }
+
+        .try-button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .response-box {
+            background: #1e1e1e;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+            position: relative;
+        }
+
+        .response-box.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .response-box pre {
+            color: #d4d4d4;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.5;
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 8px 15px;
+            background: rgba(76, 175, 80, 0.8);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .copy-button:hover {
+            background: #4CAF50;
+        }
+
+        .copy-button:active {
+            transform: scale(0.95);
+        }
+
+        .status-success {
+            border-left: 4px solid #4CAF50;
+        }
+
+        .status-error {
+            border-left: 4px solid #f44336;
         }
 
         footer {
@@ -297,15 +425,21 @@
                     </tbody>
                 </table>
 
-                <div class="example-section">
-                    <h4>📋 Example Request:</h4>
-                    <div class="url-box">
-                        GET /api/mxdrop/download?url=https://mxdrop.to/xxxxx
+                <div class="try-section">
+                    <h4>🧪 Try It Out</h4>
+                    <div class="input-group">
+                        <label>MXDrop URL:</label>
+                        <input type="text" id="downloadUrl" placeholder="https://mxdrop.to/xxxxx" />
                     </div>
+                    <button class="try-button" onclick="testDownloadAPI()" id="downloadBtn">
+                        🚀 Test API
+                    </button>
+                    <div id="downloadResponse" class="response-box"></div>
+                </div>
 
-                    <h4>✅ Success Response:</h4>
-                    <div class="code-block">
-                        <pre>{
+                <h4 style="margin-top: 30px;">✅ Success Response Example:</h4>
+                <div class="code-block">
+                    <pre>{
   "success": true,
   "data": {
     "title": "File Name.zip",
@@ -317,16 +451,6 @@
   "author": "Kayzen Izumi",
   "apiUrl": "https://kayzenapi.com"
 }</pre>
-                    </div>
-
-                    <h4>❌ Error Response:</h4>
-                    <div class="code-block">
-                        <pre>{
-  "success": false,
-  "message": "Parameter URL diperlukan",
-  "example": "/api/mxdrop/download?url=https://mxdrop.to/xxxxx"
-}</pre>
-                    </div>
                 </div>
             </div>
 
@@ -361,15 +485,21 @@
                     </tbody>
                 </table>
 
-                <div class="example-section">
-                    <h4>📋 Example Request:</h4>
-                    <div class="url-box">
-                        GET /api/mxdrop/info?url=https://mxdrop.to/xxxxx
+                <div class="try-section">
+                    <h4>🧪 Try It Out</h4>
+                    <div class="input-group">
+                        <label>MXDrop URL:</label>
+                        <input type="text" id="infoUrl" placeholder="https://mxdrop.to/xxxxx" />
                     </div>
+                    <button class="try-button" onclick="testInfoAPI()" id="infoBtn">
+                        🚀 Test API
+                    </button>
+                    <div id="infoResponse" class="response-box"></div>
+                </div>
 
-                    <h4>✅ Success Response:</h4>
-                    <div class="code-block">
-                        <pre>{
+                <h4 style="margin-top: 30px;">✅ Success Response Example:</h4>
+                <div class="code-block">
+                    <pre>{
   "success": true,
   "data": {
     "title": "File Name.zip",
@@ -382,7 +512,80 @@
   "author": "Kayzen Izumi",
   "apiUrl": "https://kayzenapi.com"
 }</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📌 Pinterest Search API</h2>
+            
+            <div class="endpoint">
+                <h3>Search Pinterest</h3>
+                <div>
+                    <span class="method get">GET</span>
+                    <span style="font-family: monospace; font-size: 1.1em;">/api/pinterest/search</span>
+                </div>
+                
+                <p style="margin: 15px 0; line-height: 1.6;">
+                    Endpoint ini digunakan untuk mencari gambar, video, dan pins dari Pinterest
+                </p>
+
+                <h4 style="margin-top: 20px; margin-bottom: 10px;">Query Parameters:</h4>
+                <table class="params-table">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Deskripsi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>query</code></td>
+                            <td>string</td>
+                            <td><span class="badge required">Required</span></td>
+                            <td>Kata kunci pencarian (contoh: frieren, anime, nature)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="try-section">
+                    <h4>🧪 Try It Out</h4>
+                    <div class="input-group">
+                        <label>Search Query:</label>
+                        <input type="text" id="pinterestQuery" placeholder="frieren" />
                     </div>
+                    <button class="try-button" onclick="testPinterestAPI()" id="pinterestBtn">
+                        🚀 Test API
+                    </button>
+                    <div id="pinterestResponse" class="response-box"></div>
+                </div>
+
+                <h4 style="margin-top: 30px;">✅ Success Response Example:</h4>
+                <div class="code-block">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <pre>{
+  "success": true,
+  "query": "frieren",
+  "totalResults": 40,
+  "data": [
+    {
+      "id": "14707136281399837",
+      "title": "‎ ‎ ‎",
+      "description": "Heiter, Himmel and Frieren chibis",
+      "imageUrl": "https://i.pinimg.com/736x/56/e4/e0/...",
+      "videoUrl": "gak ada",
+      "pinner": "Maria paula",
+      "pinnerUsername": "mariapaularce",
+      "boardName": "icons<3",
+      "boardUrl": "/mariapaularce/icons3/"
+    },
+    ...
+  ],
+  "author": "Kayzen Izumi",
+  "apiUrl": "https://kayzenapi.com"
+}</pre>
                 </div>
             </div>
         </div>
@@ -401,15 +604,17 @@
                     Check status API dan melihat semua endpoint yang tersedia
                 </p>
 
-                <div class="example-section">
-                    <h4>📋 Example Request:</h4>
-                    <div class="url-box">
-                        GET /api/status
-                    </div>
+                <div class="try-section">
+                    <h4>🧪 Try It Out</h4>
+                    <button class="try-button" onclick="testStatusAPI()" id="statusBtn">
+                        🚀 Test API
+                    </button>
+                    <div id="statusResponse" class="response-box"></div>
+                </div>
 
-                    <h4>✅ Response:</h4>
-                    <div class="code-block">
-                        <pre>{
+                <h4 style="margin-top: 30px;">✅ Response Example:</h4>
+                <div class="code-block">
+                    <pre>{
   "success": true,
   "status": "online",
   "timestamp": "2024-01-15T10:30:00.000Z",
@@ -417,6 +622,9 @@
     "mxdrop": [
       "/api/mxdrop/download",
       "/api/mxdrop/info"
+    ],
+    "pinterest": [
+      "/api/pinterest/search"
     ]
   },
   "author": "Kayzen Izumi",
@@ -426,7 +634,6 @@
     "instagram": "@kayzenfry"
   }
 }</pre>
-                    </div>
                 </div>
             </div>
         </div>
@@ -447,6 +654,7 @@
             
             <h3 style="margin-bottom: 15px;">JavaScript (Fetch API)</h3>
             <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
                 <pre>const url = 'https://api.kayzen.com/api/mxdrop/download';
 const params = new URLSearchParams({
     url: 'https://mxdrop.to/xxxxx'
@@ -464,6 +672,7 @@ fetch(`${url}?${params}`)
 
             <h3 style="margin: 30px 0 15px 0;">Python (Requests)</h3>
             <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
                 <pre>import requests
 
 url = 'https://api.kayzen.com/api/mxdrop/download'
@@ -478,8 +687,30 @@ if data['success']:
     print('Download URL:', data['data']['downloadUrl'])</pre>
             </div>
 
+            <h3 style="margin: 30px 0 15px 0;">Python (Requests) - Pinterest Search</h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                <pre>import requests
+
+url = 'https://api.kayzen.com/api/pinterest/search'
+params = {
+    'query': 'frieren'
+}
+
+response = requests.get(url, params=params)
+data = response.json()
+
+if data['success']:
+    print(f'Found {data["totalResults"]} results')
+    for pin in data['data']:
+        print(f'Title: {pin["title"]}')
+        print(f'Image: {pin["imageUrl"]}')
+        print('---')</pre>
+            </div>
+
             <h3 style="margin: 30px 0 15px 0;">PHP (cURL)</h3>
             <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
                 <pre>$url = 'https://api.kayzen.com/api/mxdrop/download';
 $params = http_build_query([
     'url' => 'https://mxdrop.to/xxxxx'
@@ -525,5 +756,183 @@ if ($data['success']) {
             <p style="margin-top: 10px; opacity: 0.8;">Documentation Version 1.0</p>
         </footer>
     </div>
+
+    <script>
+        async function testDownloadAPI() {
+            const urlInput = document.getElementById('downloadUrl');
+            const responseBox = document.getElementById('downloadResponse');
+            const button = document.getElementById('downloadBtn');
+            
+            const url = urlInput.value.trim();
+            
+            if (!url) {
+                showResponse(responseBox, {
+                    success: false,
+                    message: 'Mohon masukkan URL MXDrop'
+                }, false);
+                return;
+            }
+            
+            button.disabled = true;
+            button.innerHTML = '⏳ Loading<span class="loading"></span>';
+            
+            try {
+                const response = await fetch(`/api/mxdrop/download?url=${encodeURIComponent(url)}`);
+                const data = await response.json();
+                showResponse(responseBox, data, data.success);
+            } catch (error) {
+                showResponse(responseBox, {
+                    success: false,
+                    message: 'Terjadi kesalahan saat menghubungi API',
+                    error: error.message
+                }, false);
+            } finally {
+                button.disabled = false;
+                button.innerHTML = '🚀 Test API';
+            }
+        }
+
+        async function testInfoAPI() {
+            const urlInput = document.getElementById('infoUrl');
+            const responseBox = document.getElementById('infoResponse');
+            const button = document.getElementById('infoBtn');
+            
+            const url = urlInput.value.trim();
+            
+            if (!url) {
+                showResponse(responseBox, {
+                    success: false,
+                    message: 'Mohon masukkan URL MXDrop'
+                }, false);
+                return;
+            }
+            
+            button.disabled = true;
+            button.innerHTML = '⏳ Loading<span class="loading"></span>';
+            
+            try {
+                const response = await fetch(`/api/mxdrop/info?url=${encodeURIComponent(url)}`);
+                const data = await response.json();
+                showResponse(responseBox, data, data.success);
+            } catch (error) {
+                showResponse(responseBox, {
+                    success: false,
+                    message: 'Terjadi kesalahan saat menghubungi API',
+                    error: error.message
+                }, false);
+            } finally {
+                button.disabled = false;
+                button.innerHTML = '🚀 Test API';
+            }
+        }
+
+        async function testPinterestAPI() {
+            const queryInput = document.getElementById('pinterestQuery');
+            const responseBox = document.getElementById('pinterestResponse');
+            const button = document.getElementById('pinterestBtn');
+            
+            const query = queryInput.value.trim();
+            
+            if (!query) {
+                showResponse(responseBox, {
+                    success: false,
+                    message: 'Mohon masukkan kata kunci pencarian'
+                }, false);
+                return;
+            }
+            
+            button.disabled = true;
+            button.innerHTML = '⏳ Loading<span class="loading"></span>';
+            
+            try {
+                const response = await fetch(`/api/pinterest/search?query=${encodeURIComponent(query)}`);
+                const data = await response.json();
+                showResponse(responseBox, data, data.success);
+            } catch (error) {
+                showResponse(responseBox, {
+                    success: false,
+                    message: 'Terjadi kesalahan saat menghubungi API',
+                    error: error.message
+                }, false);
+            } finally {
+                button.disabled = false;
+                button.innerHTML = '🚀 Test API';
+            }
+        }
+
+        async function testStatusAPI() {
+            const responseBox = document.getElementById('statusResponse');
+            const button = document.getElementById('statusBtn');
+            
+            button.disabled = true;
+            button.innerHTML = '⏳ Loading<span class="loading"></span>';
+            
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+                showResponse(responseBox, data, data.success);
+            } catch (error) {
+                showResponse(responseBox, {
+                    success: false,
+                    message: 'Terjadi kesalahan saat menghubungi API',
+                    error: error.message
+                }, false);
+            } finally {
+                button.disabled = false;
+                button.innerHTML = '🚀 Test API';
+            }
+        }
+
+        function showResponse(element, data, isSuccess) {
+            element.innerHTML = `
+                <button class="copy-button" onclick="copyResponse(this)">📋 Copy</button>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+            `;
+            element.className = 'response-box show ' + (isSuccess ? 'status-success' : 'status-error');
+        }
+
+        function copyCode(button) {
+            const codeBlock = button.nextElementSibling;
+            const text = codeBlock.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            });
+        }
+
+        function copyResponse(button) {
+            const pre = button.nextElementSibling;
+            const text = pre.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            });
+        }
+
+        document.getElementById('downloadUrl').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                testDownloadAPI();
+            }
+        });
+
+        document.getElementById('infoUrl').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                testInfoAPI();
+            }
+        });
+        document.getElementById('pinterestQuery').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                testPinterestAPI();
+            }
+        });
+    </script>
 </body>
 </html>
