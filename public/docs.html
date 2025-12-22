@@ -547,14 +547,45 @@
                             <td><span class="badge required">Required</span></td>
                             <td>Kata kunci pencarian (contoh: frieren, anime, nature)</td>
                         </tr>
+                        <tr>
+                            <td><code>cookie</code></td>
+                            <td>string</td>
+                            <td><span class="badge optional">Optional</span></td>
+                            <td>Cookie dari Pinterest (untuk hasil lebih baik)</td>
+                        </tr>
+                        <tr>
+                            <td><code>csrftoken</code></td>
+                            <td>string</td>
+                            <td><span class="badge optional">Optional</span></td>
+                            <td>CSRF Token dari Pinterest</td>
+                        </tr>
                     </tbody>
                 </table>
+
+                <div style="background: rgba(255, 193, 7, 0.2); padding: 15px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #FFC107;">
+                    <strong>💡 Tips:</strong> Untuk hasil yang lebih baik, Anda bisa menambahkan cookie dan csrftoken dari browser Anda:
+                    <ol style="margin-top: 10px; margin-left: 20px;">
+                        <li>Buka Pinterest di browser dan login</li>
+                        <li>Tekan F12 untuk membuka Developer Tools</li>
+                        <li>Buka tab "Application" → "Cookies" → "https://id.pinterest.com"</li>
+                        <li>Copy value dari cookie "_pinterest_sess" dan "csrftoken"</li>
+                        <li>Gunakan sebagai parameter optional di API</li>
+                    </ol>
+                </div>
 
                 <div class="try-section">
                     <h4>🧪 Try It Out</h4>
                     <div class="input-group">
                         <label>Search Query:</label>
                         <input type="text" id="pinterestQuery" placeholder="frieren" />
+                    </div>
+                    <div class="input-group">
+                        <label>Cookie (Optional):</label>
+                        <input type="text" id="pinterestCookie" placeholder="_pinterest_sess=..." />
+                    </div>
+                    <div class="input-group">
+                        <label>CSRF Token (Optional):</label>
+                        <input type="text" id="pinterestCsrf" placeholder="a1b2c3d4..." />
                     </div>
                     <button class="try-button" onclick="testPinterestAPI()" id="pinterestBtn">
                         🚀 Test API
@@ -828,10 +859,14 @@ if ($data['success']) {
 
         async function testPinterestAPI() {
             const queryInput = document.getElementById('pinterestQuery');
+            const cookieInput = document.getElementById('pinterestCookie');
+            const csrfInput = document.getElementById('pinterestCsrf');
             const responseBox = document.getElementById('pinterestResponse');
             const button = document.getElementById('pinterestBtn');
             
             const query = queryInput.value.trim();
+            const cookie = cookieInput.value.trim();
+            const csrf = csrfInput.value.trim();
             
             if (!query) {
                 showResponse(responseBox, {
@@ -845,7 +880,11 @@ if ($data['success']) {
             button.innerHTML = '⏳ Loading<span class="loading"></span>';
             
             try {
-                const response = await fetch(`/api/pinterest/search?query=${encodeURIComponent(query)}`);
+                let apiUrl = `/api/pinterest/search?query=${encodeURIComponent(query)}`;
+                if (cookie) apiUrl += `&cookie=${encodeURIComponent(cookie)}`;
+                if (csrf) apiUrl += `&csrftoken=${encodeURIComponent(csrf)}`;
+                
+                const response = await fetch(apiUrl);
                 const data = await response.json();
                 showResponse(responseBox, data, data.success);
             } catch (error) {
