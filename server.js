@@ -145,6 +145,99 @@ app.get('/api/mxdrop/info', async (req, res) => {
     }
 });
 
+app.get('/api/pinterest/search', async (req, res) => {
+    try {
+        const { query } = req.query;
+
+        if (!query) {
+            return res.status(400).json({
+                success: false,
+                message: 'Parameter query diperlukan',
+                example: '/api/pinterest/search?query=frieren'
+            });
+        }
+
+        const defaultCookie = '_auth=1; _pinterest_sess=TWc9PSZHamJOZ0JobUFiSEpSN3Z4VHN5dHNEYXByaWJ5OGh1R3M3ZkhWRGU2TmhLR0VEanVnQ2hXY3VncFZWZldJVWJOdEFJR09ZQktnVmplMFhaUVVrQ2daQT09';
+        const defaultCsrftoken = 'a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6';
+
+        const userAgents = [
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        ];
+        const randomUserAgent = userAgents[Math.floor(Math.random() * userAgents.length)];
+
+        const modifiedQuery = query;
+        const url = 'https://id.pinterest.com/resource/BaseSearchResource/get/';
+
+        const options = {
+            scope: 'pins',
+            query: modifiedQuery
+        };
+
+        const params = {
+            source_url: `/search/pins/?q=${encodeURIComponent(modifiedQuery)}&rs=typed`,
+            data: JSON.stringify({
+                options: options,
+                context: {}
+            })
+        };
+
+        const headers = {
+            'accept': 'application/json, text/javascript, */*, q=0.01',
+            'accept-language': 'id-ID',
+            'content-type': 'application/x-www-form-urlencoded',
+            'cookie': defaultCookie,
+            'origin': 'https://id.pinterest.com',
+            'referer': `https://id.pinterest.com/search/pins/?q=${encodeURIComponent(modifiedQuery)}&rs=typed`,
+            'user-agent': randomUserAgent,
+            'x-csrftoken': defaultCsrftoken,
+            'x-pinterest-appstate': 'active',
+            'x-pinterest-source-url': `/search/pins/?q=${encodeURIComponent(modifiedQuery)}&rs=typed`,
+            'x-requested-with': 'XMLHttpRequest',
+        };
+
+        const response = await axios.get(url, {
+            params: params,
+            headers: headers
+        });
+
+        const results = [];
+        const resourceData = response.data.resource_response?.data?.results || [];
+
+        for (const item of resourceData) {
+            const pinData = {
+                id: item.id || 'N/A',
+                title: item.grid_title || item.title || '‎ ‎ ‎',
+                description: item.description || item.grid_description || undefined,
+                imageUrl: item.images?.['736x']?.url || item.images?.orig?.url || 'N/A',
+                videoUrl: item.videos?.video_list?.V_720P?.url || 'gak ada',
+                pinner: item.pinner?.username || item.pinner?.full_name || 'Unknown',
+                pinnerUsername: item.pinner?.username || 'Unknown',
+                boardName: item.board?.name || 'Unknown',
+                boardUrl: item.board?.url || '/'
+            };
+            results.push(pinData);
+        }
+
+        res.json({
+            success: true,
+            query: query,
+            totalResults: results.length,
+            data: results,
+            author: 'Kayzen Izumi',
+            apiUrl: 'https://kayzenapi.com'
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Gagal mengambil data dari Pinterest',
+            error: error.message
+        });
+    }
+});
+
 app.get('/api/status', (req, res) => {
     res.json({
         success: true,
@@ -154,6 +247,9 @@ app.get('/api/status', (req, res) => {
             mxdrop: [
                 '/api/mxdrop/download',
                 '/api/mxdrop/info'
+            ],
+            pinterest: [
+                '/api/pinterest/search'
             ]
         },
         author: 'Kayzen Izumi',
