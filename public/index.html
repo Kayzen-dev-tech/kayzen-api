@@ -31,6 +31,41 @@
             border-radius: 20px;
             margin-bottom: 40px;
             backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-banner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            object-fit: cover;
+            margin-bottom: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
         header h1 {
@@ -251,8 +286,14 @@
 <body>
     <div class="container">
         <header>
-            <h1>🚀 Kayzen API</h1>
-            <p>Your Powerful API Solution</p>
+            <img src="banner.jpg" alt="Banner" class="header-banner" onerror="this.style.display='none'">
+            <div class="header-content">
+                <div class="profile-section">
+                    <img src="profile.jpg" alt="Kayzen Izumi" class="profile-pic" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%22150%22%3E%3Crect fill=%22%23667eea%22 width=%22150%22 height=%22150%22/%3E%3Ctext fill=%22%23fff%22 font-family=%22Arial%22 font-size=%2260%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3EKI%3C/text%3E%3C/svg%3E'">
+                </div>
+                <h1>🚀 Kayzen API</h1>
+                <p>Your Powerful API Solution</p>
+            </div>
         </header>
 
         <div class="nav-buttons">
