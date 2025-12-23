@@ -77,7 +77,7 @@ app.get('/api/mxdrop/download', async (req, res) => {
                 originalUrl: url
             },
             author: 'Kayzen Izumi',
-            apiUrl: 'https://kayzenapi.com'
+            apiUrl: 'https://kayzen-api.my.id'
         });
 
     } catch (error) {
@@ -133,7 +133,7 @@ app.get('/api/mxdrop/info', async (req, res) => {
                 url: url
             },
             author: 'Kayzen Izumi',
-            apiUrl: 'https://kayzenapi.com'
+            apiUrl: 'https://kayzen-api.my.id'
         });
 
     } catch (error) {
@@ -147,18 +147,40 @@ app.get('/api/mxdrop/info', async (req, res) => {
 
 app.get('/api/pinterest/search', async (req, res) => {
     try {
-        const { query, cookie, csrftoken } = req.query;
+        const { query, cookie, csrftoken, limit } = req.query;
 
         if (!query) {
             return res.status(400).json({
                 success: false,
                 message: 'Parameter query diperlukan',
-                example: '/api/pinterest/search?query=frieren'
+                example: '/api/pinterest/search?query=frieren&limit=5',
+                note: 'Cookie dan csrftoken sangat disarankan untuk hasil yang lebih baik'
             });
         }
 
-        const defaultCookie = '_pinterest_sess=TWc9PSZHamJOZ0JobUFiSEpSN3Z4VHN5dHNEYXByaWJ5OGh1R3M3ZkhWRGU2TmhLR0VEanVnQ2hXY3VncFZWZldJVWJOdEFJR09ZQktnVmplMFhaUVVrQ2daQT09; csrftoken=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6';
-        const defaultCsrftoken = 'a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6';
+        const resultLimit = parseInt(limit) || 10;
+        if (resultLimit < 1 || resultLimit > 50) {
+            return res.status(400).json({
+                success: false,
+                message: 'Parameter limit harus antara 1-50',
+                example: '/api/pinterest/search?query=frieren&limit=10'
+            });
+        }
+
+        if (!cookie || !csrftoken) {
+            return res.status(400).json({
+                success: false,
+                message: 'Cookie dan csrftoken diperlukan untuk menggunakan Pinterest API',
+                tutorial: {
+                    step1: 'Buka Pinterest di browser dan login',
+                    step2: 'Tekan F12 untuk membuka Developer Tools',
+                    step3: 'Buka tab Application → Cookies → https://id.pinterest.com',
+                    step4: 'Copy value dari _pinterest_sess dan csrftoken',
+                    step5: 'Gunakan sebagai parameter di API'
+                },
+                example: '/api/pinterest/search?query=frieren&limit=10&cookie=YOUR_COOKIE&csrftoken=YOUR_TOKEN'
+            });
+        }
 
         const randomSuffix = Math.floor(Math.random() * 10000);
         const modifiedQuery = `${query} ${randomSuffix}`;
@@ -177,11 +199,11 @@ app.get('/api/pinterest/search', async (req, res) => {
             'accept': 'application/json, text/javascript, */*, q=0.01',
             'accept-language': 'id-ID',
             'content-type': 'application/x-www-form-urlencoded',
-            'cookie': cookie || defaultCookie,
+            'cookie': cookie,
             'origin': 'https://id.pinterest.com',
             'referer': `https://id.pinterest.com/search/pins/?q=${encodeURIComponent(modifiedQuery)}&rs=typed`,
             'user-agent': randomUserAgent,
-            'x-csrftoken': csrftoken || defaultCsrftoken,
+            'x-csrftoken': csrftoken,
             'x-pinterest-appstate': 'active',
             'x-pinterest-source-url': `/search/pins/?q=${encodeURIComponent(modifiedQuery)}&rs=typed`,
             'x-requested-with': 'XMLHttpRequest',
@@ -231,7 +253,7 @@ app.get('/api/pinterest/search', async (req, res) => {
 
         const shuffledResults = [...results].sort(() => Math.random() - 0.5);
 
-        const mappedResults = shuffledResults.map((pin) => ({
+        const mappedResults = shuffledResults.slice(0, resultLimit).map((pin) => ({
             id: pin.id,
             title: pin.grid_title || '‎ ‎ ‎',
             description: pin.description || undefined,
@@ -246,10 +268,11 @@ app.get('/api/pinterest/search', async (req, res) => {
         res.json({
             success: true,
             query: query,
+            limit: resultLimit,
             totalResults: mappedResults.length,
             data: mappedResults,
             author: 'Kayzen Izumi',
-            apiUrl: 'https://kayzenapi.com'
+            apiUrl: 'https://kayzen-api.my.id'
         });
 
     } catch (error) {
@@ -257,7 +280,7 @@ app.get('/api/pinterest/search', async (req, res) => {
             success: false,
             message: 'Gagal mengambil data dari Pinterest',
             error: error.message,
-            note: 'Pastikan cookie dan csrftoken valid. Anda bisa mendapatkannya dari browser dengan login ke Pinterest terlebih dahulu.'
+            note: 'Pastikan cookie dan csrftoken valid dan masih aktif dari Pinterest'
         });
     }
 });
@@ -294,7 +317,8 @@ app.use((req, res) => {
             '/docs',
             '/api/status',
             '/api/mxdrop/download',
-            '/api/mxdrop/info'
+            '/api/mxdrop/info',
+            '/api/pinterest/search'
         ]
     });
 });
