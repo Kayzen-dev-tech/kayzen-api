@@ -689,7 +689,8 @@
       "/api/mxdrop/info"
     ],
     "pinterest": [
-      "/api/pinterest/search"
+      "/api/pinterest/search (requires cookie)",
+      "/api/pinterest/search-v2 (no cookie needed)"
     ]
   },
   "author": "Kayzen Izumi",
@@ -894,6 +895,45 @@ if ($data['success']) {
             }
         }
 
+        async function testPinterestV2API() {
+            const queryInput = document.getElementById('pinterestQueryV2');
+            const limitInput = document.getElementById('pinterestLimitV2');
+            const responseBox = document.getElementById('pinterestResponseV2');
+            const button = document.getElementById('pinterestBtnV2');
+            
+            const query = queryInput.value.trim();
+            const limit = limitInput.value.trim();
+            
+            if (!query) {
+                showResponse(responseBox, {
+                    success: false,
+                    message: 'Mohon masukkan kata kunci pencarian'
+                }, false);
+                return;
+            }
+            
+            button.disabled = true;
+            button.innerHTML = '⏳ Loading<span class="loading"></span>';
+            
+            try {
+                let apiUrl = `/api/pinterest/search-v2?query=${encodeURIComponent(query)}`;
+                if (limit) apiUrl += `&limit=${limit}`;
+                
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                showResponse(responseBox, data, data.success);
+            } catch (error) {
+                showResponse(responseBox, {
+                    success: false,
+                    message: 'Terjadi kesalahan saat menghubungi API',
+                    error: error.message
+                }, false);
+            } finally {
+                button.disabled = false;
+                button.innerHTML = '🚀 Test API V2';
+            }
+        }
+
         async function testPinterestAPI() {
             const queryInput = document.getElementById('pinterestQuery');
             const limitInput = document.getElementById('pinterestLimit');
@@ -1007,6 +1047,12 @@ if ($data['success']) {
                 testInfoAPI();
             }
         });
+        document.getElementById('pinterestQueryV2').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                testPinterestV2API();
+            }
+        });
+
         document.getElementById('pinterestQuery').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 testPinterestAPI();
