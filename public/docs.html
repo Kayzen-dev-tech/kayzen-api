@@ -548,6 +548,12 @@
                             <td>Kata kunci pencarian (contoh: frieren, anime, nature)</td>
                         </tr>
                         <tr>
+                            <td><code>limit</code></td>
+                            <td>integer</td>
+                            <td><span class="badge optional">Optional</span></td>
+                            <td>Jumlah hasil (1-50, default: 10) - untuk bot WA disarankan 5-10</td>
+                        </tr>
+                        <tr>
                             <td><code>cookie</code></td>
                             <td>string</td>
                             <td><span class="badge optional">Optional</span></td>
@@ -561,6 +567,15 @@
                         </tr>
                     </tbody>
                 </table>
+
+                <div style="background: rgba(76, 175, 80, 0.2); padding: 15px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #4CAF50;">
+                    <strong>✅ Rekomendasi untuk Bot WhatsApp:</strong>
+                    <ul style="margin-top: 10px; margin-left: 20px;">
+                        <li>Gunakan <code>limit=5</code> atau <code>limit=10</code> untuk menghindari spam</li>
+                        <li>Tambahkan delay 2-3 detik antar pengiriman gambar</li>
+                        <li>Jangan kirim lebih dari 10 gambar sekaligus</li>
+                    </ul>
+                </div>
 
                 <div style="background: rgba(255, 193, 7, 0.2); padding: 15px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #FFC107;">
                     <strong>💡 Tips:</strong> Untuk hasil yang lebih baik, Anda bisa menambahkan cookie dan csrftoken dari browser Anda:
@@ -578,6 +593,10 @@
                     <div class="input-group">
                         <label>Search Query:</label>
                         <input type="text" id="pinterestQuery" placeholder="frieren" />
+                    </div>
+                    <div class="input-group">
+                        <label>Limit (1-50):</label>
+                        <input type="number" id="pinterestLimit" placeholder="10" value="10" min="1" max="50" />
                     </div>
                     <div class="input-group">
                         <label>Cookie (Optional):</label>
@@ -599,7 +618,8 @@
                     <pre>{
   "success": true,
   "query": "frieren",
-  "totalResults": 40,
+  "limit": 10,
+  "totalResults": 10,
   "data": [
     {
       "id": "14707136281399837",
@@ -653,9 +673,6 @@
     "mxdrop": [
       "/api/mxdrop/download",
       "/api/mxdrop/info"
-    ],
-    "pinterest": [
-      "/api/pinterest/search"
     ]
   },
   "author": "Kayzen Izumi",
@@ -716,27 +733,6 @@ data = response.json()
 
 if data['success']:
     print('Download URL:', data['data']['downloadUrl'])</pre>
-            </div>
-
-            <h3 style="margin: 30px 0 15px 0;">Python (Requests) - Pinterest Search</h3>
-            <div class="code-block">
-                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                <pre>import requests
-
-url = 'https://api.kayzen.com/api/pinterest/search'
-params = {
-    'query': 'frieren'
-}
-
-response = requests.get(url, params=params)
-data = response.json()
-
-if data['success']:
-    print(f'Found {data["totalResults"]} results')
-    for pin in data['data']:
-        print(f'Title: {pin["title"]}')
-        print(f'Image: {pin["imageUrl"]}')
-        print('---')</pre>
             </div>
 
             <h3 style="margin: 30px 0 15px 0;">PHP (cURL)</h3>
@@ -857,48 +853,6 @@ if ($data['success']) {
             }
         }
 
-        async function testPinterestAPI() {
-            const queryInput = document.getElementById('pinterestQuery');
-            const cookieInput = document.getElementById('pinterestCookie');
-            const csrfInput = document.getElementById('pinterestCsrf');
-            const responseBox = document.getElementById('pinterestResponse');
-            const button = document.getElementById('pinterestBtn');
-            
-            const query = queryInput.value.trim();
-            const cookie = cookieInput.value.trim();
-            const csrf = csrfInput.value.trim();
-            
-            if (!query) {
-                showResponse(responseBox, {
-                    success: false,
-                    message: 'Mohon masukkan kata kunci pencarian'
-                }, false);
-                return;
-            }
-            
-            button.disabled = true;
-            button.innerHTML = '⏳ Loading<span class="loading"></span>';
-            
-            try {
-                let apiUrl = `/api/pinterest/search?query=${encodeURIComponent(query)}`;
-                if (cookie) apiUrl += `&cookie=${encodeURIComponent(cookie)}`;
-                if (csrf) apiUrl += `&csrftoken=${encodeURIComponent(csrf)}`;
-                
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-                showResponse(responseBox, data, data.success);
-            } catch (error) {
-                showResponse(responseBox, {
-                    success: false,
-                    message: 'Terjadi kesalahan saat menghubungi API',
-                    error: error.message
-                }, false);
-            } finally {
-                button.disabled = false;
-                button.innerHTML = '🚀 Test API';
-            }
-        }
-
         async function testStatusAPI() {
             const responseBox = document.getElementById('statusResponse');
             const button = document.getElementById('statusBtn');
@@ -965,11 +919,6 @@ if ($data['success']) {
         document.getElementById('infoUrl').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 testInfoAPI();
-            }
-        });
-        document.getElementById('pinterestQuery').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                testPinterestAPI();
             }
         });
     </script>
