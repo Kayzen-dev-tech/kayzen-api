@@ -4,21 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>API Documentation - Kayzen API</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-        h1, h2, h3 {
-            color: #333;
-        }
-        pre {
-            background-color: #f4f4f4;
-            padding: 10px;
-            border: 1px solid #ddd;
-            overflow-x: auto;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>API Documentation</h1>
@@ -34,6 +20,10 @@
     <ul>
         <li><strong>url</strong> (string): Required. URL lengkap dari mxdrop.to (contoh: <code>https://mxdrop.to/xxxxx</code>)</li>
     </ul>
+    <h4>🚀 Test API</h4>
+    <input type="text" id="mxdropUrl" placeholder="Masukkan MXDrop URL" />
+    <button onclick="testMxdropDownload()">Test API</button>
+    <pre id="mxdropResponse"></pre>
     
     <h4>✅ Success Response Example:</h4>
     <pre>{
@@ -56,6 +46,10 @@
     <ul>
         <li><strong>url</strong> (string): Required. URL lengkap dari mxdrop.to</li>
     </ul>
+    <h4>🚀 Test API</h4>
+    <input type="text" id="mxdropInfoUrl" placeholder="Masukkan MXDrop URL" />
+    <button onclick="testMxdropInfo()">Test API</button>
+    <pre id="mxdropInfoResponse"></pre>
     
     <h4>✅ Success Response Example:</h4>
     <pre>{
@@ -81,6 +75,10 @@
         <li><strong>cookie</strong> (string): Optional. Cookie dari Pinterest.</li>
         <li><strong>csrftoken</strong> (string): Optional. CSRF Token dari Pinterest.</li>
     </ul>
+    <h4>🚀 Test API</h4>
+    <input type="text" id="pinterestQuery" placeholder="Masukkan query" />
+    <button onclick="testPinterestSearch()">Test API</button>
+    <pre id="pinterestResponse"></pre>
     
     <h4>✅ Success Response Example:</h4>
     <pre>{
@@ -111,6 +109,10 @@
     <ul>
         <li><strong>query</strong> (string): Required. Kata kunci pencarian untuk AI.</li>
     </ul>
+    <h4>🚀 Test API</h4>
+    <input type="text" id="aiPoeQuery" placeholder="Masukkan query" />
+    <button onclick="testAiPoe()">Test API</button>
+    <pre id="aiPoeResponse"></pre>
     
     <h4>✅ Success Response Example:</h4>
     <pre>{
@@ -120,11 +122,15 @@
     "query": "weather"
   }
 }</pre>
-    
+
     <h2>🔧 Utility Endpoints</h2>
     <h3>API Status</h3>
     <h4>GET /api/status</h4>
     <p>Check status API dan melihat semua endpoint yang tersedia.</p>
+    
+    <h4>🚀 Test API</h4>
+    <button onclick="testApiStatus()">Test API</button>
+    <pre id="statusResponse"></pre>
     
     <h4>✅ Response Example:</h4>
     <pre>{
@@ -156,5 +162,41 @@
     <p>WhatsApp: <a href="https://wa.me/628152313006">628152313006</a></p>
     <p>Telegram: <a href="https://t.me/nonewpo">@nonewpo</a></p>
     <p>Instagram: <a href="https://instagram.com/kayzenfry">@kayzenfry</a></p>
+
+    <script>
+        async function testMxdropDownload() {
+            const url = document.getElementById('mxdropUrl').value;
+            const response = await fetch(`/api/mxdrop/download?url=${encodeURIComponent(url)}`);
+            const data = await response.json();
+            document.getElementById('mxdropResponse').textContent = JSON.stringify(data, null, 2);
+        }
+
+        async function testMxdropInfo() {
+            const url = document.getElementById('mxdropInfoUrl').value;
+            const response = await fetch(`/api/mxdrop/info?url=${encodeURIComponent(url)}`);
+            const data = await response.json();
+            document.getElementById('mxdropInfoResponse').textContent = JSON.stringify(data, null, 2);
+        }
+
+        async function testPinterestSearch() {
+            const query = document.getElementById('pinterestQuery').value;
+            const response = await fetch(`/api/pinterest/search?query=${encodeURIComponent(query)}`);
+            const data = await response.json();
+            document.getElementById('pinterestResponse').textContent = JSON.stringify(data, null, 2);
+        }
+
+        async function testAiPoe() {
+            const query = document.getElementById('aiPoeQuery').value;
+            const response = await fetch(`/api/ai/poe?query=${encodeURIComponent(query)}`);
+            const data = await response.json();
+            document.getElementById('aiPoeResponse').textContent = JSON.stringify(data, null, 2);
+        }
+
+        async function testApiStatus() {
+            const response = await fetch('/api/status');
+            const data = await response.json();
+            document.getElementById('statusResponse').textContent = JSON.stringify(data, null, 2);
+        }
+    </script>
 </body>
 </html>
