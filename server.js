@@ -77,7 +77,7 @@ app.get('/api/mxdrop/download', async (req, res) => {
                 originalUrl: url
             },
             author: 'Kayzen Izumi',
-            apiUrl: 'https://kayzen-api.my.id'
+            apiUrl: 'https://kayzenapi.com'
         });
 
     } catch (error) {
@@ -133,7 +133,7 @@ app.get('/api/mxdrop/info', async (req, res) => {
                 url: url
             },
             author: 'Kayzen Izumi',
-            apiUrl: 'https://kayzen-api.my.id'
+            apiUrl: 'https://kayzenapi.com'
         });
 
     } catch (error) {
@@ -147,40 +147,18 @@ app.get('/api/mxdrop/info', async (req, res) => {
 
 app.get('/api/pinterest/search', async (req, res) => {
     try {
-        const { query, cookie, csrftoken, limit } = req.query;
+        const { query, cookie, csrftoken } = req.query;
 
         if (!query) {
             return res.status(400).json({
                 success: false,
                 message: 'Parameter query diperlukan',
-                example: '/api/pinterest/search?query=frieren&limit=5',
-                note: 'Cookie dan csrftoken sangat disarankan untuk hasil yang lebih baik'
+                example: '/api/pinterest/search?query=frieren'
             });
         }
 
-        const resultLimit = parseInt(limit) || 10;
-        if (resultLimit < 1 || resultLimit > 50) {
-            return res.status(400).json({
-                success: false,
-                message: 'Parameter limit harus antara 1-50',
-                example: '/api/pinterest/search?query=frieren&limit=10'
-            });
-        }
-
-        if (!cookie || !csrftoken) {
-            return res.status(400).json({
-                success: false,
-                message: 'Cookie dan csrftoken diperlukan untuk menggunakan Pinterest API',
-                tutorial: {
-                    step1: 'Buka Pinterest di browser dan login',
-                    step2: 'Tekan F12 untuk membuka Developer Tools',
-                    step3: 'Buka tab Application → Cookies → https://id.pinterest.com',
-                    step4: 'Copy value dari _pinterest_sess dan csrftoken',
-                    step5: 'Gunakan sebagai parameter di API'
-                },
-                example: '/api/pinterest/search?query=frieren&limit=10&cookie=YOUR_COOKIE&csrftoken=YOUR_TOKEN'
-            });
-        }
+        const defaultCookie = '_pinterest_sess=TWc9PSZHamJOZ0JobUFiSEpSN3Z4VHN5dHNEYXByaWJ5OGh1R3M3ZkhWRGU2TmhLR0VEanVnQ2hXY3VncFZWZldJVWJOdEFJR09ZQktnVmplMFhaUVVrQ2daQT09; csrftoken=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6';
+        const defaultCsrftoken = 'a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6';
 
         const randomSuffix = Math.floor(Math.random() * 10000);
         const modifiedQuery = `${query} ${randomSuffix}`;
@@ -199,11 +177,11 @@ app.get('/api/pinterest/search', async (req, res) => {
             'accept': 'application/json, text/javascript, */*, q=0.01',
             'accept-language': 'id-ID',
             'content-type': 'application/x-www-form-urlencoded',
-            'cookie': cookie,
+            'cookie': cookie || defaultCookie,
             'origin': 'https://id.pinterest.com',
             'referer': `https://id.pinterest.com/search/pins/?q=${encodeURIComponent(modifiedQuery)}&rs=typed`,
             'user-agent': randomUserAgent,
-            'x-csrftoken': csrftoken,
+            'x-csrftoken': csrftoken || defaultCsrftoken,
             'x-pinterest-appstate': 'active',
             'x-pinterest-source-url': `/search/pins/?q=${encodeURIComponent(modifiedQuery)}&rs=typed`,
             'x-requested-with': 'XMLHttpRequest',
@@ -253,7 +231,7 @@ app.get('/api/pinterest/search', async (req, res) => {
 
         const shuffledResults = [...results].sort(() => Math.random() - 0.5);
 
-        const mappedResults = shuffledResults.slice(0, resultLimit).map((pin) => ({
+        const mappedResults = shuffledResults.map((pin) => ({
             id: pin.id,
             title: pin.grid_title || '‎ ‎ ‎',
             description: pin.description || undefined,
@@ -268,11 +246,10 @@ app.get('/api/pinterest/search', async (req, res) => {
         res.json({
             success: true,
             query: query,
-            limit: resultLimit,
             totalResults: mappedResults.length,
             data: mappedResults,
             author: 'Kayzen Izumi',
-            apiUrl: 'https://kayzen-api.my.id'
+            apiUrl: 'https://kayzenapi.com'
         });
 
     } catch (error) {
@@ -280,149 +257,7 @@ app.get('/api/pinterest/search', async (req, res) => {
             success: false,
             message: 'Gagal mengambil data dari Pinterest',
             error: error.message,
-            note: 'Pastikan cookie dan csrftoken valid dan masih aktif dari Pinterest'
-        });
-    }
-});
-
-app.get('/api/pinterest/search-v2', async (req, res) => {
-    try {
-        const { query, limit } = req.query;
-
-        if (!query) {
-            return res.status(400).json({
-                success: false,
-                message: 'Parameter query diperlukan',
-                example: '/api/pinterest/search-v2?query=frieren&limit=10'
-            });
-        }
-
-        const resultLimit = parseInt(limit) || 10;
-        if (resultLimit < 1 || resultLimit > 20) {
-            return res.status(400).json({
-                success: false,
-                message: 'Parameter limit harus antara 1-20 untuk endpoint v2',
-                example: '/api/pinterest/search-v2?query=frieren&limit=10'
-            });
-        }
-
-        const searchUrl = `https://www.pinterest.com/search/pins/?q=${encodeURIComponent(query)}`;
-        
-        const headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-            'Accept-Language': 'en-US,en;q=0.5',
-            'Accept-Encoding': 'gzip, deflate, br',
-            'Connection': 'keep-alive',
-            'Upgrade-Insecure-Requests': '1',
-            'Sec-Fetch-Dest': 'document',
-            'Sec-Fetch-Mode': 'navigate',
-            'Sec-Fetch-Site': 'none',
-            'Cache-Control': 'max-age=0'
-        };
-
-        const response = await axios.get(searchUrl, { 
-            headers,
-            timeout: 15000,
-            maxRedirects: 5
-        });
-
-        const html = response.data;
-        
-        const scriptRegex = /<script[^>]*id="__PWS_INITIAL_PROPS__"[^>]*>(.*?)<\/script>/s;
-        const match = html.match(scriptRegex);
-        
-        const results = [];
-        
-        if (match && match[1]) {
-            try {
-                const jsonStr = match[1].trim();
-                const jsonData = JSON.parse(jsonStr);
-                
-                const initialRedux = jsonData?.initialReduxState;
-                
-                if (initialRedux && initialRedux.pins) {
-                    const pins = initialRedux.pins;
-                    
-                    for (const pinId in pins) {
-                        if (results.length >= resultLimit) break;
-                        
-                        const pin = pins[pinId];
-                        if (pin && pin.images) {
-                            const pinData = {
-                                id: pin.id || pinId,
-                                title: pin.grid_title || pin.title || '‎ ‎ ‎',
-                                description: pin.description || undefined,
-                                imageUrl: pin.images?.['736x']?.url || pin.images?.['474x']?.url || pin.images?.orig?.url || 'N/A',
-                                videoUrl: pin.videos?.video_list?.V_720P?.url || pin.story_pin_data?.pages?.[0]?.blocks?.[0]?.video?.video_list?.V_HLSV3_MOBILE?.url || 'gak ada',
-                                pinner: pin.pinner?.full_name || pin.pinner?.username || 'Unknown',
-                                pinnerUsername: pin.pinner?.username || 'Unknown',
-                                boardName: pin.board?.name || 'Unknown',
-                                boardUrl: pin.board?.url || '/',
-                                link: `https://www.pinterest.com/pin/${pin.id || pinId}/`
-                            };
-                            results.push(pinData);
-                        }
-                    }
-                }
-            } catch (parseError) {
-                console.error('JSON Parse Error:', parseError.message);
-            }
-        }
-
-        if (results.length === 0) {
-            const imgRegex = /<img[^>]+src="https:\/\/i\.pinimg\.com\/[^"]+"/g;
-            const imgMatches = html.match(imgRegex) || [];
-            
-            const uniqueImages = new Set();
-            imgMatches.forEach(imgTag => {
-                const urlMatch = imgTag.match(/src="([^"]+)"/);
-                if (urlMatch && urlMatch[1]) {
-                    const imgUrl = urlMatch[1];
-                    if (imgUrl.includes('736x') || imgUrl.includes('474x')) {
-                        uniqueImages.add(imgUrl);
-                    }
-                }
-            });
-
-            let counter = 1;
-            for (const imgUrl of uniqueImages) {
-                if (results.length >= resultLimit) break;
-                
-                results.push({
-                    id: `scraped_${counter}`,
-                    title: `${query} - Image ${counter}`,
-                    description: undefined,
-                    imageUrl: imgUrl,
-                    videoUrl: 'gak ada',
-                    pinner: 'Pinterest User',
-                    pinnerUsername: 'pinterest',
-                    boardName: 'Search Results',
-                    boardUrl: '/',
-                    link: searchUrl
-                });
-                counter++;
-            }
-        }
-
-        res.json({
-            success: true,
-            query: query,
-            limit: resultLimit,
-            totalResults: results.length,
-            data: results,
-            method: 'scraping',
-            note: 'Endpoint v2 tanpa cookie - hasil mungkin terbatas',
-            author: 'Kayzen Izumi',
-            apiUrl: 'https://kayzen-api.my.id'
-        });
-
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Gagal mengambil data dari Pinterest',
-            error: error.message,
-            note: 'Pinterest mungkin memblokir scraping. Gunakan endpoint /api/pinterest/search dengan cookie untuk hasil yang lebih baik.'
+            note: 'Pastikan cookie dan csrftoken valid. Anda bisa mendapatkannya dari browser dengan login ke Pinterest terlebih dahulu.'
         });
     }
 });
@@ -438,8 +273,7 @@ app.get('/api/status', (req, res) => {
                 '/api/mxdrop/info'
             ],
             pinterest: [
-                '/api/pinterest/search (requires cookie)',
-                '/api/pinterest/search-v2 (no cookie needed)'
+                '/api/pinterest/search'
             ]
         },
         author: 'Kayzen Izumi',
@@ -460,9 +294,7 @@ app.use((req, res) => {
             '/docs',
             '/api/status',
             '/api/mxdrop/download',
-            '/api/mxdrop/info',
-            '/api/pinterest/search',
-            '/api/pinterest/search-v2'
+            '/api/mxdrop/info'
         ]
     });
 });
