@@ -114,6 +114,20 @@
             color: #fff;
         }
 
+        .method.post {
+            background: #2196F3;
+            color: #fff;
+        }
+
+        .url-box {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            word-break: break-all;
+        }
+
         .params-table {
             width: 100%;
             margin: 20px 0;
@@ -168,11 +182,6 @@
             color: #fff;
         }
 
-        .badge.recommended {
-            background: #4CAF50;
-            color: #fff;
-        }
-
         .try-section {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 12px;
@@ -217,13 +226,6 @@
 
         .input-group input::placeholder {
             color: rgba(255, 255, 255, 0.5);
-        }
-
-        .input-group small {
-            display: block;
-            margin-top: 5px;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.9em;
         }
 
         .try-button {
@@ -337,27 +339,6 @@
             border-left: 4px solid #f44336;
         }
 
-        .info-box {
-            padding: 15px;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-
-        .info-box.success {
-            background: rgba(76, 175, 80, 0.2);
-            border-left: 4px solid #4CAF50;
-        }
-
-        .info-box.warning {
-            background: rgba(255, 193, 7, 0.2);
-            border-left: 4px solid #FFC107;
-        }
-
-        .info-box.error {
-            background: rgba(255, 87, 34, 0.2);
-            border-left: 4px solid #FF5722;
-        }
-
         footer {
             text-align: center;
             padding: 30px;
@@ -406,7 +387,7 @@
                 Semua endpoint dapat diakses secara gratis dan mudah digunakan.
             </p>
             <p style="margin-top: 15px; line-height: 1.8; font-size: 1.1em;">
-                <strong>Base URL:</strong> <code style="background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 5px;">https://kayzen-api.my.id</code>
+                <strong>Base URL:</strong> <code style="background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 5px;">https://api.kayzen.com</code>
             </p>
         </div>
 
@@ -439,7 +420,7 @@
                             <td><code>url</code></td>
                             <td>string</td>
                             <td><span class="badge required">Required</span></td>
-                            <td>URL lengkap dari mxdrop.to</td>
+                            <td>URL lengkap dari mxdrop.to (contoh: https://mxdrop.to/xxxxx)</td>
                         </tr>
                     </tbody>
                 </table>
@@ -456,9 +437,8 @@
                     <div id="downloadResponse" class="response-box"></div>
                 </div>
 
-                <h4 style="margin-top: 30px;">✅ Success Response:</h4>
+                <h4 style="margin-top: 30px;">✅ Success Response Example:</h4>
                 <div class="code-block">
-                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
                     <pre>{
   "success": true,
   "data": {
@@ -469,7 +449,7 @@
     "originalUrl": "https://mxdrop.to/xxxxx"
   },
   "author": "Kayzen Izumi",
-  "apiUrl": "https://kayzen-api.my.id"
+  "apiUrl": "https://kayzenapi.com"
 }</pre>
                 </div>
             </div>
@@ -517,9 +497,8 @@
                     <div id="infoResponse" class="response-box"></div>
                 </div>
 
-                <h4 style="margin-top: 30px;">✅ Success Response:</h4>
+                <h4 style="margin-top: 30px;">✅ Success Response Example:</h4>
                 <div class="code-block">
-                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
                     <pre>{
   "success": true,
   "data": {
@@ -531,7 +510,7 @@
     "url": "https://mxdrop.to/xxxxx"
   },
   "author": "Kayzen Izumi",
-  "apiUrl": "https://kayzen-api.my.id"
+  "apiUrl": "https://kayzenapi.com"
 }</pre>
                 </div>
             </div>
@@ -541,14 +520,14 @@
             <h2>📌 Pinterest Search API</h2>
             
             <div class="endpoint">
-                <h3>Search Pinterest V1 (With Cookie)</h3>
+                <h3>Search Pinterest</h3>
                 <div>
                     <span class="method get">GET</span>
                     <span style="font-family: monospace; font-size: 1.1em;">/api/pinterest/search</span>
                 </div>
                 
                 <p style="margin: 15px 0; line-height: 1.6;">
-                    Endpoint ini mencari gambar dari Pinterest menggunakan API internal Pinterest. <strong>Memerlukan cookie & token</strong> untuk hasil maksimal (hingga 50 gambar).
+                    Endpoint ini digunakan untuk mencari gambar, video, dan pins dari Pinterest
                 </p>
 
                 <h4 style="margin-top: 20px; margin-bottom: 10px;">Query Parameters:</h4>
@@ -566,192 +545,78 @@
                             <td><code>query</code></td>
                             <td>string</td>
                             <td><span class="badge required">Required</span></td>
-                            <td>Kata kunci pencarian</td>
-                        </tr>
-                        <tr>
-                            <td><code>limit</code></td>
-                            <td>integer</td>
-                            <td><span class="badge optional">Optional</span></td>
-                            <td>Jumlah hasil (1-50, default: 10)</td>
+                            <td>Kata kunci pencarian (contoh: frieren, anime, nature)</td>
                         </tr>
                         <tr>
                             <td><code>cookie</code></td>
                             <td>string</td>
-                            <td><span class="badge required">Required</span></td>
-                            <td>Cookie _pinterest_sess dari Pinterest</td>
+                            <td><span class="badge optional">Optional</span></td>
+                            <td>Cookie dari Pinterest (untuk hasil lebih baik)</td>
                         </tr>
                         <tr>
                             <td><code>csrftoken</code></td>
                             <td>string</td>
-                            <td><span class="badge required">Required</span></td>
+                            <td><span class="badge optional">Optional</span></td>
                             <td>CSRF Token dari Pinterest</td>
                         </tr>
                     </tbody>
                 </table>
 
-                <div class="info-box error">
-                    <strong>⚠️ PENTING - Cookie & CSRF Token WAJIB!</strong>
-                    <p style="margin-top: 10px;">Pinterest API V1 <strong>MEMERLUKAN</strong> cookie dan csrftoken yang valid.</p>
-                </div>
-
-                <div class="info-box warning">
-                    <strong>💡 Cara Mendapatkan Cookie & CSRF Token:</strong>
-                    <ol style="margin-top: 10px; margin-left: 20px; line-height: 1.8;">
+                <div style="background: rgba(255, 193, 7, 0.2); padding: 15px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #FFC107;">
+                    <strong>💡 Tips:</strong> Untuk hasil yang lebih baik, Anda bisa menambahkan cookie dan csrftoken dari browser Anda:
+                    <ol style="margin-top: 10px; margin-left: 20px;">
                         <li>Buka Pinterest di browser dan login</li>
-                        <li>Tekan F12 → Tab "Application" → "Cookies" → "https://id.pinterest.com"</li>
-                        <li>Copy value dari <code>_pinterest_sess</code> dan <code>csrftoken</code></li>
-                        <li>Paste ke input field di bawah</li>
+                        <li>Tekan F12 untuk membuka Developer Tools</li>
+                        <li>Buka tab "Application" → "Cookies" → "https://id.pinterest.com"</li>
+                        <li>Copy value dari cookie "_pinterest_sess" dan "csrftoken"</li>
+                        <li>Gunakan sebagai parameter optional di API</li>
                     </ol>
                 </div>
 
                 <div class="try-section">
-                    <h4>🧪 Try It Out - V1</h4>
+                    <h4>🧪 Try It Out</h4>
                     <div class="input-group">
-                        <label>Search Query: <span class="badge required">Required</span></label>
+                        <label>Search Query:</label>
                         <input type="text" id="pinterestQuery" placeholder="frieren" />
                     </div>
                     <div class="input-group">
-                        <label>Limit (1-50):</label>
-                        <input type="number" id="pinterestLimit" placeholder="10" value="10" min="1" max="50" />
+                        <label>Cookie (Optional):</label>
+                        <input type="text" id="pinterestCookie" placeholder="_pinterest_sess=..." />
                     </div>
                     <div class="input-group">
-                        <label>Cookie (_pinterest_sess): <span class="badge required">Required</span></label>
-                        <input type="text" id="pinterestCookie" placeholder="Paste cookie here..." />
-                        <small>DevTools → Application → Cookies → _pinterest_sess</small>
-                    </div>
-                    <div class="input-group">
-                        <label>CSRF Token: <span class="badge required">Required</span></label>
-                        <input type="text" id="pinterestCsrf" placeholder="Paste token here..." />
-                        <small>DevTools → Application → Cookies → csrftoken</small>
+                        <label>CSRF Token (Optional):</label>
+                        <input type="text" id="pinterestCsrf" placeholder="a1b2c3d4..." />
                     </div>
                     <button class="try-button" onclick="testPinterestAPI()" id="pinterestBtn">
-                        🚀 Test API V1
+                        🚀 Test API
                     </button>
                     <div id="pinterestResponse" class="response-box"></div>
                 </div>
 
-                <h4 style="margin-top: 30px;">✅ Success Response:</h4>
+                <h4 style="margin-top: 30px;">✅ Success Response Example:</h4>
                 <div class="code-block">
                     <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
                     <pre>{
   "success": true,
   "query": "frieren",
-  "limit": 10,
-  "totalResults": 10,
+  "totalResults": 40,
   "data": [
     {
       "id": "14707136281399837",
-      "title": "Frieren Icon",
-      "description": "Cute chibi",
-      "imageUrl": "https://i.pinimg.com/736x/...",
+      "title": "‎ ‎ ‎",
+      "description": "Heiter, Himmel and Frieren chibis",
+      "imageUrl": "https://i.pinimg.com/736x/56/e4/e0/...",
       "videoUrl": "gak ada",
       "pinner": "Maria paula",
       "pinnerUsername": "mariapaularce",
       "boardName": "icons<3",
       "boardUrl": "/mariapaularce/icons3/"
-    }
+    },
+    ...
   ],
   "author": "Kayzen Izumi",
-  "apiUrl": "https://kayzen-api.my.id"
+  "apiUrl": "https://kayzenapi.com"
 }</pre>
-                </div>
-            </div>
-
-            <div class="endpoint">
-                <h3>Search Pinterest V2 (No Cookie) <span class="badge recommended">Recommended</span></h3>
-                <div>
-                    <span class="method get">GET</span>
-                    <span style="font-family: monospace; font-size: 1.1em;">/api/pinterest/search-v2</span>
-                </div>
-                
-                <p style="margin: 15px 0; line-height: 1.6;">
-                    Endpoint ini mencari gambar dari Pinterest <strong>TANPA memerlukan cookie</strong>. Perfect untuk bot WhatsApp!
-                </p>
-
-                <div class="info-box success">
-                    <strong>✅ Keunggulan V2:</strong>
-                    <ul style="margin-top: 10px; margin-left: 20px;">
-                        <li><strong>Tidak perlu cookie</strong> - langsung pakai!</li>
-                        <li>Lebih mudah untuk bot WhatsApp</li>
-                        <li>Hasil 5-20 gambar per request</li>
-                        <li>Lebih stabil untuk penggunaan jangka panjang</li>
-                    </ul>
-                </div>
-
-                <h4 style="margin-top: 20px; margin-bottom: 10px;">Query Parameters:</h4>
-                <table class="params-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Status</th>
-                            <th>Deskripsi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>query</code></td>
-                            <td>string</td>
-                            <td><span class="badge required">Required</span></td>
-                            <td>Kata kunci pencarian</td>
-                        </tr>
-                        <tr>
-                            <td><code>limit</code></td>
-                            <td>integer</td>
-                            <td><span class="badge optional">Optional</span></td>
-                            <td>Jumlah hasil (1-20, default: 10)</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="try-section">
-                    <h4>🧪 Try It Out - V2</h4>
-                    <div class="input-group">
-                        <label>Search Query: <span class="badge required">Required</span></label>
-                        <input type="text" id="pinterestQueryV2" placeholder="frieren" />
-                    </div>
-                    <div class="input-group">
-                        <label>Limit (1-20):</label>
-                        <input type="number" id="pinterestLimitV2" placeholder="10" value="10" min="1" max="20" />
-                    </div>
-                    <button class="try-button" onclick="testPinterestV2API()" id="pinterestBtnV2">
-                        🚀 Test API V2
-                    </button>
-                    <div id="pinterestResponseV2" class="response-box"></div>
-                </div>
-
-                <h4 style="margin-top: 30px;">✅ Success Response:</h4>
-                <div class="code-block">
-                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                    <pre>{
-  "success": true,
-  "query": "frieren",
-  "limit": 10,
-  "totalResults": 10,
-  "data": [
-    {
-      "id": "14707136281399837",
-      "title": "Frieren Icon",
-      "imageUrl": "https://i.pinimg.com/736x/...",
-      "videoUrl": "gak ada",
-      "pinner": "Maria paula",
-      "pinnerUsername": "mariapaularce",
-      "link": "https://www.pinterest.com/pin/..."
-    }
-  ],
-  "method": "scraping",
-  "author": "Kayzen Izumi",
-  "apiUrl": "https://kayzen-api.my.id"
-}</pre>
-                </div>
-
-                <div class="info-box success">
-                    <strong>✅ Tips untuk Bot WhatsApp:</strong>
-                    <ul style="margin-top: 10px; margin-left: 20px;">
-                        <li>Gunakan <code>limit=5</code> atau <code>limit=10</code></li>
-                        <li>Tambahkan delay 2-3 detik antar gambar</li>
-                        <li>Jangan kirim lebih dari 10 gambar sekaligus</li>
-                    </ul>
                 </div>
             </div>
         </div>
@@ -778,21 +643,19 @@
                     <div id="statusResponse" class="response-box"></div>
                 </div>
 
-                <h4 style="margin-top: 30px;">✅ Response:</h4>
+                <h4 style="margin-top: 30px;">✅ Response Example:</h4>
                 <div class="code-block">
-                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
                     <pre>{
   "success": true,
   "status": "online",
-  "timestamp": "2024-12-24T10:30:00.000Z",
+  "timestamp": "2024-01-15T10:30:00.000Z",
   "endpoints": {
     "mxdrop": [
       "/api/mxdrop/download",
       "/api/mxdrop/info"
     ],
     "pinterest": [
-      "/api/pinterest/search (requires cookie)",
-      "/api/pinterest/search-v2 (no cookie needed)"
+      "/api/pinterest/search"
     ]
   },
   "author": "Kayzen Izumi",
@@ -807,40 +670,62 @@
         </div>
 
         <div class="section">
+            <h2>💡 Tips & Best Practices</h2>
+            <div style="line-height: 1.8; font-size: 1.05em;">
+                <p style="margin-bottom: 15px;"><strong>1. Rate Limiting:</strong> Gunakan API dengan bijak. Jangan melakukan spam request.</p>
+                <p style="margin-bottom: 15px;"><strong>2. Error Handling:</strong> Selalu handle error response dengan baik di aplikasi Anda.</p>
+                <p style="margin-bottom: 15px;"><strong>3. URL Encoding:</strong> Pastikan URL parameter di-encode dengan benar.</p>
+                <p style="margin-bottom: 15px;"><strong>4. Cache Response:</strong> Cache response untuk mengurangi jumlah request yang sama.</p>
+                <p style="margin-bottom: 15px;"><strong>5. Update:</strong> Follow channel WhatsApp untuk mendapatkan info update terbaru.</p>
+            </div>
+        </div>
+
+        <div class="section">
             <h2>🌐 Code Examples</h2>
             
-            <h3 style="margin-bottom: 15px;">JavaScript - Pinterest V2 (No Cookie)</h3>
+            <h3 style="margin-bottom: 15px;">JavaScript (Fetch API)</h3>
             <div class="code-block">
                 <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                <pre>const url = 'https://kayzen-api.my.id/api/pinterest/search-v2';
+                <pre>const url = 'https://api.kayzen.com/api/mxdrop/download';
 const params = new URLSearchParams({
-    query: 'frieren',
-    limit: 10
+    url: 'https://mxdrop.to/xxxxx'
 });
 
 fetch(`${url}?${params}`)
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            console.log(`Found ${data.totalResults} results`);
-            data.data.forEach(pin => {
-                console.log('Image:', pin.imageUrl);
-            });
+            console.log('Download URL:', data.data.downloadUrl);
         }
     })
     .catch(error => console.error('Error:', error));</pre>
             </div>
 
-            <h3 style="margin: 30px 0 15px 0;">Python - Pinterest V2 (No Cookie)</h3>
+            <h3 style="margin: 30px 0 15px 0;">Python (Requests)</h3>
             <div class="code-block">
                 <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
                 <pre>import requests
-import time
 
-url = 'https://kayzen-api.my.id/api/pinterest/search-v2'
+url = 'https://api.kayzen.com/api/mxdrop/download'
 params = {
-    'query': 'frieren',
-    'limit': 10
+    'url': 'https://mxdrop.to/xxxxx'
+}
+
+response = requests.get(url, params=params)
+data = response.json()
+
+if data['success']:
+    print('Download URL:', data['data']['downloadUrl'])</pre>
+            </div>
+
+            <h3 style="margin: 30px 0 15px 0;">Python (Requests) - Pinterest Search</h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                <pre>import requests
+
+url = 'https://api.kayzen.com/api/pinterest/search'
+params = {
+    'query': 'frieren'
 }
 
 response = requests.get(url, params=params)
@@ -849,14 +734,15 @@ data = response.json()
 if data['success']:
     print(f'Found {data["totalResults"]} results')
     for pin in data['data']:
+        print(f'Title: {pin["title"]}')
         print(f'Image: {pin["imageUrl"]}')
-        time.sleep(2)</pre>
+        print('---')</pre>
             </div>
 
-            <h3 style="margin: 30px 0 15px 0;">PHP - MXDrop Download</h3>
+            <h3 style="margin: 30px 0 15px 0;">PHP (cURL)</h3>
             <div class="code-block">
                 <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                <pre>$url = 'https://kayzen-api.my.id/api/mxdrop/download';
+                <pre>$url = 'https://api.kayzen.com/api/mxdrop/download';
 $params = http_build_query([
     'url' => 'https://mxdrop.to/xxxxx'
 ]);
@@ -876,17 +762,6 @@ if ($data['success']) {
         </div>
 
         <div class="section">
-            <h2>💡 Tips & Best Practices</h2>
-            <div style="line-height: 1.8; font-size: 1.05em;">
-                <p style="margin-bottom: 15px;"><strong>1. Rate Limiting:</strong> Gunakan API dengan bijak. Jangan melakukan spam request.</p>
-                <p style="margin-bottom: 15px;"><strong>2. Error Handling:</strong> Selalu handle error response dengan baik di aplikasi Anda.</p>
-                <p style="margin-bottom: 15px;"><strong>3. URL Encoding:</strong> Pastikan URL parameter di-encode dengan benar.</p>
-                <p style="margin-bottom: 15px;"><strong>4. Cache Response:</strong> Cache response untuk mengurangi jumlah request yang sama.</p>
-                <p style="margin-bottom: 15px;"><strong>5. Update:</strong> Follow channel WhatsApp untuk mendapatkan info update terbaru.</p>
-            </div>
-        </div>
-
-        <div class="section">
             <h2>📞 Support & Contact</h2>
             <p style="line-height: 1.8; font-size: 1.1em; margin-bottom: 20px;">
                 Jika Anda memiliki pertanyaan atau menemukan bug, silakan hubungi kami melalui:
@@ -902,13 +777,7 @@ if ($data['success']) {
                     <strong>📸 Instagram:</strong> @kayzenfry
                 </div>
                 <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px;">
-                    <strong>🎥 YouTube:</strong> @kayzenfry
-                </div>
-                <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px;">
-                    <strong>🎵 TikTok:</strong> @scz_kayzen
-                </div>
-                <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px;">
-                    <strong>📢 Updates:</strong> <a href="https://whatsapp.com/channel/0029VbBRpUN8F2pMzHjQqz3S" style="color: #fff; text-decoration: underline;">WA Channel</a>
+                    <strong>📢 Updates:</strong> <a href="https://whatsapp.com/channel/0029VbBRpUN8F2pMzHjQqz3S" style="color: #fff;">WA Channel</a>
                 </div>
             </div>
         </div>
@@ -990,14 +859,12 @@ if ($data['success']) {
 
         async function testPinterestAPI() {
             const queryInput = document.getElementById('pinterestQuery');
-            const limitInput = document.getElementById('pinterestLimit');
             const cookieInput = document.getElementById('pinterestCookie');
             const csrfInput = document.getElementById('pinterestCsrf');
             const responseBox = document.getElementById('pinterestResponse');
             const button = document.getElementById('pinterestBtn');
             
             const query = queryInput.value.trim();
-            const limit = limitInput.value.trim();
             const cookie = cookieInput.value.trim();
             const csrf = csrfInput.value.trim();
             
@@ -1014,7 +881,6 @@ if ($data['success']) {
             
             try {
                 let apiUrl = `/api/pinterest/search?query=${encodeURIComponent(query)}`;
-                if (limit) apiUrl += `&limit=${limit}`;
                 if (cookie) apiUrl += `&cookie=${encodeURIComponent(cookie)}`;
                 if (csrf) apiUrl += `&csrftoken=${encodeURIComponent(csrf)}`;
                 
@@ -1029,46 +895,7 @@ if ($data['success']) {
                 }, false);
             } finally {
                 button.disabled = false;
-                button.innerHTML = '🚀 Test API V1';
-            }
-        }
-
-        async function testPinterestV2API() {
-            const queryInput = document.getElementById('pinterestQueryV2');
-            const limitInput = document.getElementById('pinterestLimitV2');
-            const responseBox = document.getElementById('pinterestResponseV2');
-            const button = document.getElementById('pinterestBtnV2');
-            
-            const query = queryInput.value.trim();
-            const limit = limitInput.value.trim();
-            
-            if (!query) {
-                showResponse(responseBox, {
-                    success: false,
-                    message: 'Mohon masukkan kata kunci pencarian'
-                }, false);
-                return;
-            }
-            
-            button.disabled = true;
-            button.innerHTML = '⏳ Loading<span class="loading"></span>';
-            
-            try {
-                let apiUrl = `/api/pinterest/search-v2?query=${encodeURIComponent(query)}`;
-                if (limit) apiUrl += `&limit=${limit}`;
-                
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-                showResponse(responseBox, data, data.success);
-            } catch (error) {
-                showResponse(responseBox, {
-                    success: false,
-                    message: 'Terjadi kesalahan saat menghubungi API',
-                    error: error.message
-                }, false);
-            } finally {
-                button.disabled = false;
-                button.innerHTML = '🚀 Test API V2';
+                button.innerHTML = '🚀 Test API';
             }
         }
 
@@ -1140,16 +967,9 @@ if ($data['success']) {
                 testInfoAPI();
             }
         });
-
         document.getElementById('pinterestQuery').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 testPinterestAPI();
-            }
-        });
-
-        document.getElementById('pinterestQueryV2').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                testPinterestV2API();
             }
         });
     </script>
