@@ -5,441 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>API Documentation - Kayzen API</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            min-height: 100vh;
-            color: #fff;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+            font-family: Arial, sans-serif;
             padding: 20px;
         }
-
-        header {
-            text-align: center;
-            padding: 40px 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 20px;
-            margin-bottom: 40px;
-            backdrop-filter: blur(10px);
+        h1, h2, h3 {
+            color: #333;
         }
-
-        header h1 {
-            font-size: 3em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        header p {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-
-        .nav-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin: 30px 0;
-        }
-
-        .nav-btn {
-            padding: 15px 40px;
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50px;
-            color: #fff;
-            text-decoration: none;
-            font-size: 1.1em;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-        }
-
-        .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .section {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .section h2 {
-            font-size: 2em;
-            margin-bottom: 20px;
-            border-bottom: 3px solid rgba(255, 255, 255, 0.3);
-            padding-bottom: 10px;
-        }
-
-        .endpoint {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
-            border-left: 4px solid #4CAF50;
-        }
-
-        .endpoint h3 {
-            font-size: 1.5em;
-            margin-bottom: 15px;
-            color: #4CAF50;
-        }
-
-        .method {
-            display: inline-block;
-            padding: 5px 15px;
-            border-radius: 5px;
-            font-weight: bold;
-            font-size: 0.9em;
-            margin-right: 10px;
-        }
-
-        .method.get {
-            background: #4CAF50;
-            color: #fff;
-        }
-
-        .method.post {
-            background: #2196F3;
-            color: #fff;
-        }
-
-        .url-box {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 15px;
-            border-radius: 8px;
-            font-family: 'Courier New', monospace;
-            margin: 15px 0;
-            word-break: break-all;
-        }
-
-        .params-table {
-            width: 100%;
-            margin: 20px 0;
-            border-collapse: collapse;
-        }
-
-        .params-table th,
-        .params-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .params-table th {
-            background: rgba(255, 255, 255, 0.1);
-            font-weight: bold;
-        }
-
-        .code-block {
-            background: #1e1e1e;
-            padding: 20px;
-            border-radius: 10px;
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ddd;
             overflow-x: auto;
-            margin: 15px 0;
-            position: relative;
-        }
-
-        .code-block pre {
-            margin: 0;
-            color: #d4d4d4;
-            font-family: 'Courier New', monospace;
-            font-size: 0.95em;
-            line-height: 1.5;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 0.85em;
-            font-weight: bold;
-            margin: 0 5px;
-        }
-
-        .badge.required {
-            background: #f44336;
-            color: #fff;
-        }
-
-        .badge.optional {
-            background: #FF9800;
-            color: #fff;
-        }
-
-        .try-section {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 25px;
-            margin-top: 25px;
-            border: 2px solid rgba(76, 175, 80, 0.3);
-        }
-
-        .try-section h4 {
-            font-size: 1.3em;
-            margin-bottom: 20px;
-            color: #4CAF50;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            font-size: 1.05em;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 12px 15px;
-            background: rgba(0, 0, 0, 0.4);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 8px;
-            color: #fff;
-            font-size: 1em;
-            transition: all 0.3s ease;
-        }
-
-        .input-group input:focus {
-            outline: none;
-            border-color: #4CAF50;
-            background: rgba(0, 0, 0, 0.5);
-        }
-
-        .input-group input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .try-button {
-            display: inline-block;
-            padding: 12px 30px;
-            background: #4CAF50;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            font-size: 1.05em;
-            font-weight: bold;
-        }
-
-        .try-button:hover {
-            background: #45a049;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
-        }
-
-        .try-button:active {
-            transform: translateY(0);
-        }
-
-        .try-button:disabled {
-            background: #666;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .response-box {
-            background: #1e1e1e;
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 20px;
-            display: none;
-            position: relative;
-        }
-
-        .response-box.show {
-            display: block;
-            animation: slideDown 0.3s ease;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .response-box pre {
-            color: #d4d4d4;
-            font-family: 'Courier New', monospace;
-            font-size: 0.95em;
-            line-height: 1.5;
-            margin: 0;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s linear infinite;
-            margin-left: 10px;
-            vertical-align: middle;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .copy-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 8px 15px;
-            background: rgba(76, 175, 80, 0.8);
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9em;
-            transition: all 0.3s ease;
-        }
-
-        .copy-button:hover {
-            background: #4CAF50;
-        }
-
-        .copy-button:active {
-            transform: scale(0.95);
-        }
-
-        .status-success {
-            border-left: 4px solid #4CAF50;
-        }
-
-        .status-error {
-            border-left: 4px solid #f44336;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            margin-top: 40px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-        }
-
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2em;
-            }
-
-            .nav-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .params-table {
-                font-size: 0.9em;
-            }
-
-            .code-block {
-                font-size: 0.85em;
-            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>📚 API Documentation</h1>
-            <p>Complete Guide to Kayzen API</p>
-        </header>
-
-        <div class="nav-buttons">
-            <a href="/" class="nav-btn">Home</a>
-            <a href="/docs" class="nav-btn">API Documentation</a>
-        </div>
-
-        <div class="section">
-            <h2>🚀 Getting Started</h2>
-            <p style="line-height: 1.8; font-size: 1.1em;">
-                Selamat datang di Kayzen API! API ini menyediakan berbagai endpoint untuk kebutuhan development Anda. 
-                Semua endpoint dapat diakses secara gratis dan mudah digunakan.
-            </p>
-            <p style="margin-top: 15px; line-height: 1.8; font-size: 1.1em;">
-                <strong>Base URL:</strong> <code style="background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 5px;">https://api.kayzen.com</code>
-            </p>
-        </div>
-
-        <div class="section">
-            <h2>📥 MXDrop Download API</h2>
-            
-            <div class="endpoint">
-                <h3>Download File dari MXDrop</h3>
-                <div>
-                    <span class="method get">GET</span>
-                    <span style="font-family: monospace; font-size: 1.1em;">/api/mxdrop/download</span>
-                </div>
-                
-                <p style="margin: 15px 0; line-height: 1.6;">
-                    Endpoint ini digunakan untuk mendapatkan direct download link dari URL mxdrop.to
-                </p>
-
-                <h4 style="margin-top: 20px; margin-bottom: 10px;">Query Parameters:</h4>
-                <table class="params-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Status</th>
-                            <th>Deskripsi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>url</code></td>
-                            <td>string</td>
-                            <td><span class="badge required">Required</span></td>
-                            <td>URL lengkap dari mxdrop.to (contoh: https://mxdrop.to/xxxxx)</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="try-section">
-                    <h4>🧪 Try It Out</h4>
-                    <div class="input-group">
-                        <label>MXDrop URL:</label>
-                        <input type="text" id="downloadUrl" placeholder="https://mxdrop.to/xxxxx" />
-                    </div>
-                    <button class="try-button" onclick="testDownloadAPI()" id="downloadBtn">
-                        🚀 Test API
-                    </button>
-                    <div id="downloadResponse" class="response-box"></div>
-                </div>
-
-                <h4 style="margin-top: 30px;">✅ Success Response Example:</h4>
-                <div class="code-block">
-                    <pre>{
+    <h1>API Documentation</h1>
+    <h2>Selamat datang di Kayzen API!</h2>
+    <p>API ini menyediakan berbagai endpoint untuk kebutuhan development Anda. Semua endpoint dapat diakses secara gratis dan mudah digunakan.</p>
+    <h3>Base URL:</h3>
+    <p><code>https://api.kayzen.com</code></p>
+    
+    <h2>📥 MXDrop Download API</h2>
+    <p>Endpoint ini digunakan untuk mendapatkan direct download link dari URL mxdrop.to</p>
+    <h3>GET /api/mxdrop/download</h3>
+    <h4>Query Parameters:</h4>
+    <ul>
+        <li><strong>url</strong> (string): Required. URL lengkap dari mxdrop.to (contoh: <code>https://mxdrop.to/xxxxx</code>)</li>
+    </ul>
+    
+    <h4>✅ Success Response Example:</h4>
+    <pre>{
   "success": true,
   "data": {
     "title": "File Name.zip",
@@ -451,55 +48,17 @@
   "author": "Kayzen Izumi",
   "apiUrl": "https://kayzenapi.com"
 }</pre>
-                </div>
-            </div>
-
-            <div class="endpoint">
-                <h3>Informasi File MXDrop</h3>
-                <div>
-                    <span class="method get">GET</span>
-                    <span style="font-family: monospace; font-size: 1.1em;">/api/mxdrop/info</span>
-                </div>
-                
-                <p style="margin: 15px 0; line-height: 1.6;">
-                    Endpoint ini digunakan untuk mendapatkan informasi detail tentang file di mxdrop.to
-                </p>
-
-                <h4 style="margin-top: 20px; margin-bottom: 10px;">Query Parameters:</h4>
-                <table class="params-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Status</th>
-                            <th>Deskripsi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>url</code></td>
-                            <td>string</td>
-                            <td><span class="badge required">Required</span></td>
-                            <td>URL lengkap dari mxdrop.to</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="try-section">
-                    <h4>🧪 Try It Out</h4>
-                    <div class="input-group">
-                        <label>MXDrop URL:</label>
-                        <input type="text" id="infoUrl" placeholder="https://mxdrop.to/xxxxx" />
-                    </div>
-                    <button class="try-button" onclick="testInfoAPI()" id="infoBtn">
-                        🚀 Test API
-                    </button>
-                    <div id="infoResponse" class="response-box"></div>
-                </div>
-
-                <h4 style="margin-top: 30px;">✅ Success Response Example:</h4>
-                <div class="code-block">
-                    <pre>{
+    
+    <h2>Informasi File MXDrop</h2>
+    <h3>GET /api/mxdrop/info</h3>
+    <p>Endpoint ini digunakan untuk mendapatkan informasi detail tentang file di mxdrop.to</p>
+    <h4>Query Parameters:</h4>
+    <ul>
+        <li><strong>url</strong> (string): Required. URL lengkap dari mxdrop.to</li>
+    </ul>
+    
+    <h4>✅ Success Response Example:</h4>
+    <pre>{
   "success": true,
   "data": {
     "title": "File Name.zip",
@@ -512,91 +71,19 @@
   "author": "Kayzen Izumi",
   "apiUrl": "https://kayzenapi.com"
 }</pre>
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>📌 Pinterest Search API</h2>
-            
-            <div class="endpoint">
-                <h3>Search Pinterest</h3>
-                <div>
-                    <span class="method get">GET</span>
-                    <span style="font-family: monospace; font-size: 1.1em;">/api/pinterest/search</span>
-                </div>
-                
-                <p style="margin: 15px 0; line-height: 1.6;">
-                    Endpoint ini digunakan untuk mencari gambar, video, dan pins dari Pinterest
-                </p>
-
-                <h4 style="margin-top: 20px; margin-bottom: 10px;">Query Parameters:</h4>
-                <table class="params-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Status</th>
-                            <th>Deskripsi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>query</code></td>
-                            <td>string</td>
-                            <td><span class="badge required">Required</span></td>
-                            <td>Kata kunci pencarian (contoh: frieren, anime, nature)</td>
-                        </tr>
-                        <tr>
-                            <td><code>cookie</code></td>
-                            <td>string</td>
-                            <td><span class="badge optional">Optional</span></td>
-                            <td>Cookie dari Pinterest (untuk hasil lebih baik)</td>
-                        </tr>
-                        <tr>
-                            <td><code>csrftoken</code></td>
-                            <td>string</td>
-                            <td><span class="badge optional">Optional</span></td>
-                            <td>CSRF Token dari Pinterest</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div style="background: rgba(255, 193, 7, 0.2); padding: 15px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #FFC107;">
-                    <strong>💡 Tips:</strong> Untuk hasil yang lebih baik, Anda bisa menambahkan cookie dan csrftoken dari browser Anda:
-                    <ol style="margin-top: 10px; margin-left: 20px;">
-                        <li>Buka Pinterest di browser dan login</li>
-                        <li>Tekan F12 untuk membuka Developer Tools</li>
-                        <li>Buka tab "Application" → "Cookies" → "https://id.pinterest.com"</li>
-                        <li>Copy value dari cookie "_pinterest_sess" dan "csrftoken"</li>
-                        <li>Gunakan sebagai parameter optional di API</li>
-                    </ol>
-                </div>
-
-                <div class="try-section">
-                    <h4>🧪 Try It Out</h4>
-                    <div class="input-group">
-                        <label>Search Query:</label>
-                        <input type="text" id="pinterestQuery" placeholder="frieren" />
-                    </div>
-                    <div class="input-group">
-                        <label>Cookie (Optional):</label>
-                        <input type="text" id="pinterestCookie" placeholder="_pinterest_sess=..." />
-                    </div>
-                    <div class="input-group">
-                        <label>CSRF Token (Optional):</label>
-                        <input type="text" id="pinterestCsrf" placeholder="a1b2c3d4..." />
-                    </div>
-                    <button class="try-button" onclick="testPinterestAPI()" id="pinterestBtn">
-                        🚀 Test API
-                    </button>
-                    <div id="pinterestResponse" class="response-box"></div>
-                </div>
-
-                <h4 style="margin-top: 30px;">✅ Success Response Example:</h4>
-                <div class="code-block">
-                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                    <pre>{
+    
+    <h2>📌 Pinterest Search API</h2>
+    <h3>GET /api/pinterest/search</h3>
+    <p>Endpoint ini digunakan untuk mencari gambar, video, dan pins dari Pinterest</p>
+    <h4>Query Parameters:</h4>
+    <ul>
+        <li><strong>query</strong> (string): Required. Kata kunci pencarian (contoh: <code>frieren</code>, <code>anime</code>, <code>nature</code>)</li>
+        <li><strong>cookie</strong> (string): Optional. Cookie dari Pinterest.</li>
+        <li><strong>csrftoken</strong> (string): Optional. CSRF Token dari Pinterest.</li>
+    </ul>
+    
+    <h4>✅ Success Response Example:</h4>
+    <pre>{
   "success": true,
   "query": "frieren",
   "totalResults": 40,
@@ -611,41 +98,36 @@
       "pinnerUsername": "mariapaularce",
       "boardName": "icons<3",
       "boardUrl": "/mariapaularce/icons3/"
-    },
-    ...
+    }
   ],
   "author": "Kayzen Izumi",
   "apiUrl": "https://kayzenapi.com"
 }</pre>
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>🔧 Utility Endpoints</h2>
-            
-            <div class="endpoint">
-                <h3>API Status</h3>
-                <div>
-                    <span class="method get">GET</span>
-                    <span style="font-family: monospace; font-size: 1.1em;">/api/status</span>
-                </div>
-                
-                <p style="margin: 15px 0; line-height: 1.6;">
-                    Check status API dan melihat semua endpoint yang tersedia
-                </p>
-
-                <div class="try-section">
-                    <h4>🧪 Try It Out</h4>
-                    <button class="try-button" onclick="testStatusAPI()" id="statusBtn">
-                        🚀 Test API
-                    </button>
-                    <div id="statusResponse" class="response-box"></div>
-                </div>
-
-                <h4 style="margin-top: 30px;">✅ Response Example:</h4>
-                <div class="code-block">
-                    <pre>{
+    
+    <h2>📌 AI Poe.com API</h2>
+    <h3>GET /api/ai/poe</h3>
+    <p>Endpoint ini digunakan untuk mendapatkan informasi atau hasil dari layanan AI di Poe.com.</p>
+    <h4>Query Parameters:</h4>
+    <ul>
+        <li><strong>query</strong> (string): Required. Kata kunci pencarian untuk AI.</li>
+    </ul>
+    
+    <h4>✅ Success Response Example:</h4>
+    <pre>{
+  "success": true,
+  "data": {
+    "response": "Hasil untuk query \"weather\"",
+    "query": "weather"
+  }
+}</pre>
+    
+    <h2>🔧 Utility Endpoints</h2>
+    <h3>API Status</h3>
+    <h4>GET /api/status</h4>
+    <p>Check status API dan melihat semua endpoint yang tersedia.</p>
+    
+    <h4>✅ Response Example:</h4>
+    <pre>{
   "success": true,
   "status": "online",
   "timestamp": "2024-01-15T10:30:00.000Z",
@@ -656,6 +138,9 @@
     ],
     "pinterest": [
       "/api/pinterest/search"
+    ],
+    "ai": [
+      "/api/ai/poe"
     ]
   },
   "author": "Kayzen Izumi",
@@ -665,313 +150,11 @@
     "instagram": "@kayzenfry"
   }
 }</pre>
-                </div>
-            </div>
-        </div>
 
-        <div class="section">
-            <h2>💡 Tips & Best Practices</h2>
-            <div style="line-height: 1.8; font-size: 1.05em;">
-                <p style="margin-bottom: 15px;"><strong>1. Rate Limiting:</strong> Gunakan API dengan bijak. Jangan melakukan spam request.</p>
-                <p style="margin-bottom: 15px;"><strong>2. Error Handling:</strong> Selalu handle error response dengan baik di aplikasi Anda.</p>
-                <p style="margin-bottom: 15px;"><strong>3. URL Encoding:</strong> Pastikan URL parameter di-encode dengan benar.</p>
-                <p style="margin-bottom: 15px;"><strong>4. Cache Response:</strong> Cache response untuk mengurangi jumlah request yang sama.</p>
-                <p style="margin-bottom: 15px;"><strong>5. Update:</strong> Follow channel WhatsApp untuk mendapatkan info update terbaru.</p>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>🌐 Code Examples</h2>
-            
-            <h3 style="margin-bottom: 15px;">JavaScript (Fetch API)</h3>
-            <div class="code-block">
-                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                <pre>const url = 'https://api.kayzen.com/api/mxdrop/download';
-const params = new URLSearchParams({
-    url: 'https://mxdrop.to/xxxxx'
-});
-
-fetch(`${url}?${params}`)
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            console.log('Download URL:', data.data.downloadUrl);
-        }
-    })
-    .catch(error => console.error('Error:', error));</pre>
-            </div>
-
-            <h3 style="margin: 30px 0 15px 0;">Python (Requests)</h3>
-            <div class="code-block">
-                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                <pre>import requests
-
-url = 'https://api.kayzen.com/api/mxdrop/download'
-params = {
-    'url': 'https://mxdrop.to/xxxxx'
-}
-
-response = requests.get(url, params=params)
-data = response.json()
-
-if data['success']:
-    print('Download URL:', data['data']['downloadUrl'])</pre>
-            </div>
-
-            <h3 style="margin: 30px 0 15px 0;">Python (Requests) - Pinterest Search</h3>
-            <div class="code-block">
-                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                <pre>import requests
-
-url = 'https://api.kayzen.com/api/pinterest/search'
-params = {
-    'query': 'frieren'
-}
-
-response = requests.get(url, params=params)
-data = response.json()
-
-if data['success']:
-    print(f'Found {data["totalResults"]} results')
-    for pin in data['data']:
-        print(f'Title: {pin["title"]}')
-        print(f'Image: {pin["imageUrl"]}')
-        print('---')</pre>
-            </div>
-
-            <h3 style="margin: 30px 0 15px 0;">PHP (cURL)</h3>
-            <div class="code-block">
-                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                <pre>$url = 'https://api.kayzen.com/api/mxdrop/download';
-$params = http_build_query([
-    'url' => 'https://mxdrop.to/xxxxx'
-]);
-
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $url . '?' . $params);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-$response = curl_exec($ch);
-curl_close($ch);
-
-$data = json_decode($response, true);
-
-if ($data['success']) {
-    echo 'Download URL: ' . $data['data']['downloadUrl'];
-}</pre>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>📞 Support & Contact</h2>
-            <p style="line-height: 1.8; font-size: 1.1em; margin-bottom: 20px;">
-                Jika Anda memiliki pertanyaan atau menemukan bug, silakan hubungi kami melalui:
-            </p>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
-                <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px;">
-                    <strong>📱 WhatsApp:</strong> 628152313006
-                </div>
-                <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px;">
-                    <strong>✈️ Telegram:</strong> @nonewpo
-                </div>
-                <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px;">
-                    <strong>📸 Instagram:</strong> @kayzenfry
-                </div>
-                <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px;">
-                    <strong>📢 Updates:</strong> <a href="https://whatsapp.com/channel/0029VbBRpUN8F2pMzHjQqz3S" style="color: #fff;">WA Channel</a>
-                </div>
-            </div>
-        </div>
-
-        <footer>
-            <p>&copy; 2024 Kayzen API. Made with ❤️ by Kayzen Izumi</p>
-            <p style="margin-top: 10px; opacity: 0.8;">Documentation Version 1.0</p>
-        </footer>
-    </div>
-
-    <script>
-        async function testDownloadAPI() {
-            const urlInput = document.getElementById('downloadUrl');
-            const responseBox = document.getElementById('downloadResponse');
-            const button = document.getElementById('downloadBtn');
-            
-            const url = urlInput.value.trim();
-            
-            if (!url) {
-                showResponse(responseBox, {
-                    success: false,
-                    message: 'Mohon masukkan URL MXDrop'
-                }, false);
-                return;
-            }
-            
-            button.disabled = true;
-            button.innerHTML = '⏳ Loading<span class="loading"></span>';
-            
-            try {
-                const response = await fetch(`/api/mxdrop/download?url=${encodeURIComponent(url)}`);
-                const data = await response.json();
-                showResponse(responseBox, data, data.success);
-            } catch (error) {
-                showResponse(responseBox, {
-                    success: false,
-                    message: 'Terjadi kesalahan saat menghubungi API',
-                    error: error.message
-                }, false);
-            } finally {
-                button.disabled = false;
-                button.innerHTML = '🚀 Test API';
-            }
-        }
-
-        async function testInfoAPI() {
-            const urlInput = document.getElementById('infoUrl');
-            const responseBox = document.getElementById('infoResponse');
-            const button = document.getElementById('infoBtn');
-            
-            const url = urlInput.value.trim();
-            
-            if (!url) {
-                showResponse(responseBox, {
-                    success: false,
-                    message: 'Mohon masukkan URL MXDrop'
-                }, false);
-                return;
-            }
-            
-            button.disabled = true;
-            button.innerHTML = '⏳ Loading<span class="loading"></span>';
-            
-            try {
-                const response = await fetch(`/api/mxdrop/info?url=${encodeURIComponent(url)}`);
-                const data = await response.json();
-                showResponse(responseBox, data, data.success);
-            } catch (error) {
-                showResponse(responseBox, {
-                    success: false,
-                    message: 'Terjadi kesalahan saat menghubungi API',
-                    error: error.message
-                }, false);
-            } finally {
-                button.disabled = false;
-                button.innerHTML = '🚀 Test API';
-            }
-        }
-
-        async function testPinterestAPI() {
-            const queryInput = document.getElementById('pinterestQuery');
-            const cookieInput = document.getElementById('pinterestCookie');
-            const csrfInput = document.getElementById('pinterestCsrf');
-            const responseBox = document.getElementById('pinterestResponse');
-            const button = document.getElementById('pinterestBtn');
-            
-            const query = queryInput.value.trim();
-            const cookie = cookieInput.value.trim();
-            const csrf = csrfInput.value.trim();
-            
-            if (!query) {
-                showResponse(responseBox, {
-                    success: false,
-                    message: 'Mohon masukkan kata kunci pencarian'
-                }, false);
-                return;
-            }
-            
-            button.disabled = true;
-            button.innerHTML = '⏳ Loading<span class="loading"></span>';
-            
-            try {
-                let apiUrl = `/api/pinterest/search?query=${encodeURIComponent(query)}`;
-                if (cookie) apiUrl += `&cookie=${encodeURIComponent(cookie)}`;
-                if (csrf) apiUrl += `&csrftoken=${encodeURIComponent(csrf)}`;
-                
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-                showResponse(responseBox, data, data.success);
-            } catch (error) {
-                showResponse(responseBox, {
-                    success: false,
-                    message: 'Terjadi kesalahan saat menghubungi API',
-                    error: error.message
-                }, false);
-            } finally {
-                button.disabled = false;
-                button.innerHTML = '🚀 Test API';
-            }
-        }
-
-        async function testStatusAPI() {
-            const responseBox = document.getElementById('statusResponse');
-            const button = document.getElementById('statusBtn');
-            
-            button.disabled = true;
-            button.innerHTML = '⏳ Loading<span class="loading"></span>';
-            
-            try {
-                const response = await fetch('/api/status');
-                const data = await response.json();
-                showResponse(responseBox, data, data.success);
-            } catch (error) {
-                showResponse(responseBox, {
-                    success: false,
-                    message: 'Terjadi kesalahan saat menghubungi API',
-                    error: error.message
-                }, false);
-            } finally {
-                button.disabled = false;
-                button.innerHTML = '🚀 Test API';
-            }
-        }
-
-        function showResponse(element, data, isSuccess) {
-            element.innerHTML = `
-                <button class="copy-button" onclick="copyResponse(this)">📋 Copy</button>
-                <pre>${JSON.stringify(data, null, 2)}</pre>
-            `;
-            element.className = 'response-box show ' + (isSuccess ? 'status-success' : 'status-error');
-        }
-
-        function copyCode(button) {
-            const codeBlock = button.nextElementSibling;
-            const text = codeBlock.textContent;
-            
-            navigator.clipboard.writeText(text).then(() => {
-                const originalText = button.textContent;
-                button.textContent = '✅ Copied!';
-                setTimeout(() => {
-                    button.textContent = originalText;
-                }, 2000);
-            });
-        }
-
-        function copyResponse(button) {
-            const pre = button.nextElementSibling;
-            const text = pre.textContent;
-            
-            navigator.clipboard.writeText(text).then(() => {
-                const originalText = button.textContent;
-                button.textContent = '✅ Copied!';
-                setTimeout(() => {
-                    button.textContent = originalText;
-                }, 2000);
-            });
-        }
-
-        document.getElementById('downloadUrl').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                testDownloadAPI();
-            }
-        });
-
-        document.getElementById('infoUrl').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                testInfoAPI();
-            }
-        });
-        document.getElementById('pinterestQuery').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                testPinterestAPI();
-            }
-        });
-    </script>
+    <h2>📞 Support & Contact</h2>
+    <p>Jika Anda memiliki pertanyaan atau menemukan bug, silakan hubungi kami melalui:</p>
+    <p>WhatsApp: <a href="https://wa.me/628152313006">628152313006</a></p>
+    <p>Telegram: <a href="https://t.me/nonewpo">@nonewpo</a></p>
+    <p>Instagram: <a href="https://instagram.com/kayzenfry">@kayzenfry</a></p>
 </body>
 </html>
