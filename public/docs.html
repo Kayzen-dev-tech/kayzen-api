@@ -102,17 +102,20 @@
   "apiUrl": "https://kayzenapi.com"
 }</pre>
     
-    <h2>📌 AI Poe.com API</h2>
-    <h3>GET /api/ai/poe</h3>
-    <p>Endpoint ini digunakan untuk mendapatkan informasi atau hasil dari layanan AI di Poe.com.</p>
-    <h4>Query Parameters:</h4>
-    <ul>
-        <li><strong>query</strong> (string): Required. Kata kunci pencarian untuk AI.</li>
-    </ul>
-    <h4>🚀 Test API</h4>
-    <input type="text" id="aiPoeQuery" placeholder="Masukkan query" />
-    <button onclick="testAiPoe()">Test API</button>
-    <pre id="aiPoeResponse"></pre>
+    <h2>🤖 AI Poe.com API</h2>
+<h3>GET /api/ai/poe</h3>
+<p>Endpoint AI berbasis Poe.com untuk menjawab pertanyaan, diskusi, dan pencarian informasi.</p>
+
+<h4>Query Parameters:</h4>
+<ul>
+    <li><strong>query</strong> (string): Required. Pertanyaan atau prompt AI</li>
+</ul>
+
+<h4>🚀 Test API</h4>
+<input type="text" id="aiPoeQuery" placeholder="Tanyakan sesuatu ke AI" />
+<button onclick="testAiPoe()">Test API</button>
+<pre id="aiPoeResponse"></pre>
+
     
     <h4>✅ Success Response Example:</h4>
     <pre>{
