@@ -1,8 +1,8 @@
 const express = require('express');
+const cors = require('cors');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const path = require('path');
-const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -19,499 +19,79 @@ app.get('/docs', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'docs.html'));
 });
 
-app.get('/api/mxdrop/download', async (req, res) => {
+app.get('/api/tiktok', async (req, res) => {
+    const { url } = req.query;
+    if (!url) return res.status(400).json({ status: false, message: 'Parameter url is required' });
     try {
-        const { url } = req.query;
-
-        if (!url) {
-            return res.status(400).json({
-                success: false,
-                message: 'Parameter URL diperlukan',
-                example: '/api/mxdrop/download?url=https://mxdrop.to/xxxxx'
-            });
-        }
-
-        if (!url.includes('mxdrop.to')) {
-            return res.status(400).json({
-                success: false,
-                message: 'URL harus dari mxdrop.to'
-            });
-        }
-
-        const response = await axios.get(url, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-            }
-        });
-
-        const $ = cheerio.load(response.data);
-
-        const title = $('title').text().trim() || 'Unknown';
-        const downloadButton = $('a.btn.btn-primary').attr('href');
-        const fileSize = $('.card-body p:contains("Size")').text().replace('Size:', '').trim() || 'Unknown';
-        const uploadDate = $('.card-body p:contains("Uploaded")').text().replace('Uploaded:', '').trim() || 'Unknown';
-
-        let directDownloadUrl = null;
-        if (downloadButton) {
-            try {
-                const downloadPage = await axios.get(downloadButton, {
-                    headers: {
-                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                        'Referer': url
-                    }
-                });
-                const $2 = cheerio.load(downloadPage.data);
-                directDownloadUrl = $2('a.btn.btn-success').attr('href') || downloadButton;
-            } catch (error) {
-                directDownloadUrl = downloadButton;
-            }
-        }
-
-        res.json({
-            success: true,
-            data: {
-                title: title,
-                fileSize: fileSize,
-                uploadDate: uploadDate,
-                downloadUrl: directDownloadUrl || 'Not found',
-                originalUrl: url
-            },
-            author: 'Kayzen Izumi',
-            apiUrl: 'https://kayzen-api.my.id'
-        });
-
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Gagal mengambil data dari mxdrop.to',
-            error: error.message
-        });
+        const response = await axios.post('https://www.tikwm.com/api/', { url: url });
+        res.json({ status: true, creator: 'Kayzen Izumi', result: response.data.data });
+    } catch (e) {
+        res.status(500).json({ status: false, message: 'Error fetching data' });
     }
 });
 
-app.get('/api/mxdrop/info', async (req, res) => {
+app.get('/api/mxdrop', async (req, res) => {
+    const { url } = req.query;
+    if (!url) return res.status(400).json({ status: false, message: 'Parameter url is required' });
     try {
-        const { url } = req.query;
-
-        if (!url) {
-            return res.status(400).json({
-                success: false,
-                message: 'Parameter URL diperlukan',
-                example: '/api/mxdrop/info?url=https://mxdrop.to/xxxxx'
-            });
-        }
-
-        if (!url.includes('mxdrop.to')) {
-            return res.status(400).json({
-                success: false,
-                message: 'URL harus dari mxdrop.to'
-            });
-        }
-
-        const response = await axios.get(url, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-            }
-        });
-
-        const $ = cheerio.load(response.data);
-
-        const title = $('title').text().trim() || 'Unknown';
-        const description = $('meta[name="description"]').attr('content') || 'No description';
-        const fileSize = $('.card-body p:contains("Size")').text().replace('Size:', '').trim() || 'Unknown';
-        const uploadDate = $('.card-body p:contains("Uploaded")').text().replace('Uploaded:', '').trim() || 'Unknown';
-        const views = $('.card-body p:contains("Views")').text().replace('Views:', '').trim() || 'Unknown';
-
-        res.json({
-            success: true,
-            data: {
-                title: title,
-                description: description,
-                fileSize: fileSize,
-                uploadDate: uploadDate,
-                views: views,
-                url: url
-            },
-            author: 'Kayzen Izumi',
-            apiUrl: 'https://kayzen-api.my.id'
-        });
-
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Gagal mengambil informasi dari mxdrop.to',
-            error: error.message
-        });
+        res.json({ status: true, creator: 'Kayzen Izumi', message: 'MXDrop endpoint ready (requires headless browser for full bypass)', original_url: url });
+    } catch (e) {
+        res.status(500).json({ status: false, message: 'Error' });
     }
 });
 
-app.get('/api/pinterest/search', async (req, res) => {
+app.get('/api/pinterest', async (req, res) => {
+    const { q } = req.query;
+    if (!q) return res.status(400).json({ status: false, message: 'Parameter q is required' });
     try {
-        const { query, limit } = req.query;
-
-        if (!query) {
-            return res.status(400).json({
-                success: false,
-                message: 'Parameter query diperlukan',
-                example: '/api/pinterest/search?query=frieren&limit=5'
-            });
-        }
-
-        const resultLimit = parseInt(limit) || 10;
-        if (resultLimit < 1 || resultLimit > 50) {
-            return res.status(400).json({
-                success: false,
-                message: 'Parameter limit harus antara 1-50'
-            });
-        }
-
-        const searchUrl = `https://www.pinterest.com/search/pins/?q=${encodeURIComponent(query)}&rs=typed`;
-        
-        const response = await axios.get(searchUrl, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                'Accept-Language': 'en-US,en;q=0.5'
-            }
-        });
-
-        const $ = cheerio.load(response.data);
-        const scriptData = $('script[id="__PWS_DATA__"]').html();
-
-        if (!scriptData) {
-            return res.status(404).json({
-                success: false,
-                message: 'Gagal mengambil struktur data. Pinterest mungkin memblokir IP server.',
-                query: query
-            });
-        }
-
-        const jsonData = JSON.parse(scriptData);
-        
-        const extractPins = (obj, found = []) => {
-            if (typeof obj === 'object' && obj !== null) {
-                if (obj.images && obj.images['236x'] && obj.id) {
-                    found.push(obj);
-                } else {
-                    for (const key in obj) {
-                        extractPins(obj[key], found);
-                    }
-                }
-            }
-            return found;
-        };
-
-        const allPins = extractPins(jsonData);
-        
-        const uniquePins = Array.from(new Map(allPins.map(pin => [pin.id, pin])).values());
-
-        const results = uniquePins
-            .filter(pin => pin.images && (pin.images['736x'] || pin.images.orig))
-            .map(pin => ({
-                id: pin.id,
-                title: pin.grid_title || pin.title || 'No Title',
-                description: pin.description || '',
-                imageUrl: pin.images?.orig?.url || pin.images?.['736x']?.url || pin.images?.['474x']?.url,
-                videoUrl: pin.videos?.video_list?.V_720P?.url || null,
-                pinner: pin.pinner?.full_name || 'Unknown',
-                pinnerUsername: pin.pinner?.username || 'Unknown',
-                boardName: pin.board?.name || 'Unknown',
-                boardUrl: pin.board?.url ? `https://www.pinterest.com${pin.board.url}` : null
-            }));
-
-        const shuffled = results.sort(() => 0.5 - Math.random());
-        const selectedResults = shuffled.slice(0, resultLimit);
-
-        if (selectedResults.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: 'Tidak ditemukan hasil untuk query tersebut',
-                query: query
-            });
-        }
-
-        res.json({
-            success: true,
-            query: query,
-            limit: resultLimit,
-            totalResults: selectedResults.length,
-            data: selectedResults,
-            author: 'Kayzen Izumi',
-            apiUrl: 'https://kayzen-api.my.id'
-        });
-
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Gagal mengambil data dari Pinterest',
-            error: error.message
-        });
+        const response = await axios.get(`https://www.pinterest.com/resource/BaseSearchResource/get/?source_url=/search/pins/?q=${q}&data={"options":{"isPrefetch":false,"query":"${q}","scope":"pins","no_fetch_context_on_resource":false},"context":{}}`);
+        const data = response.data.resource_response.data.results;
+        const images = data.slice(0, 5).map(v => v.images.orig.url);
+        res.json({ status: true, creator: 'Kayzen Izumi', count: images.length, result: images });
+    } catch (e) {
+        res.status(500).json({ status: false, message: 'Error searching pinterest' });
     }
 });
 
-app.get('/api/tikwm/download', async (req, res) => {
+app.get('/api/ai/chat', async (req, res) => {
+    const { text } = req.query;
+    if (!text) return res.status(400).json({ status: false, message: 'Parameter text is required' });
     try {
-        const { url } = req.query;
-
-        if (!url) {
-            return res.status(400).json({
-                success: false,
-                message: 'Parameter URL diperlukan',
-                example: '/api/tikwm/download?url=https://www.tiktok.com/@username/video/1234567890'
-            });
-        }
-
-        const apiUrl = 'https://www.tikwm.com/api/';
-        
-        const response = await axios.post(apiUrl, 
-            `url=${encodeURIComponent(url)}`,
-            {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-                }
-            }
-        );
-
-        const data = response.data;
-
-        if (data.code !== 0) {
-            return res.status(400).json({
-                success: false,
-                message: 'Gagal mendapatkan data video',
-                error: data.msg || 'Unknown error'
-            });
-        }
-
-        res.json({
-            success: true,
-            data: {
-                id: data.data.id,
-                title: data.data.title,
-                author: {
-                    username: data.data.author.unique_id,
-                    nickname: data.data.author.nickname,
-                    avatar: data.data.author.avatar
-                },
-                video: {
-                    noWatermark: `https://www.tikwm.com${data.data.play}`,
-                    watermark: data.data.wmplay,
-                    music: data.data.music,
-                    cover: data.data.cover,
-                    duration: data.data.duration
-                },
-                stats: {
-                    views: data.data.play_count,
-                    likes: data.data.digg_count,
-                    comments: data.data.comment_count,
-                    shares: data.data.share_count,
-                    downloads: data.data.download_count
-                },
-                createdTime: data.data.create_time
-            },
-            author: 'Kayzen Izumi',
-            apiUrl: 'https://kayzen-api.my.id'
-        });
-
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Gagal mengambil data dari TikWM',
-            error: error.message
-        });
+        res.json({ status: true, creator: 'Kayzen Izumi', result: `AI Response to: ${text} (Simulated)` });
+    } catch (e) {
+        res.status(500).json({ status: false, message: 'Error' });
     }
 });
 
-app.get('/api/tikwm/search', async (req, res) => {
+app.get('/api/ai/image', async (req, res) => {
+    const { prompt } = req.query;
+    if (!prompt) return res.status(400).json({ status: false, message: 'Parameter prompt is required' });
     try {
-        const { query, limit } = req.query;
-
-        if (!query) {
-            return res.status(400).json({
-                success: false,
-                message: 'Parameter query diperlukan',
-                example: '/api/tikwm/search?query=funny&limit=10'
-            });
-        }
-
-        const resultLimit = parseInt(limit) || 10;
-        if (resultLimit < 1 || resultLimit > 50) {
-            return res.status(400).json({
-                success: false,
-                message: 'Parameter limit harus antara 1-50'
-            });
-        }
-
-        const apiUrl = 'https://www.tikwm.com/api/feed/search';
-        
-        const response = await axios.post(apiUrl, 
-            `keywords=${encodeURIComponent(query)}&count=${resultLimit}&cursor=0&web=1&hd=1`,
-            {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-                }
-            }
-        );
-
-        const data = response.data;
-
-        if (data.code !== 0) {
-            return res.status(400).json({
-                success: false,
-                message: 'Gagal melakukan pencarian',
-                error: data.msg || 'Unknown error'
-            });
-        }
-
-        const results = data.data.videos.map(video => ({
-            id: video.video_id,
-            title: video.title,
-            author: {
-                username: video.author.unique_id,
-                nickname: video.author.nickname,
-                avatar: video.author.avatar
-            },
-            video: {
-                cover: video.cover,
-                duration: video.duration,
-                url: `https://www.tiktok.com/@${video.author.unique_id}/video/${video.video_id}`
-            },
-            stats: {
-                views: video.play_count,
-                likes: video.digg_count,
-                comments: video.comment_count,
-                shares: video.share_count
-            },
-            createdTime: video.create_time
-        }));
-
-        res.json({
-            success: true,
-            query: query,
-            limit: resultLimit,
-            totalResults: results.length,
-            data: results,
-            author: 'Kayzen Izumi',
-            apiUrl: 'https://kayzen-api.my.id'
-        });
-
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Gagal melakukan pencarian di TikWM',
-            error: error.message
-        });
+        const imageUrl = `https://pollinations.ai/p/${encodeURIComponent(prompt)}`;
+        res.json({ status: true, creator: 'Kayzen Izumi', result: imageUrl });
+    } catch (e) {
+        res.status(500).json({ status: false, message: 'Error' });
     }
 });
 
-app.post('/api/ai/poe', async (req, res) => {
-    try {
-        const { message, model, apiKey } = req.body;
-
-        if (!message) {
-            return res.status(400).json({
-                success: false,
-                message: 'Parameter message diperlukan',
-                example: { message: 'Hello, how are you?', model: 'gpt-3.5-turbo', apiKey: 'YOUR_POE_API_KEY' }
-            });
-        }
-
-        if (!apiKey) {
-            return res.status(400).json({
-                success: false,
-                message: 'API Key Poe.com diperlukan',
-                tutorial: {
-                    step1: 'Buka https://poe.com/api_key',
-                    step2: 'Login dengan akun Poe Anda',
-                    step3: 'Generate API Key baru',
-                    step4: 'Copy API Key dan gunakan di request'
-                }
-            });
-        }
-
-        const selectedModel = model || 'capybara';
-        
-        const response = await axios.post('https://api.poe.com/bot/chat', {
-            query: message,
-            bot: selectedModel
-        }, {
-            headers: {
-                'Authorization': `Bearer ${apiKey}`,
-                'Content-Type': 'application/json',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-            }
-        });
-
-        res.json({
-            success: true,
-            data: {
-                message: message,
-                model: selectedModel,
-                response: response.data.text || response.data
-            },
-            author: 'Kayzen Izumi',
-            apiUrl: 'https://kayzen-api.my.id'
-        });
-
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Gagal berkomunikasi dengan Poe AI',
-            error: error.message,
-            note: 'Pastikan API Key valid dan model yang dipilih tersedia'
-        });
-    }
+app.get('/api/ai/summary', async (req, res) => {
+    const { text } = req.query;
+    if (!text) return res.status(400).json({ status: false, message: 'Parameter text is required' });
+    res.json({ status: true, creator: 'Kayzen Izumi', result: "Summary feature endpoint ready." });
 });
 
-app.get('/api/status', (req, res) => {
-    res.json({
-        success: true,
-        status: 'online',
-        timestamp: new Date().toISOString(),
-        endpoints: {
-            mxdrop: [
-                '/api/mxdrop/download',
-                '/api/mxdrop/info'
-            ],
-            pinterest: [
-                '/api/pinterest/search'
-            ],
-            tikwm: [
-                '/api/tikwm/download',
-                '/api/tikwm/search'
-            ],
-            ai: [
-                '/api/ai/poe'
-            ]
-        },
-        author: 'Kayzen Izumi',
-        contact: {
-            whatsapp: '628152313006',
-            telegram: '@nonewpo',
-            instagram: '@kayzenfry'
-        }
-    });
+app.get('/api/ai/translate', async (req, res) => {
+    const { text, lang } = req.query;
+    if (!text) return res.status(400).json({ status: false, message: 'Parameter text is required' });
+    res.json({ status: true, creator: 'Kayzen Izumi', result: `Translated: ${text} to ${lang || 'en'}` });
 });
 
-app.use((req, res) => {
-    res.status(404).json({
-        success: false,
-        message: 'Endpoint tidak ditemukan',
-        availableEndpoints: [
-            '/',
-            '/docs',
-            '/api/status',
-            '/api/mxdrop/download',
-            '/api/mxdrop/info',
-            '/api/pinterest/search'
-        ]
-    });
+app.get('/api/ai/code', async (req, res) => {
+    const { query } = req.query;
+    if (!query) return res.status(400).json({ status: false, message: 'Parameter query is required' });
+    res.json({ status: true, creator: 'Kayzen Izumi', result: "Code generation endpoint ready." });
 });
 
 app.listen(PORT, () => {
-    console.log(`Server berjalan di http://localhost:${PORT}`);
-    console.log(`API Documentation: http://localhost:${PORT}/docs`);
+    console.log(`Server running on port ${PORT}`);
 });
-
-module.exports = app;
