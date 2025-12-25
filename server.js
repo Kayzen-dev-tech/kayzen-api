@@ -147,14 +147,15 @@ app.get('/api/mxdrop/info', async (req, res) => {
 
 app.get('/api/pinterest/search', async (req, res) => {
     try {
-        const { query, cookie, csrftoken, limit } = req.query;
+        const { query, limit } = req.query;
+        const cookie = req.query.cookie || 'isi_cookie_pinterest_disini';
+        const csrftoken = req.query.csrftoken || 'isi_csrftoken_disini';
 
         if (!query) {
             return res.status(400).json({
                 success: false,
                 message: 'Parameter query diperlukan',
-                example: '/api/pinterest/search?query=frieren&limit=5',
-                note: 'Cookie dan csrftoken sangat disarankan untuk hasil yang lebih baik'
+                example: '/api/pinterest/search?query=frieren&limit=5'
             });
         }
 
@@ -164,21 +165,6 @@ app.get('/api/pinterest/search', async (req, res) => {
                 success: false,
                 message: 'Parameter limit harus antara 1-50',
                 example: '/api/pinterest/search?query=frieren&limit=10'
-            });
-        }
-
-        if (!cookie || !csrftoken) {
-            return res.status(400).json({
-                success: false,
-                message: 'Cookie dan csrftoken diperlukan untuk menggunakan Pinterest API',
-                tutorial: {
-                    step1: 'Buka Pinterest di browser dan login',
-                    step2: 'Tekan F12 untuk membuka Developer Tools',
-                    step3: 'Buka tab Application → Cookies → https://id.pinterest.com',
-                    step4: 'Copy value dari _pinterest_sess dan csrftoken',
-                    step5: 'Gunakan sebagai parameter di API'
-                },
-                example: '/api/pinterest/search?query=frieren&limit=10&cookie=YOUR_COOKIE&csrftoken=YOUR_TOKEN'
             });
         }
 
@@ -279,8 +265,7 @@ app.get('/api/pinterest/search', async (req, res) => {
         res.status(500).json({
             success: false,
             message: 'Gagal mengambil data dari Pinterest',
-            error: error.message,
-            note: 'Pastikan cookie dan csrftoken valid dan masih aktif dari Pinterest'
+            error: error.message
         });
     }
 });
