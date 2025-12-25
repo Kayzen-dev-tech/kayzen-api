@@ -285,195 +285,69 @@ app.get('/api/pinterest/search', async (req, res) => {
     }
 });
 
-app.get('/api/pinterest/search-v2', async (req, res) => {
+app.get('/api/tikwm/download', async (req, res) => {
     try {
-        const { query, limit } = req.query;
+        const { url } = req.query;
 
-        if (!query) {
+        if (!url) {
             return res.status(400).json({
                 success: false,
-                message: 'Parameter query diperlukan',
-                example: '/api/pinterest/search-v2?query=frieren&limit=10'
+                message: 'Parameter URL diperlukan',
+                example: '/api/tikwm/download?url=https://www.tiktok.com/@username/video/1234567890'
             });
         }
 
-        const resultLimit = parseInt(limit) || 10;
-        if (resultLimit < 1 || resultLimit > 20) {
+        const apiUrl = 'https://www.tikwm.com/api/';
+        
+        const response = await axios.post(apiUrl, 
+            `url=${encodeURIComponent(url)}`,
+            {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                }
+            }
+        );
+
+        const data = response.data;
+
+        if (data.code !== 0) {
             return res.status(400).json({
                 success: false,
-                message: 'Parameter limit harus antara 1-20 untuk endpoint v2',
-                example: '/api/pinterest/search-v2?query=frieren&limit=10'
+                message: 'Gagal mendapatkan data video',
+                error: data.msg || 'Unknown error'
             });
-        }
-
-        const searchUrl = `https://www.pinterest.com/search/pins/?q=${encodeURIComponent(query)}`;
-        
-        const headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-            'Accept-Language': 'en-US,en;q=0.5',
-            'Accept-Encoding': 'gzip, deflate, br',
-            'Connection': 'keep-alive',
-            'Upgrade-Insecure-Requests': '1',
-            'Sec-Fetch-Dest': 'document',
-            'Sec-Fetch-Mode': 'navigate',
-            'Sec-Fetch-Site': 'none',
-            'Cache-Control': 'max-age=0'
-        };
-
-        const response = await axios.get(searchUrl, { 
-            headers,
-            timeout: 15000,
-            maxRedirects: 5
-        });
-
-        const html = response.data;
-        
-        const scriptRegex = /<script[^>]*id="__PWS_INITIAL_PROPS__"[^>]*>(.*?)<\/script>/s;
-        const match = html.match(scriptRegex);
-        
-        const results = [];
-        
-        if (match && match[1]) {
-            try {
-                const jsonStr = match[1].trim();
-                const jsonData = JSON.parse(jsonStr);
-                
-                const initialRedux = jsonData?.initialReduxState;
-                
-                if (initialRedux && initialRedux.pins) {
-                    const pins = initialRedux.pins;
-                    
-                    for (const pinId in pins) {
-                        if (results.length >= resultLimit) break;
-                        
-                        const pin = pins[pinId];
-                        if (pin && pin.images) {
-                            const pinData = {
-                                id: pin.id || pinId,
-                                title: pin.grid_title || pin.title || '‎ ‎ ‎',
-                                description: pin.description || undefined,
-                                imageUrl: pin.images?.['736x']?.url || pin.images?.['474x']?.url || pin.images?.orig?.url || 'N/A',
-                                videoUrl: pin.videos?.video_list?.V_720P?.url || pin.story_pin_data?.pages?.[0]?.blocks?.[0]?.video?.video_list?.V_HLSV3_MOBILE?.url || 'gak ada',
-                                pinner: pin.pinner?.full_name || pin.pinner?.username || 'Unknown',
-                                pinnerUsername: pin.pinner?.username || 'Unknown',
-                                boardName: pin.board?.name || 'Unknown',
-                                boardUrl: pin.board?.url || '/',
-                                link: `https://www.pinterest.com/pin/${pin.id || pinId}/`
-                            };
-                            results.push(pinData);
-                        }
-                    }
-                }
-            } catch (parseError) {
-                console.error('JSON Parse Error:', parseError.message);
-            }
-        }
-
-        if (results.length === 0) {
-            const imgRegex = /<img[^>]+src="https:\/\/i\.pinimg\.com\/[^"]+"/g;
-            const imgMatches = html.match(imgRegex) || [];
-            
-            const uniqueImages = new Set();
-            imgMatches.forEach(imgTag => {
-                const urlMatch = imgTag.match(/src="([^"]+)"/);
-                if (urlMatch && urlMatch[1]) {
-                    const imgUrl = urlMatch[1];
-                    if (imgUrl.includes('736x') || imgUrl.includes('474x')) {
-                        uniqueImages.add(imgUrl);
-                    }
-                }
-            });
-
-            let counter = 1;
-            for (const imgUrl of uniqueImages) {
-                if (results.length >= resultLimit) break;
-                
-                results.push({
-                    id: `scraped_${counter}`,
-                    title: `${query} - Image ${counter}`,
-                    description: undefined,
-                    imageUrl: imgUrl,
-                    videoUrl: 'gak ada',
-                    pinner: 'Pinterest User',
-                    pinnerUsername: 'pinterest',
-                    boardName: 'Search Results',
-                    boardUrl: '/',
-                    link: searchUrl
-                });
-                counter++;
-            }
         }
 
         res.json({
             success: true,
-            query: query,
-            limit: resultLimit,
-            totalResults: results.length,
-            data: results,
-            method: 'scraping',
-            note: 'Endpoint v2 tanpa cookie - hasil mungkin terbatas',
+            data: {
+                id: data.data.id,
+                title: data.data.title,
+                author: {
+                    username: data.data.author.unique_id,
+                    nickname: data.data.author.nickname,
+                    avatar: data.data.author.avatar
+                },
+                video: {
+                    noWatermark: `https://www.tikwm.com${data.data.play}`,
+                    watermark: data.data.wmplay,
+                    music: data.data.music,
+                    cover: data.data.cover,
+                    duration: data.data.duration
+                },
+                stats: {
+                    views: data.data.play_count,
+                    likes: data.data.digg_count,
+                    comments: data.data.comment_count,
+                    shares: data.data.share_count,
+                    downloads: data.data.download_count
+                },
+                createdTime: data.data.create_time
+            },
             author: 'Kayzen Izumi',
             apiUrl: 'https://kayzen-api.my.id'
         });
-
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Gagal mengambil data dari Pinterest',
-            error: error.message,
-            note: 'Pinterest mungkin memblokir scraping. Gunakan endpoint /api/pinterest/search dengan cookie untuk hasil yang lebih baik.'
-        });
-    }
-});
-
-app.get('/api/tiktok/search', async (req, res) => {
-    try {
-        const { query } = req.query;
-
-        if (!query) {
-            return res.status(400).json({
-                success: false,
-                message: 'Parameter query diperlukan',
-                example: '/api/tiktok/search?query=jedag jedug'
-            });
-        }
-
-        const postData = new URLSearchParams({
-            keywords: query,
-            count: 12,
-            cursor: 0,
-            web: 1,
-            hd: 1
-        });
-
-        const response = await axios.post('https://www.tikwm.com/api/feed/search', postData, {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                'Origin': 'https://www.tikwm.com',
-                'Referer': 'https://www.tikwm.com/'
-            }
-        });
-
-        const data = response.data;
-
-        if (data && data.data) {
-            res.json({
-                success: true,
-                query: query,
-                total: data.data.length,
-                data: data.data,
-                author: 'Kayzen Izumi',
-                apiUrl: 'https://kayzen-api.my.id'
-            });
-        } else {
-            res.status(404).json({
-                success: false,
-                message: 'Tidak ditemukan hasil untuk query tersebut',
-                originalResponse: data
-            });
-        }
 
     } catch (error) {
         res.status(500).json({
@@ -484,41 +358,76 @@ app.get('/api/tiktok/search', async (req, res) => {
     }
 });
 
-app.get('/api/ai/blackbox', async (req, res) => {
+app.get('/api/tikwm/search', async (req, res) => {
     try {
-        const { query } = req.query;
+        const { query, limit } = req.query;
 
         if (!query) {
             return res.status(400).json({
                 success: false,
                 message: 'Parameter query diperlukan',
-                example: '/api/ai/blackbox?query=apa itu javascript'
+                example: '/api/tikwm/search?query=funny&limit=10'
             });
         }
 
-        const response = await axios.post('https://www.blackbox.ai/api/chat', {
-            messages: [{ id: "K80s36K", content: query, role: "user" }],
-            previewToken: null,
-            userId: null,
-            codeModelMode: true,
-            agentMode: {},
-            trendingAgentMode: {},
-            isMicMode: false,
-            isChromeExt: false,
-            githubToken: null
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                'Origin': 'https://www.blackbox.ai'
+        const resultLimit = parseInt(limit) || 10;
+        if (resultLimit < 1 || resultLimit > 50) {
+            return res.status(400).json({
+                success: false,
+                message: 'Parameter limit harus antara 1-50'
+            });
+        }
+
+        const apiUrl = 'https://www.tikwm.com/api/feed/search';
+        
+        const response = await axios.post(apiUrl, 
+            `keywords=${encodeURIComponent(query)}&count=${resultLimit}&cursor=0&web=1&hd=1`,
+            {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                }
             }
-        });
+        );
+
+        const data = response.data;
+
+        if (data.code !== 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'Gagal melakukan pencarian',
+                error: data.msg || 'Unknown error'
+            });
+        }
+
+        const results = data.data.videos.map(video => ({
+            id: video.video_id,
+            title: video.title,
+            author: {
+                username: video.author.unique_id,
+                nickname: video.author.nickname,
+                avatar: video.author.avatar
+            },
+            video: {
+                cover: video.cover,
+                duration: video.duration,
+                url: `https://www.tiktok.com/@${video.author.unique_id}/video/${video.video_id}`
+            },
+            stats: {
+                views: video.play_count,
+                likes: video.digg_count,
+                comments: video.comment_count,
+                shares: video.share_count
+            },
+            createdTime: video.create_time
+        }));
 
         res.json({
             success: true,
             query: query,
-            response: response.data,
-            model: 'Blackbox AI',
+            limit: resultLimit,
+            totalResults: results.length,
+            data: results,
             author: 'Kayzen Izumi',
             apiUrl: 'https://kayzen-api.my.id'
         });
@@ -526,8 +435,67 @@ app.get('/api/ai/blackbox', async (req, res) => {
     } catch (error) {
         res.status(500).json({
             success: false,
-            message: 'Gagal mengambil respon dari AI',
+            message: 'Gagal melakukan pencarian di TikWM',
             error: error.message
+        });
+    }
+});
+
+app.post('/api/ai/poe', async (req, res) => {
+    try {
+        const { message, model, apiKey } = req.body;
+
+        if (!message) {
+            return res.status(400).json({
+                success: false,
+                message: 'Parameter message diperlukan',
+                example: { message: 'Hello, how are you?', model: 'gpt-3.5-turbo', apiKey: 'YOUR_POE_API_KEY' }
+            });
+        }
+
+        if (!apiKey) {
+            return res.status(400).json({
+                success: false,
+                message: 'API Key Poe.com diperlukan',
+                tutorial: {
+                    step1: 'Buka https://poe.com/api_key',
+                    step2: 'Login dengan akun Poe Anda',
+                    step3: 'Generate API Key baru',
+                    step4: 'Copy API Key dan gunakan di request'
+                }
+            });
+        }
+
+        const selectedModel = model || 'capybara';
+        
+        const response = await axios.post('https://api.poe.com/bot/chat', {
+            query: message,
+            bot: selectedModel
+        }, {
+            headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Type': 'application/json',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            }
+        });
+
+        res.json({
+            success: true,
+            data: {
+                message: message,
+                model: selectedModel,
+                response: response.data.text || response.data
+            },
+            author: 'Kayzen Izumi',
+            apiUrl: 'https://kayzen-api.my.id'
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Gagal berkomunikasi dengan Poe AI',
+            error: error.message,
+            note: 'Pastikan API Key valid dan model yang dipilih tersedia'
         });
     }
 });
@@ -543,14 +511,14 @@ app.get('/api/status', (req, res) => {
                 '/api/mxdrop/info'
             ],
             pinterest: [
-                '/api/pinterest/search (requires cookie)',
-                '/api/pinterest/search-v2 (no cookie needed)'
+                '/api/pinterest/search'
             ],
-            tiktok: [
-                '/api/tiktok/search'
+            tikwm: [
+                '/api/tikwm/download',
+                '/api/tikwm/search'
             ],
             ai: [
-                '/api/ai/blackbox'
+                '/api/ai/poe'
             ]
         },
         author: 'Kayzen Izumi',
@@ -572,10 +540,7 @@ app.use((req, res) => {
             '/api/status',
             '/api/mxdrop/download',
             '/api/mxdrop/info',
-            '/api/pinterest/search',
-            '/api/pinterest/search-v2',
-            '/api/tiktok/search',
-            '/api/ai/blackbox'
+            '/api/pinterest/search'
         ]
     });
 });
