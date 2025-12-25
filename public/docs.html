@@ -387,7 +387,7 @@
                 Semua endpoint dapat diakses secara gratis dan mudah digunakan.
             </p>
             <p style="margin-top: 15px; line-height: 1.8; font-size: 1.1em;">
-                <strong>Base URL:</strong> <code style="background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 5px;">https://api.kayzen.com</code>
+                <strong>Base URL:</strong> <code style="background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 5px;">https://kayzen-api.my.id</code>
             </p>
         </div>
 
@@ -436,6 +436,22 @@
                     </button>
                     <div id="downloadResponse" class="response-box"></div>
                 </div>
+
+                <h4 style="margin-top: 30px;">✅ Success Response Example:</h4>
+                <div class="code-block">
+                    <pre>{
+  "success": true,
+  "data": {
+    "title": "File Name.zip",
+    "fileSize": "150 MB",
+    "uploadDate": "2024-01-15",
+    "downloadUrl": "https://direct.download.link/file.zip",
+    "originalUrl": "https://mxdrop.to/xxxxx"
+  },
+  "author": "Kayzen Izumi",
+  "apiUrl": "https://kayzenapi.com"
+}</pre>
+                </div>
             </div>
 
             <div class="endpoint">
@@ -480,101 +496,22 @@
                     </button>
                     <div id="infoResponse" class="response-box"></div>
                 </div>
-            </div>
-        </div>
 
-        <div class="section">
-            <h2>🎵 TikTok API</h2>
-            
-            <div class="endpoint">
-                <h3>Search TikTok Videos</h3>
-                <div>
-                    <span class="method get">GET</span>
-                    <span style="font-family: monospace; font-size: 1.1em;">/api/tiktok/search</span>
-                </div>
-                
-                <p style="margin: 15px 0; line-height: 1.6;">
-                    Endpoint ini digunakan untuk mencari video TikTok berdasarkan kata kunci (via TikWM)
-                </p>
-
-                <h4 style="margin-top: 20px; margin-bottom: 10px;">Query Parameters:</h4>
-                <table class="params-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Status</th>
-                            <th>Deskripsi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>query</code></td>
-                            <td>string</td>
-                            <td><span class="badge required">Required</span></td>
-                            <td>Kata kunci pencarian (contoh: jedag jedug)</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="try-section">
-                    <h4>🧪 Try It Out</h4>
-                    <div class="input-group">
-                        <label>Search Query:</label>
-                        <input type="text" id="tiktokQuery" placeholder="jedag jedug" />
-                    </div>
-                    <button class="try-button" onclick="testTiktokAPI()" id="tiktokBtn">
-                        🚀 Test API
-                    </button>
-                    <div id="tiktokResponse" class="response-box"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>🤖 AI Chat API</h2>
-            
-            <div class="endpoint">
-                <h3>Blackbox AI Chat</h3>
-                <div>
-                    <span class="method get">GET</span>
-                    <span style="font-family: monospace; font-size: 1.1em;">/api/ai/blackbox</span>
-                </div>
-                
-                <p style="margin: 15px 0; line-height: 1.6;">
-                    Endpoint ini digunakan untuk tanya jawab dengan AI (Model: Blackbox)
-                </p>
-
-                <h4 style="margin-top: 20px; margin-bottom: 10px;">Query Parameters:</h4>
-                <table class="params-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Status</th>
-                            <th>Deskripsi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>query</code></td>
-                            <td>string</td>
-                            <td><span class="badge required">Required</span></td>
-                            <td>Pertanyaan untuk AI</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="try-section">
-                    <h4>🧪 Try It Out</h4>
-                    <div class="input-group">
-                        <label>Question:</label>
-                        <input type="text" id="aiQuery" placeholder="Buatkan kode javascript simple" />
-                    </div>
-                    <button class="try-button" onclick="testAiAPI()" id="aiBtn">
-                        🚀 Test API
-                    </button>
-                    <div id="aiResponse" class="response-box"></div>
+                <h4 style="margin-top: 30px;">✅ Success Response Example:</h4>
+                <div class="code-block">
+                    <pre>{
+  "success": true,
+  "data": {
+    "title": "File Name.zip",
+    "description": "File description here",
+    "fileSize": "150 MB",
+    "uploadDate": "2024-01-15",
+    "views": "1,234",
+    "url": "https://mxdrop.to/xxxxx"
+  },
+  "author": "Kayzen Izumi",
+  "apiUrl": "https://kayzenapi.com"
+}</pre>
                 </div>
             </div>
         </div>
@@ -611,16 +548,143 @@
                             <td>Kata kunci pencarian (contoh: frieren, anime, nature)</td>
                         </tr>
                         <tr>
+                            <td><code>limit</code></td>
+                            <td>integer</td>
+                            <td><span class="badge optional">Optional</span></td>
+                            <td>Jumlah hasil (1-50, default: 10) - untuk bot WA disarankan 5-10</td>
+                        </tr>
+                        <tr>
                             <td><code>cookie</code></td>
                             <td>string</td>
-                            <td><span class="badge optional">Optional</span></td>
-                            <td>Cookie dari Pinterest (untuk hasil lebih baik)</td>
+                            <td><span class="badge required">Required</span></td>
+                            <td>Cookie _pinterest_sess dari Pinterest (WAJIB untuk hasil)</td>
                         </tr>
                         <tr>
                             <td><code>csrftoken</code></td>
                             <td>string</td>
-                            <td><span class="badge optional">Optional</span></td>
-                            <td>CSRF Token dari Pinterest</td>
+                            <td><span class="badge required">Required</span></td>
+                            <td>CSRF Token dari Pinterest (WAJIB untuk hasil)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="background: rgba(255, 87, 34, 0.2); padding: 15px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #FF5722;">
+                    <strong>⚠️ PENTING - Cookie & CSRF Token WAJIB!</strong>
+                    <p style="margin-top: 10px;">Pinterest API <strong>MEMERLUKAN</strong> cookie dan csrftoken yang valid. Tanpa parameter ini, API akan mengembalikan error.</p>
+                </div>
+
+                <div style="background: rgba(255, 193, 7, 0.2); padding: 15px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #FFC107;">
+                    <strong>💡 Cara Mendapatkan Cookie & CSRF Token:</strong>
+                    <ol style="margin-top: 10px; margin-left: 20px; line-height: 1.8;">
+                        <li>Buka <strong>Pinterest</strong> di browser (Chrome/Firefox) dan <strong>login</strong></li>
+                        <li>Tekan <strong>F12</strong> untuk membuka Developer Tools</li>
+                        <li>Buka tab <strong>"Application"</strong> (Chrome) atau <strong>"Storage"</strong> (Firefox)</li>
+                        <li>Pilih <strong>"Cookies"</strong> → <strong>"https://id.pinterest.com"</strong></li>
+                        <li>Cari dan copy value dari:
+                            <ul style="margin-left: 20px; margin-top: 5px;">
+                                <li><code>_pinterest_sess</code> (cookie yang panjang)</li>
+                                <li><code>csrftoken</code> (token pendek)</li>
+                            </ul>
+                        </li>
+                        <li>Paste ke input field di bawah atau gunakan sebagai parameter API</li>
+                    </ol>
+                </div>
+
+                <div class="try-section">
+                    <h4>🧪 Try It Out</h4>
+                    <div class="input-group">
+                        <label>Search Query: <span class="badge required">Required</span></label>
+                        <input type="text" id="pinterestQuery" placeholder="frieren" />
+                    </div>
+                    <div class="input-group">
+                        <label>Limit (1-50):</label>
+                        <input type="number" id="pinterestLimit" placeholder="10" value="10" min="1" max="50" />
+                    </div>
+                    <div class="input-group">
+                        <label>Cookie (_pinterest_sess): <span class="badge required">Required</span></label>
+                        <input type="text" id="pinterestCookie" placeholder="Paste your _pinterest_sess cookie here..." />
+                        <small style="color: rgba(255,255,255,0.7); font-size: 0.9em; margin-top: 5px; display: block;">Dapatkan dari DevTools → Application → Cookies → _pinterest_sess</small>
+                    </div>
+                    <div class="input-group">
+                        <label>CSRF Token: <span class="badge required">Required</span></label>
+                        <input type="text" id="pinterestCsrf" placeholder="Paste your csrftoken here..." />
+                        <small style="color: rgba(255,255,255,0.7); font-size: 0.9em; margin-top: 5px; display: block;">Dapatkan dari DevTools → Application → Cookies → csrftoken</small>
+                    </div>
+                    <button class="try-button" onclick="testPinterestAPI()" id="pinterestBtn">
+                        🚀 Test API
+                    </button>
+                    <div id="pinterestResponse" class="response-box"></div>
+                </div>
+
+                <div style="background: rgba(76, 175, 80, 0.2); padding: 15px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #4CAF50;">
+                    <strong>✅ Rekomendasi untuk Bot WhatsApp:</strong>
+                    <ul style="margin-top: 10px; margin-left: 20px;">
+                        <li>Gunakan <code>limit=5</code> atau <code>limit=10</code> untuk menghindari spam</li>
+                        <li>Tambahkan delay 2-3 detik antar pengiriman gambar</li>
+                        <li>Jangan kirim lebih dari 10 gambar sekaligus</li>
+                        <li>Simpan cookie dan csrftoken untuk digunakan berulang kali</li>
+                    </ul>
+                </div>
+
+                <h4 style="margin-top: 30px;">✅ Success Response Example:</h4>
+                <div class="code-block">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <pre>{
+  "success": true,
+  "query": "frieren",
+  "limit": 10,
+  "totalResults": 10,
+  "data": [
+    {
+      "id": "14707136281399837",
+      "title": "‎ ‎ ‎",
+      "description": "Heiter, Himmel and Frieren chibis",
+      "imageUrl": "https://i.pinimg.com/736x/56/e4/e0/...",
+      "videoUrl": "gak ada",
+      "pinner": "Maria paula",
+      "pinnerUsername": "mariapaularce",
+      "boardName": "icons<3",
+      "boardUrl": "/mariapaularce/icons3/"
+    },
+    ...
+  ],
+  "author": "Kayzen Izumi",
+  "apiUrl": "https://kayzenapi.com"
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎵 TikWM API</h2>
+            
+            <div class="endpoint">
+                <h3>Download TikTok Video</h3>
+                <div>
+                    <span class="method get">GET</span>
+                    <span style="font-family: monospace; font-size: 1.1em;">/api/tikwm/download</span>
+                </div>
+                
+                <p style="margin: 15px 0; line-height: 1.6;">
+                    Endpoint ini digunakan untuk download video TikTok tanpa watermark
+                </p>
+
+                <h4 style="margin-top: 20px; margin-bottom: 10px;">Query Parameters:</h4>
+                <table class="params-table">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Deskripsi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>url</code></td>
+                            <td>string</td>
+                            <td><span class="badge required">Required</span></td>
+                            <td>URL TikTok video (contoh: https://www.tiktok.com/@username/video/1234567890)</td>
                         </tr>
                     </tbody>
                 </table>
@@ -628,21 +692,225 @@
                 <div class="try-section">
                     <h4>🧪 Try It Out</h4>
                     <div class="input-group">
-                        <label>Search Query:</label>
-                        <input type="text" id="pinterestQuery" placeholder="frieren" />
+                        <label>TikTok URL: <span class="badge required">Required</span></label>
+                        <input type="text" id="tikwmDownloadUrl" placeholder="https://www.tiktok.com/@username/video/1234567890" />
                     </div>
-                    <div class="input-group">
-                        <label>Cookie (Optional):</label>
-                        <input type="text" id="pinterestCookie" placeholder="_pinterest_sess=..." />
-                    </div>
-                    <div class="input-group">
-                        <label>CSRF Token (Optional):</label>
-                        <input type="text" id="pinterestCsrf" placeholder="a1b2c3d4..." />
-                    </div>
-                    <button class="try-button" onclick="testPinterestAPI()" id="pinterestBtn">
+                    <button class="try-button" onclick="testTikwmDownloadAPI()" id="tikwmDownloadBtn">
                         🚀 Test API
                     </button>
-                    <div id="pinterestResponse" class="response-box"></div>
+                    <div id="tikwmDownloadResponse" class="response-box"></div>
+                </div>
+
+                <h4 style="margin-top: 30px;">✅ Success Response Example:</h4>
+                <div class="code-block">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <pre>{
+  "success": true,
+  "data": {
+    "id": "7123456789012345678",
+    "title": "Video title here",
+    "author": {
+      "username": "username",
+      "nickname": "Display Name",
+      "avatar": "https://..."
+    },
+    "video": {
+      "noWatermark": "https://www.tikwm.com/video/...",
+      "watermark": "https://...",
+      "music": "https://...",
+      "cover": "https://...",
+      "duration": 15
+    },
+    "stats": {
+      "views": 1000000,
+      "likes": 50000,
+      "comments": 1000,
+      "shares": 5000,
+      "downloads": 10000
+    },
+    "createdTime": 1234567890
+  }
+}</pre>
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <h3>Search TikTok Videos</h3>
+                <div>
+                    <span class="method get">GET</span>
+                    <span style="font-family: monospace; font-size: 1.1em;">/api/tikwm/search</span>
+                </div>
+                
+                <p style="margin: 15px 0; line-height: 1.6;">
+                    Endpoint ini digunakan untuk mencari video TikTok berdasarkan keyword
+                </p>
+
+                <h4 style="margin-top: 20px; margin-bottom: 10px;">Query Parameters:</h4>
+                <table class="params-table">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Deskripsi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>query</code></td>
+                            <td>string</td>
+                            <td><span class="badge required">Required</span></td>
+                            <td>Kata kunci pencarian (contoh: funny, dance, anime)</td>
+                        </tr>
+                        <tr>
+                            <td><code>limit</code></td>
+                            <td>integer</td>
+                            <td><span class="badge optional">Optional</span></td>
+                            <td>Jumlah hasil (1-50, default: 10)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="try-section">
+                    <h4>🧪 Try It Out</h4>
+                    <div class="input-group">
+                        <label>Search Query: <span class="badge required">Required</span></label>
+                        <input type="text" id="tikwmSearchQuery" placeholder="funny" />
+                    </div>
+                    <div class="input-group">
+                        <label>Limit (1-50):</label>
+                        <input type="number" id="tikwmSearchLimit" placeholder="10" value="10" min="1" max="50" />
+                    </div>
+                    <button class="try-button" onclick="testTikwmSearchAPI()" id="tikwmSearchBtn">
+                        🚀 Test API
+                    </button>
+                    <div id="tikwmSearchResponse" class="response-box"></div>
+                </div>
+
+                <h4 style="margin-top: 30px;">✅ Success Response Example:</h4>
+                <div class="code-block">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <pre>{
+  "success": true,
+  "query": "funny",
+  "limit": 10,
+  "totalResults": 10,
+  "data": [
+    {
+      "id": "7123456789012345678",
+      "title": "Funny video title",
+      "author": {
+        "username": "username",
+        "nickname": "Display Name",
+        "avatar": "https://..."
+      },
+      "video": {
+        "cover": "https://...",
+        "duration": 15,
+        "url": "https://www.tiktok.com/@username/video/7123456789012345678"
+      },
+      "stats": {
+        "views": 1000000,
+        "likes": 50000,
+        "comments": 1000,
+        "shares": 5000
+      },
+      "createdTime": 1234567890
+    }
+  ]
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🤖 AI API</h2>
+            
+            <div class="endpoint">
+                <h3>Poe AI Chat</h3>
+                <div>
+                    <span class="method post">POST</span>
+                    <span style="font-family: monospace; font-size: 1.1em;">/api/ai/poe</span>
+                </div>
+                
+                <p style="margin: 15px 0; line-height: 1.6;">
+                    Endpoint ini digunakan untuk chat dengan AI menggunakan Poe.com
+                </p>
+
+                <h4 style="margin-top: 20px; margin-bottom: 10px;">Request Body (JSON):</h4>
+                <table class="params-table">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Deskripsi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>message</code></td>
+                            <td>string</td>
+                            <td><span class="badge required">Required</span></td>
+                            <td>Pesan yang ingin dikirim ke AI</td>
+                        </tr>
+                        <tr>
+                            <td><code>model</code></td>
+                            <td>string</td>
+                            <td><span class="badge optional">Optional</span></td>
+                            <td>Model AI (default: capybara). Pilihan: gpt-3.5-turbo, claude, capybara, dll</td>
+                        </tr>
+                        <tr>
+                            <td><code>apiKey</code></td>
+                            <td>string</td>
+                            <td><span class="badge required">Required</span></td>
+                            <td>API Key dari Poe.com</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="background: rgba(255, 193, 7, 0.2); padding: 15px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #FFC107;">
+                    <strong>💡 Cara Mendapatkan API Key Poe.com:</strong>
+                    <ol style="margin-top: 10px; margin-left: 20px; line-height: 1.8;">
+                        <li>Buka <a href="https://poe.com/api_key" target="_blank" style="color: #fff; text-decoration: underline;">https://poe.com/api_key</a></li>
+                        <li>Login dengan akun Poe Anda</li>
+                        <li>Generate API Key baru</li>
+                        <li>Copy API Key dan gunakan di request</li>
+                    </ol>
+                </div>
+
+                <div class="try-section">
+                    <h4>🧪 Try It Out</h4>
+                    <div class="input-group">
+                        <label>Message: <span class="badge required">Required</span></label>
+                        <input type="text" id="poeMessage" placeholder="Hello, how are you?" />
+                    </div>
+                    <div class="input-group">
+                        <label>Model (Optional):</label>
+                        <input type="text" id="poeModel" placeholder="capybara" value="capybara" />
+                        <small style="color: rgba(255,255,255,0.7); font-size: 0.9em; margin-top: 5px; display: block;">Pilihan: gpt-3.5-turbo, claude, capybara, sage, dragonfly</small>
+                    </div>
+                    <div class="input-group">
+                        <label>API Key: <span class="badge required">Required</span></label>
+                        <input type="text" id="poeApiKey" placeholder="Paste your Poe API Key here..." />
+                    </div>
+                    <button class="try-button" onclick="testPoeAPI()" id="poeBtn">
+                        🚀 Test API
+                    </button>
+                    <div id="poeResponse" class="response-box"></div>
+                </div>
+
+                <h4 style="margin-top: 30px;">✅ Success Response Example:</h4>
+                <div class="code-block">
+                    <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    <pre>{
+  "success": true,
+  "data": {
+    "message": "Hello, how are you?",
+    "model": "capybara",
+    "response": "Hello! I'm doing well, thank you for asking..."
+  }
+}</pre>
                 </div>
             </div>
         </div>
@@ -668,6 +936,132 @@
                     </button>
                     <div id="statusResponse" class="response-box"></div>
                 </div>
+
+                <h4 style="margin-top: 30px;">✅ Response Example:</h4>
+                <div class="code-block">
+                    <pre>{
+  "success": true,
+  "status": "online",
+  "timestamp": "2024-01-15T10:30:00.000Z",
+  "endpoints": {
+    "mxdrop": [
+      "/api/mxdrop/download",
+      "/api/mxdrop/info"
+    ],
+    "pinterest": [
+      "/api/pinterest/search"
+    ],
+    "tikwm": [
+      "/api/tikwm/download",
+      "/api/tikwm/search"
+    ],
+    "ai": [
+      "/api/ai/poe"
+    ]
+  },
+  "author": "Kayzen Izumi",
+  "contact": {
+    "whatsapp": "628152313006",
+    "telegram": "@nonewpo",
+    "instagram": "@kayzenfry"
+  }
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>💡 Tips & Best Practices</h2>
+            <div style="line-height: 1.8; font-size: 1.05em;">
+                <p style="margin-bottom: 15px;"><strong>1. Rate Limiting:</strong> Gunakan API dengan bijak. Jangan melakukan spam request.</p>
+                <p style="margin-bottom: 15px;"><strong>2. Error Handling:</strong> Selalu handle error response dengan baik di aplikasi Anda.</p>
+                <p style="margin-bottom: 15px;"><strong>3. URL Encoding:</strong> Pastikan URL parameter di-encode dengan benar.</p>
+                <p style="margin-bottom: 15px;"><strong>4. Cache Response:</strong> Cache response untuk mengurangi jumlah request yang sama.</p>
+                <p style="margin-bottom: 15px;"><strong>5. Update:</strong> Follow channel WhatsApp untuk mendapatkan info update terbaru.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🌐 Code Examples</h2>
+            
+            <h3 style="margin-bottom: 15px;">JavaScript (Fetch API)</h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                <pre>const url = 'https://api.kayzen.com/api/mxdrop/download';
+const params = new URLSearchParams({
+    url: 'https://mxdrop.to/xxxxx'
+});
+
+fetch(`${url}?${params}`)
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log('Download URL:', data.data.downloadUrl);
+        }
+    })
+    .catch(error => console.error('Error:', error));</pre>
+            </div>
+
+            <h3 style="margin: 30px 0 15px 0;">Python (Requests)</h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                <pre>import requests
+
+url = 'https://api.kayzen.com/api/mxdrop/download'
+params = {
+    'url': 'https://mxdrop.to/xxxxx'
+}
+
+response = requests.get(url, params=params)
+data = response.json()
+
+if data['success']:
+    print('Download URL:', data['data']['downloadUrl'])</pre>
+            </div>
+
+            <h3 style="margin: 30px 0 15px 0;">Python (Requests) - Pinterest Search</h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                <pre>import requests
+import time
+
+url = 'https://api.kayzen.com/api/pinterest/search'
+params = {
+    'query': 'frieren',
+    'limit': 5
+}
+
+response = requests.get(url, params=params)
+data = response.json()
+
+if data['success']:
+    print(f'Found {data["totalResults"]} results')
+    for pin in data['data']:
+        print(f'Title: {pin["title"]}')
+        print(f'Image: {pin["imageUrl"]}')
+        print('---')
+        time.sleep(2)</pre>
+            </div>
+
+            <h3 style="margin: 30px 0 15px 0;">PHP (cURL)</h3>
+            <div class="code-block">
+                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                <pre>$url = 'https://api.kayzen.com/api/mxdrop/download';
+$params = http_build_query([
+    'url' => 'https://mxdrop.to/xxxxx'
+]);
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url . '?' . $params);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+
+$data = json_decode($response, true);
+
+if ($data['success']) {
+    echo 'Download URL: ' . $data['data']['downloadUrl'];
+}</pre>
             </div>
         </div>
 
@@ -694,7 +1088,7 @@
 
         <footer>
             <p>&copy; 2024 Kayzen API. Made with ❤️ by Kayzen Izumi</p>
-            <p style="margin-top: 10px; opacity: 0.8;">Documentation Version 1.1</p>
+            <p style="margin-top: 10px; opacity: 0.8;">Documentation Version 1.0</p>
         </footer>
     </div>
 
@@ -769,12 +1163,14 @@
 
         async function testPinterestAPI() {
             const queryInput = document.getElementById('pinterestQuery');
+            const limitInput = document.getElementById('pinterestLimit');
             const cookieInput = document.getElementById('pinterestCookie');
             const csrfInput = document.getElementById('pinterestCsrf');
             const responseBox = document.getElementById('pinterestResponse');
             const button = document.getElementById('pinterestBtn');
             
             const query = queryInput.value.trim();
+            const limit = limitInput.value.trim();
             const cookie = cookieInput.value.trim();
             const csrf = csrfInput.value.trim();
             
@@ -791,6 +1187,7 @@
             
             try {
                 let apiUrl = `/api/pinterest/search?query=${encodeURIComponent(query)}`;
+                if (limit) apiUrl += `&limit=${limit}`;
                 if (cookie) apiUrl += `&cookie=${encodeURIComponent(cookie)}`;
                 if (csrf) apiUrl += `&csrftoken=${encodeURIComponent(csrf)}`;
                 
@@ -809,17 +1206,17 @@
             }
         }
 
-        async function testTiktokAPI() {
-            const queryInput = document.getElementById('tiktokQuery');
-            const responseBox = document.getElementById('tiktokResponse');
-            const button = document.getElementById('tiktokBtn');
+        async function testTikwmDownloadAPI() {
+            const urlInput = document.getElementById('tikwmDownloadUrl');
+            const responseBox = document.getElementById('tikwmDownloadResponse');
+            const button = document.getElementById('tikwmDownloadBtn');
             
-            const query = queryInput.value.trim();
+            const url = urlInput.value.trim();
             
-            if (!query) {
+            if (!url) {
                 showResponse(responseBox, {
                     success: false,
-                    message: 'Mohon masukkan query pencarian'
+                    message: 'Mohon masukkan URL TikTok'
                 }, false);
                 return;
             }
@@ -828,7 +1225,7 @@
             button.innerHTML = '⏳ Loading<span class="loading"></span>';
             
             try {
-                const response = await fetch(`/api/tiktok/search?query=${encodeURIComponent(query)}`);
+                const response = await fetch(`/api/tikwm/download?url=${encodeURIComponent(url)}`);
                 const data = await response.json();
                 showResponse(responseBox, data, data.success);
             } catch (error) {
@@ -843,17 +1240,19 @@
             }
         }
 
-        async function testAiAPI() {
-            const queryInput = document.getElementById('aiQuery');
-            const responseBox = document.getElementById('aiResponse');
-            const button = document.getElementById('aiBtn');
+        async function testTikwmSearchAPI() {
+            const queryInput = document.getElementById('tikwmSearchQuery');
+            const limitInput = document.getElementById('tikwmSearchLimit');
+            const responseBox = document.getElementById('tikwmSearchResponse');
+            const button = document.getElementById('tikwmSearchBtn');
             
             const query = queryInput.value.trim();
+            const limit = limitInput.value.trim();
             
             if (!query) {
                 showResponse(responseBox, {
                     success: false,
-                    message: 'Mohon masukkan pertanyaan'
+                    message: 'Mohon masukkan kata kunci pencarian'
                 }, false);
                 return;
             }
@@ -862,7 +1261,66 @@
             button.innerHTML = '⏳ Loading<span class="loading"></span>';
             
             try {
-                const response = await fetch(`/api/ai/blackbox?query=${encodeURIComponent(query)}`);
+                let apiUrl = `/api/tikwm/search?query=${encodeURIComponent(query)}`;
+                if (limit) apiUrl += `&limit=${limit}`;
+                
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                showResponse(responseBox, data, data.success);
+            } catch (error) {
+                showResponse(responseBox, {
+                    success: false,
+                    message: 'Terjadi kesalahan saat menghubungi API',
+                    error: error.message
+                }, false);
+            } finally {
+                button.disabled = false;
+                button.innerHTML = '🚀 Test API';
+            }
+        }
+
+        async function testPoeAPI() {
+            const messageInput = document.getElementById('poeMessage');
+            const modelInput = document.getElementById('poeModel');
+            const apiKeyInput = document.getElementById('poeApiKey');
+            const responseBox = document.getElementById('poeResponse');
+            const button = document.getElementById('poeBtn');
+            
+            const message = messageInput.value.trim();
+            const model = modelInput.value.trim();
+            const apiKey = apiKeyInput.value.trim();
+            
+            if (!message) {
+                showResponse(responseBox, {
+                    success: false,
+                    message: 'Mohon masukkan pesan'
+                }, false);
+                return;
+            }
+            
+            if (!apiKey) {
+                showResponse(responseBox, {
+                    success: false,
+                    message: 'Mohon masukkan API Key Poe.com'
+                }, false);
+                return;
+            }
+            
+            button.disabled = true;
+            button.innerHTML = '⏳ Loading<span class="loading"></span>';
+            
+            try {
+                const response = await fetch('/api/ai/poe', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        model: model || 'capybara',
+                        apiKey: apiKey
+                    })
+                });
                 const data = await response.json();
                 showResponse(responseBox, data, data.success);
             } catch (error) {
@@ -950,14 +1408,21 @@
                 testPinterestAPI();
             }
         });
-        document.getElementById('tiktokQuery').addEventListener('keypress', function(e) {
+        document.getElementById('tikwmDownloadUrl').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
-                testTiktokAPI();
+                testTikwmDownloadAPI();
             }
         });
-        document.getElementById('aiQuery').addEventListener('keypress', function(e) {
+
+        document.getElementById('tikwmSearchQuery').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
-                testAiAPI();
+                testTikwmSearchAPI();
+            }
+        });
+
+        document.getElementById('poeMessage').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                testPoeAPI();
             }
         });
     </script>
