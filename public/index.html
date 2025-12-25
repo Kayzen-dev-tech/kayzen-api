@@ -9,9 +9,36 @@
         body { background-color: #121212; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; }
         .container { max-width: 800px; margin: 0 auto; padding: 20px; text-align: center; }
         h1, h2 { color: #00ffcc; text-shadow: 0 0 10px #00ffcc; }
-        .swiper { width: 100%; height: 400px; margin-bottom: 30px; border-radius: 15px; border: 2px solid #333; }
-        .swiper-slide { display: flex; align-items: center; justify-content: center; background: #000; }
-        .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .swiper { 
+            width: 100%; 
+            height: 500px; 
+            margin-bottom: 30px; 
+            border-radius: 15px; 
+            border: 2px solid #333; 
+            background-color: #000;
+        }
+        
+        @media (max-width: 768px) {
+            .swiper {
+                height: 350px;
+            }
+        }
+
+        .swiper-slide { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            background-color: #000; 
+            overflow: hidden;
+        }
+        
+        .swiper-slide img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; 
+        }
+
         .section-title { margin-top: 40px; margin-bottom: 10px; border-bottom: 2px solid #00ffcc; display: inline-block; padding-bottom: 5px; }
         .about-box { background: #1e1e1e; padding: 20px; border-radius: 10px; margin-top: 20px; text-align: left; }
         .social-links a { display: block; color: #fff; text-decoration: none; margin: 5px 0; font-size: 1.1em; transition: 0.3s; }
@@ -30,12 +57,16 @@
     <div class="swiper mySwiper1">
         <div class="swiper-wrapper" id="slider1"></div>
         <div class="swiper-pagination"></div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
     </div>
 
     <h2 class="section-title">My Bini Collection</h2>
     <div class="swiper mySwiper2">
         <div class="swiper-wrapper" id="slider2"></div>
         <div class="swiper-pagination"></div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
     </div>
 
     <div class="about-box">
@@ -74,16 +105,27 @@
 <script>
     const slider1Container = document.getElementById('slider1');
     for (let i = 1; i <= 15; i++) {
-        slider1Container.innerHTML += `<div class="swiper-slide"><img src="slide${i}.jpg" alt="Cosplayer ${i}"></div>`;
+        slider1Container.innerHTML += `<div class="swiper-slide"><img src="images/slide${i}.jpg" alt="Cosplayer ${i}"></div>`;
     }
 
     const slider2Container = document.getElementById('slider2');
     for (let i = 1; i <= 5; i++) {
-        slider2Container.innerHTML += `<div class="swiper-slide"><img src="bini${i}.jpg" alt="My Bini ${i}"></div>`;
+        slider2Container.innerHTML += `<div class="swiper-slide"><img src="images/bini${i}.jpg" alt="My Bini ${i}"></div>`;
     }
 
-    new Swiper(".mySwiper1", { loop: true, autoplay: { delay: 2500 }, pagination: { el: ".swiper-pagination" } });
-    new Swiper(".mySwiper2", { loop: true, autoplay: { delay: 3000 }, pagination: { el: ".swiper-pagination" } });
+    new Swiper(".mySwiper1", { 
+        loop: true, 
+        autoplay: { delay: 2500, disableOnInteraction: false }, 
+        pagination: { el: ".swiper-pagination", clickable: true },
+        navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" }
+    });
+    
+    new Swiper(".mySwiper2", { 
+        loop: true, 
+        autoplay: { delay: 3000, disableOnInteraction: false }, 
+        pagination: { el: ".swiper-pagination", clickable: true },
+        navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" }
+    });
 </script>
 
 </body>
