@@ -1,0 +1,371 @@
+import React, { useState, useEffect } from 'react';
+import { Menu, X, Github, MessageCircle, Send, Instagram, Youtube, Music2, Code, Image, Download, Search, Brain, Home, FileText } from 'lucide-react';
+
+const App = () => {
+  const [currentPage, setCurrentPage] = useState('home');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentBiniSlide, setCurrentBiniSlide] = useState(0);
+  const [apiResult, setApiResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [apiInputs, setApiInputs] = useState({});
+
+  const slides = Array.from({ length: 15 }, (_, i) => `slide${i + 1}.jpg`);
+  const biniSlides = Array.from({ length: 5 }, (_, i) => `bini${i + 1}.jpg`);
+
+  useEffect(() => {
+    const slideInterval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 3000);
+    return () => clearInterval(slideInterval);
+  }, []);
+
+  useEffect(() => {
+    const biniInterval = setInterval(() => {
+      setCurrentBiniSlide((prev) => (prev + 1) % biniSlides.length);
+    }, 3000);
+    return () => clearInterval(biniInterval);
+  }, []);
+
+  const apiEndpoints = {
+    mxdrop: {
+      name: 'MXDrop Downloader',
+      icon: Download,
+      endpoints: [
+        { method: 'GET', path: '/api/mxdrop/download', params: ['url'], description: 'Download from MXDrop' },
+        { method: 'GET', path: '/api/mxdrop/search', params: ['query'], description: 'Search MXDrop content' }
+      ]
+    },
+    tikwm: {
+      name: 'TikWM Downloader',
+      icon: Music2,
+      endpoints: [
+        { method: 'GET', path: '/api/tikwm/download', params: ['url'], description: 'Download TikTok video' },
+        { method: 'GET', path: '/api/tikwm/search', params: ['query'], description: 'Search TikTok videos' }
+      ]
+    },
+    pinterest: {
+      name: 'Pinterest Search',
+      icon: Image,
+      endpoints: [
+        { method: 'GET', path: '/api/pinterest/search', params: ['query'], description: 'Search Pinterest images (returns 5 links)' }
+      ]
+    },
+    ai: {
+      name: 'AI Services',
+      icon: Brain,
+      endpoints: [
+        { method: 'POST', path: '/api/ai/gpt', params: ['message'], description: 'GPT Chat AI' },
+        { method: 'POST', path: '/api/ai/gemini', params: ['message'], description: 'Google Gemini AI' },
+        { method: 'POST', path: '/api/ai/claude', params: ['message'], description: 'Claude AI' },
+        { method: 'POST', path: '/api/ai/llama', params: ['message'], description: 'Llama AI' },
+        { method: 'POST', path: '/api/ai/mistral', params: ['message'], description: 'Mistral AI' },
+        { method: 'GET', path: '/api/ai/image', params: ['prompt'], description: 'AI Image Generator' }
+      ]
+    }
+  };
+
+  const testAPI = async (endpoint, params) => {
+    setLoading(true);
+    setApiResult(null);
+
+    try {
+      const queryParams = new URLSearchParams();
+      params.forEach(param => {
+        const value = apiInputs[`${endpoint.path}_${param}`];
+        if (value) queryParams.append(param, value);
+      });
+
+      const url = `${endpoint.path}?${queryParams.toString()}`;
+      
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      const mockResponse = {
+        status: 'success',
+        endpoint: endpoint.path,
+        data: endpoint.path.includes('pinterest') 
+          ? {
+              images: [
+                'https://i.pinimg.com/564x/example1.jpg',
+                'https://i.pinimg.com/564x/example2.jpg',
+                'https://i.pinimg.com/564x/example3.jpg',
+                'https://i.pinimg.com/564x/example4.jpg',
+                'https://i.pinimg.com/564x/example5.jpg'
+              ]
+            }
+          : endpoint.path.includes('ai')
+          ? { response: 'AI response generated successfully' }
+          : { download_url: 'https://example.com/download', title: 'Content Title' },
+        timestamp: new Date().toISOString()
+      };
+
+      setApiResult(mockResponse);
+    } catch (error) {
+      setApiResult({ status: 'error', message: error.message });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const HomePage = () => (
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+      <div className="relative h-96 overflow-hidden">
+        <img src="banner.jpg" alt="Banner" className="w-full h-full object-cover opacity-50" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-center">
+            <img src="profile.jpg" alt="Profile" className="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-2xl" />
+            <h1 className="text-5xl font-bold text-white mb-2">Kayzen API</h1>
+            <p className="text-xl text-gray-200">Professional Web API Platform</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl">
+            <h2 className="text-3xl font-bold text-white mb-4">Cosplayer Gallery</h2>
+            <div className="relative h-96 rounded-xl overflow-hidden shadow-xl">
+              <img 
+                src={slides[currentSlide]} 
+                alt={`Slide ${currentSlide + 1}`}
+                className="w-full h-full object-cover transition-opacity duration-500"
+              />
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+                {slides.map((_, idx) => (
+                  <div 
+                    key={idx}
+                    className={`w-2 h-2 rounded-full ${idx === currentSlide ? 'bg-white' : 'bg-white/50'}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl">
+            <h2 className="text-3xl font-bold text-white mb-4">My Bini Gallery</h2>
+            <div className="relative h-96 rounded-xl overflow-hidden shadow-xl">
+              <img 
+                src={biniSlides[currentBiniSlide]} 
+                alt={`Bini ${currentBiniSlide + 1}`}
+                className="w-full h-full object-cover transition-opacity duration-500"
+              />
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+                {biniSlides.map((_, idx) => (
+                  <div 
+                    key={idx}
+                    className={`w-2 h-2 rounded-full ${idx === currentBiniSlide ? 'bg-white' : 'bg-white/50'}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8">
+          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl">
+            <h3 className="text-2xl font-bold text-white mb-4">About Me</h3>
+            <p className="text-gray-200 text-lg leading-relaxed">
+              Hi, I'm <span className="font-bold text-purple-300">Kayzen Izumi</span>, a passionate developer creating powerful web APIs and tools for the community.
+            </p>
+          </div>
+
+          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl">
+            <h3 className="text-2xl font-bold text-white mb-4">About My Bini</h3>
+            <p className="text-gray-200 text-lg leading-relaxed">
+              Special mention to <span className="font-bold text-pink-300">@h___rvn</span>, who inspires and supports this journey.
+            </p>
+          </div>
+
+          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl">
+            <h3 className="text-2xl font-bold text-white mb-4">About This API</h3>
+            <p className="text-gray-200 text-lg leading-relaxed">
+              A comprehensive web API platform offering downloaders, search tools, AI services, and Pinterest integration.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-12 bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl">
+          <h3 className="text-2xl font-bold text-white mb-6">Connect With Me</h3>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <h4 className="text-xl font-semibold text-purple-300 mb-4">Kayzen Izumi</h4>
+              <div className="space-y-3">
+                <a href="https://wa.me/628152313006" className="flex items-center gap-3 text-gray-200 hover:text-green-400 transition">
+                  <MessageCircle size={20} />
+                  <span>WhatsApp: 628152313006</span>
+                </a>
+                <a href="https://t.me/nonewpo" className="flex items-center gap-3 text-gray-200 hover:text-blue-400 transition">
+                  <Send size={20} />
+                  <span>Telegram: @nonewpo</span>
+                </a>
+                <a href="https://instagram.com/kayzenfry" className="flex items-center gap-3 text-gray-200 hover:text-pink-400 transition">
+                  <Instagram size={20} />
+                  <span>Instagram: @kayzenfry</span>
+                </a>
+                <a href="https://youtube.com/@kayzenfry" className="flex items-center gap-3 text-gray-200 hover:text-red-400 transition">
+                  <Youtube size={20} />
+                  <span>YouTube: @kayzenfry</span>
+                </a>
+                <a href="https://tiktok.com/@scz_kayzen" className="flex items-center gap-3 text-gray-200 hover:text-purple-400 transition">
+                  <Music2 size={20} />
+                  <span>TikTok: @scz_kayzen</span>
+                </a>
+              </div>
+            </div>
+            <div>
+              <h4 className="text-xl font-semibold text-pink-300 mb-4">My Bini</h4>
+              <div className="space-y-3">
+                <a href="https://instagram.com/h___rvn" className="flex items-center gap-3 text-gray-200 hover:text-pink-400 transition">
+                  <Instagram size={20} />
+                  <span>Instagram: @h___rvn</span>
+                </a>
+              </div>
+              <h4 className="text-xl font-semibold text-blue-300 mb-4 mt-6">API Updates</h4>
+              <a href="https://whatsapp.com/channel/0029VbBRpUN8F2pMzHjQqz3S" className="flex items-center gap-3 text-gray-200 hover:text-green-400 transition">
+                <MessageCircle size={20} />
+                <span>WhatsApp Channel</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const DocsPage = () => (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 py-12">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="text-center mb-12">
+          <h1 className="text-5xl font-bold text-white mb-4">API Documentation</h1>
+          <p className="text-xl text-gray-300">Test and explore all available endpoints</p>
+        </div>
+
+        {Object.entries(apiEndpoints).map(([key, category]) => (
+          <div key={key} className="mb-8 bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl">
+            <div className="flex items-center gap-3 mb-6">
+              <category.icon className="text-purple-400" size={32} />
+              <h2 className="text-3xl font-bold text-white">{category.name}</h2>
+            </div>
+
+            {category.endpoints.map((endpoint, idx) => (
+              <div key={idx} className="mb-6 bg-white/5 rounded-xl p-6 border border-white/10">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className={`px-3 py-1 rounded-lg text-sm font-bold ${
+                    endpoint.method === 'GET' ? 'bg-green-500' : 'bg-blue-500'
+                  }`}>
+                    {endpoint.method}
+                  </span>
+                  <code className="text-purple-300 font-mono">{endpoint.path}</code>
+                </div>
+                <p className="text-gray-300 mb-4">{endpoint.description}</p>
+                
+                <div className="space-y-3">
+                  {endpoint.params.map(param => (
+                    <div key={param}>
+                      <label className="text-gray-300 text-sm mb-1 block">{param}</label>
+                      <input
+                        type="text"
+                        placeholder={`Enter ${param}`}
+                        className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-purple-400"
+                        onChange={(e) => setApiInputs({...apiInputs, [`${endpoint.path}_${param}`]: e.target.value})}
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => testAPI(endpoint, endpoint.params)}
+                  disabled={loading}
+                  className="mt-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-purple-600 hover:to-pink-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {loading ? 'Testing...' : 'Test Endpoint'}
+                </button>
+
+                {apiResult && (
+                  <div className="mt-4 bg-black/30 rounded-lg p-4">
+                    <pre className="text-green-400 text-sm overflow-x-auto">
+                      {JSON.stringify(apiResult, null, 2)}
+                    </pre>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen">
+      <nav className="bg-black/30 backdrop-blur-lg sticky top-0 z-50 border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center gap-3">
+              <Code className="text-purple-400" size={32} />
+              <span className="text-white font-bold text-xl">Kayzen API</span>
+            </div>
+
+            <div className="hidden md:flex items-center gap-6">
+              <button
+                onClick={() => setCurrentPage('home')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition ${
+                  currentPage === 'home' ? 'bg-purple-500 text-white' : 'text-gray-300 hover:text-white'
+                }`}
+              >
+                <Home size={20} />
+                <span>Home</span>
+              </button>
+              <button
+                onClick={() => setCurrentPage('docs')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition ${
+                  currentPage === 'docs' ? 'bg-purple-500 text-white' : 'text-gray-300 hover:text-white'
+                }`}
+              >
+                <FileText size={20} />
+                <span>API Docs</span>
+              </button>
+              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition">
+                <Github size={24} />
+              </a>
+            </div>
+
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="md:hidden text-white"
+            >
+              {menuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+
+          {menuOpen && (
+            <div className="md:hidden py-4 space-y-2">
+              <button
+                onClick={() => { setCurrentPage('home'); setMenuOpen(false); }}
+                className="block w-full text-left px-4 py-2 text-gray-300 hover:bg-white/10 rounded-lg"
+              >
+                Home
+              </button>
+              <button
+                onClick={() => { setCurrentPage('docs'); setMenuOpen(false); }}
+                className="block w-full text-left px-4 py-2 text-gray-300 hover:bg-white/10 rounded-lg"
+              >
+                API Docs
+              </button>
+            </div>
+          )}
+        </div>
+      </nav>
+
+      {currentPage === 'home' ? <HomePage /> : <DocsPage />}
+
+      <footer className="bg-black/50 backdrop-blur-lg border-t border-white/10 py-8">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <p className="text-gray-400">© 2024 Kayzen API. Built with ❤️ for the community</p>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default App;
