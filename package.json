@@ -1,31 +1,9 @@
 {
   "name": "kayzen-api",
   "version": "1.0.0",
-  "description": "Kayzen API - Powerful REST API with MXDrop Download Support",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
-  },
-  "keywords": [
-    "api",
-    "rest-api",
-    "mxdrop",
-    "download",
-    "kayzen"
-  ],
-  "author": "Kayzen Izumi",
-  "license": "MIT",
+  "type": "module",
   "dependencies": {
-    "express": "^4.18.2",
-    "axios": "^1.6.2",
-    "cheerio": "^1.0.0-rc.12",
-    "cors": "^2.8.5"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.2"
-  },
-  "engines": {
-    "node": ">=14.0.0"
+    "axios": "^1.6.8",
+    "cheerio": "^1.0.0"
   }
 }
