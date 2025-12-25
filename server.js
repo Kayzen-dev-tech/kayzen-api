@@ -148,8 +148,6 @@ app.get('/api/mxdrop/info', async (req, res) => {
 app.get('/api/pinterest/search', async (req, res) => {
     try {
         const { query, limit } = req.query;
-        const cookie = req.query.cookie || 'isi_cookie_pinterest_disini';
-        const csrftoken = req.query.csrftoken || 'isi_csrftoken_disini';
 
         if (!query) {
             return res.status(400).json({
@@ -163,100 +161,57 @@ app.get('/api/pinterest/search', async (req, res) => {
         if (resultLimit < 1 || resultLimit > 50) {
             return res.status(400).json({
                 success: false,
-                message: 'Parameter limit harus antara 1-50',
-                example: '/api/pinterest/search?query=frieren&limit=10'
+                message: 'Parameter limit harus antara 1-50'
             });
         }
 
-        const randomSuffix = Math.floor(Math.random() * 10000);
-        const modifiedQuery = `${query} ${randomSuffix}`;
-
-        const userAgents = [
-            'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Mobile Safari/537.36',
-            'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1',
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
-        ];
-        const randomUserAgent = userAgents[Math.floor(Math.random() * userAgents.length)];
-
-        const randomPageSize = Math.floor(Math.random() * 30) + 20;
-
-        const url = 'https://id.pinterest.com/resource/BaseSearchResource/get/';
-        const headers = {
-            'accept': 'application/json, text/javascript, */*, q=0.01',
-            'accept-language': 'id-ID',
-            'content-type': 'application/x-www-form-urlencoded',
-            'cookie': cookie,
-            'origin': 'https://id.pinterest.com',
-            'referer': `https://id.pinterest.com/search/pins/?q=${encodeURIComponent(modifiedQuery)}&rs=typed`,
-            'user-agent': randomUserAgent,
-            'x-csrftoken': csrftoken,
-            'x-pinterest-appstate': 'active',
-            'x-pinterest-source-url': `/search/pins/?q=${encodeURIComponent(modifiedQuery)}&rs=typed`,
-            'x-requested-with': 'XMLHttpRequest',
-        };
-
-        const postData = new URLSearchParams();
-        postData.append('source_url', `/search/pins/?q=${encodeURIComponent(modifiedQuery)}&rs=typed`);
-        postData.append('data', JSON.stringify({
-            options: {
-                query: modifiedQuery,
-                scope: 'pins',
-                page_size: randomPageSize,
-                appliedProductFilters: '---',
-                domains: null,
-                user: null,
-                seoDrawerEnabled: false,
-                applied_unified_filters: null,
-                auto_correction_disabled: false,
-                journey_depth: null,
-                source_id: null,
-                source_module_id: null,
-                source_url: `/search/pins/?q=${encodeURIComponent(modifiedQuery)}&rs=typed`,
-                static_feed: false,
-                selected_one_bar_modules: null,
-                query_pin_sigs: null,
-                price_max: null,
-                price_min: null,
-                request_params: null,
-                top_pin_ids: null,
-                article: null,
-                corpus: null,
-                customized_rerank_type: null,
-                filters: null,
-                rs: 'typed',
-                redux_normalize_feed: true,
-                bookmarks: [],
-            },
-            context: {},
-        }));
-
-        const response = await axios.post(url, postData.toString(), { 
-            headers,
-            timeout: 15000
+        const searchUrl = `https://www.pinterest.com/search/pins/?q=${encodeURIComponent(query)}&rs=typed`;
+        
+        const response = await axios.get(searchUrl, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.5',
+                'Referer': 'https://www.pinterest.com/'
+            }
         });
 
-        const results = response.data?.resource_response?.data?.results || [];
+        const $ = cheerio.load(response.data);
+        const scriptData = $('script[id="__PWS_DATA__"]').html();
 
-        const shuffledResults = [...results].sort(() => Math.random() - 0.5);
+        if (!scriptData) {
+            return res.status(500).json({
+                success: false,
+                message: 'Gagal mengambil struktur data dari Pinterest'
+            });
+        }
 
-        const mappedResults = shuffledResults.slice(0, resultLimit).map((pin) => ({
-            id: pin.id,
-            title: pin.grid_title || '‎ ‎ ‎',
-            description: pin.description || undefined,
-            imageUrl: pin.images?.['736x']?.url || pin.images?.['474x']?.url || 'N/A',
-            videoUrl: pin.story_pin_data?.pages?.[0]?.blocks?.[0]?.video?.video_list?.V_HLSV3_MOBILE?.url || 'gak ada',
-            pinner: pin.pinner?.full_name || 'Unknown',
-            pinnerUsername: pin.pinner?.username || 'Unknown',
-            boardName: pin.board?.name || 'Unknown',
-            boardUrl: pin.board?.url || '/',
-        }));
+        const jsonData = JSON.parse(scriptData);
+        const pins = jsonData?.props?.initialReduxState?.pins || {};
+        
+        const results = Object.values(pins)
+            .filter(pin => pin.images && (pin.images['736x'] || pin.images.orig))
+            .map(pin => ({
+                id: pin.id,
+                title: pin.grid_title || pin.title || 'No Title',
+                description: pin.description || '',
+                imageUrl: pin.images?.['736x']?.url || pin.images?.orig?.url,
+                videoUrl: pin.videos?.video_list?.V_720P?.url || null,
+                pinner: pin.pinner?.full_name || 'Unknown',
+                pinnerUsername: pin.pinner?.username || 'Unknown',
+                boardName: pin.board?.name || 'Unknown',
+                boardUrl: pin.board?.url ? `https://www.pinterest.com${pin.board.url}` : null
+            }));
+
+        const shuffled = results.sort(() => 0.5 - Math.random());
+        const selectedResults = shuffled.slice(0, resultLimit);
 
         res.json({
             success: true,
             query: query,
             limit: resultLimit,
-            totalResults: mappedResults.length,
-            data: mappedResults,
+            totalResults: selectedResults.length,
+            data: selectedResults,
             author: 'Kayzen Izumi',
             apiUrl: 'https://kayzen-api.my.id'
         });
