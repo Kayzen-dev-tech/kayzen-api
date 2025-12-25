@@ -527,7 +527,7 @@
                 </div>
                 
                 <p style="margin: 15px 0; line-height: 1.6;">
-                    Endpoint ini digunakan untuk mencari gambar, video, dan pins dari Pinterest
+                    Endpoint ini digunakan untuk mencari gambar, video, dan pins dari Pinterest tanpa cookie.
                 </p>
 
                 <h4 style="margin-top: 20px; margin-bottom: 10px;">Query Parameters:</h4>
@@ -553,42 +553,8 @@
                             <td><span class="badge optional">Optional</span></td>
                             <td>Jumlah hasil (1-50, default: 10) - untuk bot WA disarankan 5-10</td>
                         </tr>
-                        <tr>
-                            <td><code>cookie</code></td>
-                            <td>string</td>
-                            <td><span class="badge required">Required</span></td>
-                            <td>Cookie _pinterest_sess dari Pinterest (WAJIB untuk hasil)</td>
-                        </tr>
-                        <tr>
-                            <td><code>csrftoken</code></td>
-                            <td>string</td>
-                            <td><span class="badge required">Required</span></td>
-                            <td>CSRF Token dari Pinterest (WAJIB untuk hasil)</td>
-                        </tr>
                     </tbody>
                 </table>
-
-                <div style="background: rgba(255, 87, 34, 0.2); padding: 15px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #FF5722;">
-                    <strong>⚠️ PENTING - Cookie & CSRF Token WAJIB!</strong>
-                    <p style="margin-top: 10px;">Pinterest API <strong>MEMERLUKAN</strong> cookie dan csrftoken yang valid. Tanpa parameter ini, API akan mengembalikan error.</p>
-                </div>
-
-                <div style="background: rgba(255, 193, 7, 0.2); padding: 15px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #FFC107;">
-                    <strong>💡 Cara Mendapatkan Cookie & CSRF Token:</strong>
-                    <ol style="margin-top: 10px; margin-left: 20px; line-height: 1.8;">
-                        <li>Buka <strong>Pinterest</strong> di browser (Chrome/Firefox) dan <strong>login</strong></li>
-                        <li>Tekan <strong>F12</strong> untuk membuka Developer Tools</li>
-                        <li>Buka tab <strong>"Application"</strong> (Chrome) atau <strong>"Storage"</strong> (Firefox)</li>
-                        <li>Pilih <strong>"Cookies"</strong> → <strong>"https://id.pinterest.com"</strong></li>
-                        <li>Cari dan copy value dari:
-                            <ul style="margin-left: 20px; margin-top: 5px;">
-                                <li><code>_pinterest_sess</code> (cookie yang panjang)</li>
-                                <li><code>csrftoken</code> (token pendek)</li>
-                            </ul>
-                        </li>
-                        <li>Paste ke input field di bawah atau gunakan sebagai parameter API</li>
-                    </ol>
-                </div>
 
                 <div class="try-section">
                     <h4>🧪 Try It Out</h4>
@@ -599,16 +565,6 @@
                     <div class="input-group">
                         <label>Limit (1-50):</label>
                         <input type="number" id="pinterestLimit" placeholder="10" value="10" min="1" max="50" />
-                    </div>
-                    <div class="input-group">
-                        <label>Cookie (_pinterest_sess): <span class="badge required">Required</span></label>
-                        <input type="text" id="pinterestCookie" placeholder="Paste your _pinterest_sess cookie here..." />
-                        <small style="color: rgba(255,255,255,0.7); font-size: 0.9em; margin-top: 5px; display: block;">Dapatkan dari DevTools → Application → Cookies → _pinterest_sess</small>
-                    </div>
-                    <div class="input-group">
-                        <label>CSRF Token: <span class="badge required">Required</span></label>
-                        <input type="text" id="pinterestCsrf" placeholder="Paste your csrftoken here..." />
-                        <small style="color: rgba(255,255,255,0.7); font-size: 0.9em; margin-top: 5px; display: block;">Dapatkan dari DevTools → Application → Cookies → csrftoken</small>
                     </div>
                     <button class="try-button" onclick="testPinterestAPI()" id="pinterestBtn">
                         🚀 Test API
@@ -622,7 +578,6 @@
                         <li>Gunakan <code>limit=5</code> atau <code>limit=10</code> untuk menghindari spam</li>
                         <li>Tambahkan delay 2-3 detik antar pengiriman gambar</li>
                         <li>Jangan kirim lebih dari 10 gambar sekaligus</li>
-                        <li>Simpan cookie dan csrftoken untuk digunakan berulang kali</li>
                     </ul>
                 </div>
 
@@ -1164,15 +1119,11 @@ if ($data['success']) {
         async function testPinterestAPI() {
             const queryInput = document.getElementById('pinterestQuery');
             const limitInput = document.getElementById('pinterestLimit');
-            const cookieInput = document.getElementById('pinterestCookie');
-            const csrfInput = document.getElementById('pinterestCsrf');
             const responseBox = document.getElementById('pinterestResponse');
             const button = document.getElementById('pinterestBtn');
             
             const query = queryInput.value.trim();
             const limit = limitInput.value.trim();
-            const cookie = cookieInput.value.trim();
-            const csrf = csrfInput.value.trim();
             
             if (!query) {
                 showResponse(responseBox, {
@@ -1188,8 +1139,6 @@ if ($data['success']) {
             try {
                 let apiUrl = `/api/pinterest/search?query=${encodeURIComponent(query)}`;
                 if (limit) apiUrl += `&limit=${limit}`;
-                if (cookie) apiUrl += `&cookie=${encodeURIComponent(cookie)}`;
-                if (csrf) apiUrl += `&csrftoken=${encodeURIComponent(csrf)}`;
                 
                 const response = await fetch(apiUrl);
                 const data = await response.json();
