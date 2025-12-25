@@ -170,13 +170,8 @@ app.get('/api/pinterest/search', async (req, res) => {
         const response = await axios.get(searchUrl, {
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
-                'Accept-Language': 'en-US,en;q=0.9',
-                'Sec-Fetch-Dest': 'document',
-                'Sec-Fetch-Mode': 'navigate',
-                'Sec-Fetch-Site': 'none',
-                'Sec-Fetch-User': '?1',
-                'Upgrade-Insecure-Requests': '1'
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.5'
             }
         });
 
@@ -184,17 +179,33 @@ app.get('/api/pinterest/search', async (req, res) => {
         const scriptData = $('script[id="__PWS_DATA__"]').html();
 
         if (!scriptData) {
-            throw new Error('Gagal menemukan data PWS di halaman Pinterest');
+            return res.status(404).json({
+                success: false,
+                message: 'Gagal mengambil struktur data. Pinterest mungkin memblokir IP server.',
+                query: query
+            });
         }
 
         const jsonData = JSON.parse(scriptData);
         
-        let pins = [];
-        if (jsonData.props && jsonData.props.initialReduxState && jsonData.props.initialReduxState.pins) {
-            pins = Object.values(jsonData.props.initialReduxState.pins);
-        }
+        const extractPins = (obj, found = []) => {
+            if (typeof obj === 'object' && obj !== null) {
+                if (obj.images && obj.images['236x'] && obj.id) {
+                    found.push(obj);
+                } else {
+                    for (const key in obj) {
+                        extractPins(obj[key], found);
+                    }
+                }
+            }
+            return found;
+        };
 
-        const results = pins
+        const allPins = extractPins(jsonData);
+        
+        const uniquePins = Array.from(new Map(allPins.map(pin => [pin.id, pin])).values());
+
+        const results = uniquePins
             .filter(pin => pin.images && (pin.images['736x'] || pin.images.orig))
             .map(pin => ({
                 id: pin.id,
