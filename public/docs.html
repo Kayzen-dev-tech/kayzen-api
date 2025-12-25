@@ -3,17 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kayzen API Docs</title>
+    <title>Kayzen API Playground</title>
     <style>
-        body { background-color: #0f0f0f; color: #e0e0e0; font-family: monospace; padding: 20px; }
+        body { background-color: #0f0f0f; color: #e0e0e0; font-family: monospace; padding: 20px; margin: 0; }
         .container { max-width: 900px; margin: 0 auto; }
-        header { text-align: center; border-bottom: 1px solid #333; padding-bottom: 20px; margin-bottom: 30px; }
-        h1 { color: #00ffcc; }
-        .endpoint { background: #1a1a1a; padding: 15px; margin-bottom: 15px; border-left: 4px solid #00ffcc; border-radius: 4px; }
-        .method { color: #00ffcc; font-weight: bold; margin-right: 10px; }
-        .url { color: #fff; background: #333; padding: 2px 6px; border-radius: 3px; }
-        .desc { margin-top: 5px; color: #aaa; }
-        .back-btn { display: inline-block; margin-bottom: 20px; color: #00ffcc; text-decoration: none; }
+        header { text-align: center; padding-bottom: 20px; margin-bottom: 30px; border-bottom: 1px solid #333; }
+        h1 { color: #00ffcc; margin: 0; }
+        .subtitle { color: #888; margin-top: 5px; }
+        
+        .api-card { background: #1a1a1a; padding: 20px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #333; transition: 0.3s; }
+        .api-card:hover { border-color: #00ffcc; box-shadow: 0 0 10px rgba(0,255,204,0.1); }
+        
+        .method { color: #000; background: #00ffcc; padding: 3px 8px; border-radius: 3px; font-weight: bold; margin-right: 10px; font-size: 0.9em; }
+        .path { font-size: 1.1em; color: #fff; }
+        .desc { margin: 10px 0; color: #aaa; font-style: italic; }
+        
+        .input-group { margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap; }
+        input { flex: 1; padding: 10px; background: #222; border: 1px solid #444; color: #fff; border-radius: 4px; font-family: monospace; }
+        input:focus { outline: none; border-color: #00ffcc; }
+        
+        button { padding: 10px 20px; background: #333; color: #fff; border: 1px solid #444; border-radius: 4px; cursor: pointer; transition: 0.2s; font-weight: bold; }
+        button:hover { background: #00ffcc; color: #000; }
+        
+        .response-box { margin-top: 15px; background: #000; padding: 15px; border-radius: 4px; border: 1px solid #333; display: none; }
+        pre { margin: 0; white-space: pre-wrap; word-wrap: break-word; color: #a5fb8f; font-size: 0.9em; }
+        
+        .back-btn { display: inline-block; margin-bottom: 20px; color: #00ffcc; text-decoration: none; border: 1px solid #00ffcc; padding: 5px 15px; border-radius: 20px; }
+        .back-btn:hover { background: #00ffcc; color: #000; }
     </style>
 </head>
 <body>
@@ -21,54 +37,94 @@
 <div class="container">
     <a href="/" class="back-btn">&larr; Back to Home</a>
     <header>
-        <h1>API Documentation</h1>
-        <p>Created by Kayzen Izumi</p>
+        <h1>API Playground</h1>
+        <div class="subtitle">Test endpoints directly from browser</div>
     </header>
 
-    <h2>Downloader & Search</h2>
-    
-    <div class="endpoint">
-        <span class="method">GET</span> <span class="url">/api/tiktok?url=...</span>
+    <div class="api-card">
+        <div><span class="method">GET</span> <span class="path">/api/tiktok</span></div>
         <div class="desc">Download TikTok video without watermark (TikWM).</div>
+        <div class="input-group">
+            <input type="text" id="tiktok-url" placeholder="Enter TikTok URL (e.g., https://vt.tiktok...)">
+            <button onclick="testApi('/api/tiktok', { url: 'tiktok-url' }, 'tiktok-res')">Execute</button>
+        </div>
+        <div class="response-box" id="tiktok-res"><pre>Waiting...</pre></div>
     </div>
 
-    <div class="endpoint">
-        <span class="method">GET</span> <span class="url">/api/mxdrop?url=...</span>
-        <div class="desc">MXDrop video data fetcher.</div>
+    <div class="api-card">
+        <div><span class="method">GET</span> <span class="path">/api/mxdrop</span></div>
+        <div class="desc">MXDrop video details fetcher.</div>
+        <div class="input-group">
+            <input type="text" id="mx-url" placeholder="Enter MXDrop URL">
+            <button onclick="testApi('/api/mxdrop', { url: 'mx-url' }, 'mx-res')">Execute</button>
+        </div>
+        <div class="response-box" id="mx-res"><pre>Waiting...</pre></div>
     </div>
 
-    <div class="endpoint">
-        <span class="method">GET</span> <span class="url">/api/pinterest?q=query</span>
-        <div class="desc">Search Pinterest and return 5 image links.</div>
+    <div class="api-card">
+        <div><span class="method">GET</span> <span class="path">/api/pinterest</span></div>
+        <div class="desc">Search 5 images from Pinterest.</div>
+        <div class="input-group">
+            <input type="text" id="pin-q" placeholder="Enter query (e.g., Cyberpunk)">
+            <button onclick="testApi('/api/pinterest', { q: 'pin-q' }, 'pin-res')">Execute</button>
+        </div>
+        <div class="response-box" id="pin-res"><pre>Waiting...</pre></div>
     </div>
 
-    <h2>Artificial Intelligence (5 Features)</h2>
-
-    <div class="endpoint">
-        <span class="method">GET</span> <span class="url">/api/ai/chat?text=hello</span>
-        <div class="desc">Simple AI Chat response.</div>
+    <div class="api-card">
+        <div><span class="method">GET</span> <span class="path">/api/ai/chat</span></div>
+        <div class="desc">Simple AI Conversation.</div>
+        <div class="input-group">
+            <input type="text" id="chat-text" placeholder="Enter message">
+            <button onclick="testApi('/api/ai/chat', { text: 'chat-text' }, 'chat-res')">Execute</button>
+        </div>
+        <div class="response-box" id="chat-res"><pre>Waiting...</pre></div>
     </div>
 
-    <div class="endpoint">
-        <span class="method">GET</span> <span class="url">/api/ai/image?prompt=cat</span>
-        <div class="desc">Generate image from text (Pollinations).</div>
+    <div class="api-card">
+        <div><span class="method">GET</span> <span class="path">/api/ai/image</span></div>
+        <div class="desc">Generate Image from Prompt.</div>
+        <div class="input-group">
+            <input type="text" id="img-prompt" placeholder="Enter prompt (e.g., Cat in space)">
+            <button onclick="testApi('/api/ai/image', { prompt: 'img-prompt' }, 'img-res')">Execute</button>
+        </div>
+        <div class="response-box" id="img-res"><pre>Waiting...</pre></div>
     </div>
 
-    <div class="endpoint">
-        <span class="method">GET</span> <span class="url">/api/ai/summary?text=longtext</span>
-        <div class="desc">Summarize text.</div>
+    <div class="api-card">
+        <div><span class="method">GET</span> <span class="path">/api/ai/translate</span></div>
+        <div class="desc">Translate Text.</div>
+        <div class="input-group">
+            <input type="text" id="trans-text" placeholder="Text to translate">
+            <input type="text" id="trans-lang" placeholder="Lang Code (e.g., id, ja, en)" style="max-width: 80px;">
+            <button onclick="testApi('/api/ai/translate', { text: 'trans-text', lang: 'trans-lang' }, 'trans-res')">Execute</button>
+        </div>
+        <div class="response-box" id="trans-res"><pre>Waiting...</pre></div>
     </div>
 
-    <div class="endpoint">
-        <span class="method">GET</span> <span class="url">/api/ai/translate?text=hello&lang=id</span>
-        <div class="desc">Translate text to specific language.</div>
-    </div>
-
-    <div class="endpoint">
-        <span class="method">GET</span> <span class="url">/api/ai/code?query=function</span>
-        <div class="desc">Generate code snippets.</div>
-    </div>
 </div>
+
+<script>
+    async function testApi(endpoint, paramIds, resultId) {
+        const resBox = document.getElementById(resultId);
+        resBox.style.display = 'block';
+        resBox.innerHTML = '<pre>Loading...</pre>';
+
+        const params = new URLSearchParams();
+        for (const [key, id] of Object.entries(paramIds)) {
+            const val = document.getElementById(id).value;
+            if(val) params.append(key, val);
+        }
+
+        try {
+            const res = await fetch(`${endpoint}?${params.toString()}`);
+            const data = await res.json();
+            resBox.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        } catch (error) {
+            resBox.innerHTML = `<pre style="color:red">Error: ${error.message}</pre>`;
+        }
+    }
+</script>
 
 </body>
 </html>
