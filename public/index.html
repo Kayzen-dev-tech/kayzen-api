@@ -7,51 +7,45 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
         body { background-color: #121212; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; }
-        .container { max-width: 800px; margin: 0 auto; padding: 20px; text-align: center; }
-        h1, h2 { color: #00ffcc; text-shadow: 0 0 10px #00ffcc; }
+        .container { max-width: 800px; margin: 0 auto; padding-bottom: 50px; text-align: center; }
         
-        .swiper { 
-            width: 100%; 
-            height: 500px; 
-            margin-bottom: 30px; 
-            border-radius: 15px; 
-            border: 2px solid #333; 
-            background-color: #000;
-        }
-        
-        @media (max-width: 768px) {
-            .swiper {
-                height: 350px;
-            }
-        }
+        .profile-header { position: relative; margin-bottom: 60px; }
+        .banner-img { width: 100%; height: 250px; object-fit: cover; border-bottom: 3px solid #00ffcc; }
+        .profile-img-container { position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%); width: 120px; height: 120px; border-radius: 50%; border: 4px solid #121212; overflow: hidden; background: #000; box-shadow: 0 0 20px rgba(0, 255, 204, 0.5); }
+        .profile-img { width: 100%; height: 100%; object-fit: cover; }
 
-        .swiper-slide { 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            background-color: #000; 
-            overflow: hidden;
-        }
-        
-        .swiper-slide img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: contain; 
-        }
+        h1 { margin-top: 10px; color: #00ffcc; text-shadow: 0 0 10px #00ffcc; font-size: 2em; }
+        .subtitle { color: #aaa; margin-bottom: 20px; font-size: 0.9em; letter-spacing: 1px; }
 
-        .section-title { margin-top: 40px; margin-bottom: 10px; border-bottom: 2px solid #00ffcc; display: inline-block; padding-bottom: 5px; }
-        .about-box { background: #1e1e1e; padding: 20px; border-radius: 10px; margin-top: 20px; text-align: left; }
-        .social-links a { display: block; color: #fff; text-decoration: none; margin: 5px 0; font-size: 1.1em; transition: 0.3s; }
-        .social-links a:hover { color: #00ffcc; padding-left: 10px; }
-        .btn-docs { display: inline-block; padding: 10px 20px; background: #00ffcc; color: #000; text-decoration: none; border-radius: 5px; font-weight: bold; margin-top: 20px; }
+        .swiper { width: 100%; height: 500px; margin-bottom: 30px; border-radius: 15px; border: 2px solid #333; background-color: #000; margin-top: 20px; }
+        @media (max-width: 768px) { .swiper { height: 350px; } .banner-img { height: 180px; } }
+        .swiper-slide { display: flex; align-items: center; justify-content: center; background-color: #000; overflow: hidden; }
+        .swiper-slide img { width: 100%; height: 100%; object-fit: contain; }
+
+        .section-title { margin-top: 40px; margin-bottom: 15px; border-bottom: 2px solid #00ffcc; display: inline-block; padding-bottom: 5px; font-size: 1.5em; text-transform: uppercase; letter-spacing: 2px; }
+        .about-box { background: #1e1e1e; padding: 25px; border-radius: 10px; margin: 20px 20px; text-align: left; border: 1px solid #333; }
+        .social-links a { display: block; color: #fff; text-decoration: none; margin: 8px 0; font-size: 1.1em; transition: 0.3s; padding: 5px 0; border-bottom: 1px solid #333; }
+        .social-links a:hover { color: #00ffcc; padding-left: 10px; border-bottom: 1px solid #00ffcc; }
+        .btn-docs { display: inline-block; padding: 12px 30px; background: #00ffcc; color: #000; text-decoration: none; border-radius: 30px; font-weight: bold; margin-top: 10px; transition: 0.3s; box-shadow: 0 0 10px rgba(0, 255, 204, 0.3); }
+        .btn-docs:hover { background: #fff; box-shadow: 0 0 20px rgba(0, 255, 204, 0.8); }
         .footer { margin-top: 50px; font-size: 0.8em; color: #777; }
     </style>
 </head>
 <body>
 
+<div class="profile-header">
+    <img src="images/banner.jpg" alt="Banner" class="banner-img">
+    <div class="profile-img-container">
+        <img src="images/profile.jpg" alt="Profile" class="profile-img">
+    </div>
+</div>
+
 <div class="container">
-    <h1>Welcome to Kayzen API</h1>
-    <a href="/docs" class="btn-docs">Open API Documentation</a>
+    <h1>Kayzen Izumi</h1>
+    <div class="subtitle">DEVELOPER • API CREATOR • OWNER</div>
+    <a href="/docs" class="btn-docs">OPEN API PLAYGROUND</a>
+
+    <br><br>
 
     <h2 class="section-title">Cosplayer Collection</h2>
     <div class="swiper mySwiper1">
@@ -70,11 +64,11 @@
     </div>
 
     <div class="about-box">
-        <h2>About Me</h2>
+        <h2 style="color: #00ffcc; margin-top: 0;">About Me</h2>
         <p><strong>Name:</strong> Kayzen Izumi</p>
-        <p><strong>Role:</strong> Developer & Owner</p>
+        <p><strong>Role:</strong> Fullstack Developer & Bot Creator</p>
         <p><strong>My Bini:</strong> @h___rvn</p>
-        <p>Web API ini dibuat untuk keperluan testing, pembelajaran, dan integrasi bot. Menggunakan teknologi Node.js dan Express.</p>
+        <p>Web API ini menyediakan berbagai endpoint free to use untuk kebutuhan automation dan bot WhatsApp/Telegram.</p>
         
         <h3>Social Media Kayzen</h3>
         <div class="social-links">
@@ -105,12 +99,12 @@
 <script>
     const slider1Container = document.getElementById('slider1');
     for (let i = 1; i <= 15; i++) {
-        slider1Container.innerHTML += `<div class="swiper-slide"><img src="slide${i}.jpg" alt="Cosplayer ${i}"></div>`;
+        slider1Container.innerHTML += `<div class="swiper-slide"><img src="images/slide${i}.jpg" alt="Cosplayer ${i}"></div>`;
     }
 
     const slider2Container = document.getElementById('slider2');
     for (let i = 1; i <= 5; i++) {
-        slider2Container.innerHTML += `<div class="swiper-slide"><img src="bini${i}.jpg" alt="My Bini ${i}"></div>`;
+        slider2Container.innerHTML += `<div class="swiper-slide"><img src="images/bini${i}.jpg" alt="My Bini ${i}"></div>`;
     }
 
     new Swiper(".mySwiper1", { 
