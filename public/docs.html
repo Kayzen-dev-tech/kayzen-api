@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Docs & Playground - Kayzen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1e293b; color: #e2e8f0; font-family: monospace; }
+        .endpoint-card { background: #334155; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; }
+        pre { background: #0f172a; padding: 10px; border-radius: 5px; overflow-x: auto; color: #a5b4fc; }
+    </style>
+</head>
+<body class="p-6 max-w-5xl mx-auto pb-20">
+    
+    <div class="flex justify-between items-center mb-10">
+        <h1 class="text-3xl font-bold text-blue-400">Kayzen API Playground</h1>
+        <a href="/" class="text-gray-400 hover:text-white">&larr; Back Home</a>
+    </div>
+
+    <div class="endpoint-card">
+        <h3 class="text-xl font-bold text-red-400">Pinterest Search</h3>
+        <p class="text-sm mb-2">Method: GET | Endpoint: /api/pinterest</p>
+        <div class="flex gap-2">
+            <input type="text" id="pinInput" placeholder="ex: anime girl" class="w-full p-2 rounded bg-slate-800 text-white border border-slate-600">
+            <button onclick="testApi('/api/pinterest?q=' + document.getElementById('pinInput').value)" class="bg-blue-600 px-4 py-2 rounded">Test</button>
+        </div>
+    </div>
+
+    <div class="endpoint-card">
+        <h3 class="text-xl font-bold text-white">TikWM Downloader</h3>
+        <p class="text-sm mb-2">Method: GET | Endpoint: /api/tikwm</p>
+        <div class="flex gap-2">
+            <input type="text" id="tikInput" placeholder="TikTok URL" class="w-full p-2 rounded bg-slate-800 text-white border border-slate-600">
+            <button onclick="testApi('/api/tikwm?url=' + document.getElementById('tikInput').value)" class="bg-blue-600 px-4 py-2 rounded">Test</button>
+        </div>
+    </div>
+
+    <div class="endpoint-card">
+        <h3 class="text-xl font-bold text-green-400">AI Chat</h3>
+        <p class="text-sm mb-2">Method: GET | Endpoint: /api/ai-chat</p>
+        <div class="flex gap-2">
+            <input type="text" id="chatInput" placeholder="Ask something..." class="w-full p-2 rounded bg-slate-800 text-white border border-slate-600">
+            <button onclick="testApi('/api/ai-chat?text=' + document.getElementById('chatInput').value)" class="bg-blue-600 px-4 py-2 rounded">Test</button>
+        </div>
+    </div>
+
+    <div class="endpoint-card">
+        <h3 class="text-xl font-bold text-pink-400">AI Image Generator</h3>
+        <p class="text-sm mb-2">Method: GET | Endpoint: /api/ai-image</p>
+        <div class="flex gap-2">
+            <input type="text" id="imgInput" placeholder="ex: cyberpunk cat" class="w-full p-2 rounded bg-slate-800 text-white border border-slate-600">
+            <button onclick="testApi('/api/ai-image?prompt=' + document.getElementById('imgInput').value)" class="bg-blue-600 px-4 py-2 rounded">Test</button>
+        </div>
+    </div>
+
+    <div class="endpoint-card">
+        <h3 class="text-xl font-bold text-yellow-400">AI Translator</h3>
+        <p class="text-sm mb-2">Method: GET | Endpoint: /api/ai-translate</p>
+        <div class="flex gap-2">
+            <input type="text" id="transText" placeholder="Text" class="w-1/2 p-2 rounded bg-slate-800 text-white border border-slate-600">
+            <input type="text" id="transLang" placeholder="id/en/ja" class="w-1/4 p-2 rounded bg-slate-800 text-white border border-slate-600">
+            <button onclick="testApi('/api/ai-translate?text=' + document.getElementById('transText').value + '&target=' + document.getElementById('transLang').value)" class="bg-blue-600 px-4 py-2 rounded">Test</button>
+        </div>
+    </div>
+
+    <div class="mt-8">
+        <h3 class="text-lg font-bold">Result JSON:</h3>
+        <pre id="jsonOutput">Waiting for test...</pre>
+    </div>
+
+    <script>
+        async function testApi(endpoint) {
+            const output = document.getElementById('jsonOutput');
+            output.textContent = "Fetching...";
+            try {
+                const res = await fetch(endpoint);
+                const data = await res.json();
+                output.textContent = JSON.stringify(data, null, 2);
+            } catch (err) {
+                output.textContent = "Error: " + err.message;
+            }
+        }
+    </script>
+</body>
+</html>
