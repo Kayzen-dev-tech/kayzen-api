@@ -3,80 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kayzen Izumi - Web API Pro</title>
+    <meta name="description" content="Kayzen API - Free REST API untuk Downloader, AI Tools, dan Image Search">
+    <meta name="keywords" content="API, Downloader, TikTok, AI, ChatGPT, Pinterest">
+    <meta name="author" content="Kayzen Izumi">
+    <title>Kayzen API - Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-        body { font-family: 'Poppins', sans-serif; background-color: #0f172a; color: white; }
-        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .slider-container { overflow-x: scroll; scroll-snap-type: x mandatory; -ms-overflow-style: none; scrollbar-width: none; }
-        .slider-container::-webkit-scrollbar { display: none; }
-        .slide { scroll-snap-align: center; flex-shrink: 0; }
+        .gradient-text {
+            background: linear-gradient(to right, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .slide-container {
+            position: relative;
+            width: 100%;
+            height: 320px;
+            overflow: hidden;
+            border-radius: 1rem;
+        }
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .slide.active {
+            opacity: 1;
+        }
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center">
-    
-    <div class="w-full h-64 relative">
-        <img src="public/banner.jpg" alt="Banner" class="w-full h-full object-cover opacity-70">
-        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[#0f172a]"></div>
-    </div>
-
-    <div class="relative -mt-24 text-center z-10 w-full max-w-4xl px-4">
-        <div class="relative inline-block">
-            <img src="public/profile.jpg" alt="Profile" class="w-40 h-40 rounded-full border-4 border-blue-500 object-cover shadow-2xl">
-        </div>
-        <h1 class="text-3xl font-bold mt-4">Kayzen Izumi</h1>
-        <p class="text-gray-400">Professional Developer & API Creator</p>
+<body class="bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 text-white">
+    <div class="relative min-h-screen">
+        <div class="absolute inset-0 opacity-20" style="background-image: url('banner.jpg'); background-size: cover; background-position: center;"></div>
         
-        <div class="mt-6 glass p-6 rounded-xl text-left space-y-4">
-            <h2 class="text-xl font-bold text-blue-400">About Me</h2>
-            <p class="text-sm">Hai, saya Kayzen Izumi. Pengembang Web API yang berfokus pada fungsionalitas dan integrasi modern.</p>
-            
-            <h2 class="text-xl font-bold text-pink-400">About My Bini (@h___rvn)</h2>
-            <p class="text-sm">Dia adalah inspirasi terbesarku. Support system terbaik dalam setiap project.</p>
-            
-            <h2 class="text-xl font-bold text-green-400">About This API</h2>
-            <p class="text-sm">API ini menyediakan berbagai fitur mulai dari download media (TikTok, Pinterest) hingga integrasi AI canggih. Gratis untuk digunakan dengan bijak.</p>
-            <p class="text-xs text-yellow-400 mt-2">Update Info: <a href="https://whatsapp.com/channel/0029VbBRpUN8F2pMzHjQqz3S" class="underline">Channel WhatsApp</a></p>
-        </div>
-
-        <div class="mt-8">
-            <h3 class="text-lg font-bold mb-4 text-left border-l-4 border-blue-500 pl-3">Cosplayer Gallery</h3>
-            <div class="slider-container flex space-x-4 pb-4">
-                <script>
-                    for(let i=1; i<=15; i++) {
-                        document.write(`<img src="public/slide${i}.jpg" class="slide w-48 h-72 object-cover rounded-lg shadow-lg hover:scale-105 transition-transform" alt="Cosplayer ${i}">`);
-                    }
-                </script>
+        <nav class="relative z-10 bg-black bg-opacity-50 backdrop-blur-md border-b border-purple-500">
+            <div class="container mx-auto px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <h1 class="text-3xl font-bold gradient-text">Kayzen API</h1>
+                    <div class="flex gap-4">
+                        <a href="/docs.html" class="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all">
+                            API Docs
+                        </a>
+                        <a href="https://github.com/yourusername/kayzen-api" target="_blank" class="px-6 py-2 bg-gray-800 rounded-lg font-semibold hover:bg-gray-700 transition-all flex items-center gap-2">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
             </div>
-        </div>
+        </nav>
 
-        <div class="mt-8 mb-12">
-            <h3 class="text-lg font-bold mb-4 text-left border-l-4 border-pink-500 pl-3">My Bini Gallery</h3>
-            <div class="slider-container flex space-x-4 pb-4">
-                <script>
-                    for(let i=1; i<=5; i++) {
-                        document.write(`<img src="public/bini${i}.jpg" class="slide w-48 h-72 object-cover rounded-lg shadow-lg border-2 border-pink-500" alt="Bini ${i}">`);
-                    }
-                </script>
+        <div class="relative z-10 container mx-auto px-6 py-16">
+            <div class="flex flex-col items-center mb-16">
+                <div class="relative mb-6">
+                    <div class="w-32 h-32 rounded-full border-4 border-purple-500 overflow-hidden shadow-lg shadow-purple-500/50">
+                        <img src="profile.jpg" alt="Kayzen Izumi" class="w-full h-full object-cover">
+                    </div>
+                    <div class="absolute -bottom-2 -right-2 w-10 h-10 bg-green-500 rounded-full border-4 border-gray-900"></div>
+                </div>
+                <h2 class="text-4xl font-bold mb-2">Kayzen Izumi</h2>
+                <p class="text-purple-300 text-lg">Full Stack Developer & API Creator</p>
             </div>
-        </div>
 
-        <div class="fixed bottom-0 left-0 w-full glass p-4 flex justify-center space-x-6 z-50">
-            <a href="https://wa.me/628152313006" class="text-green-500 font-bold">WA</a>
-            <a href="https://t.me/nonewpo" class="text-blue-400 font-bold">TG</a>
-            <a href="https://instagram.com/kayzenfry" class="text-pink-500 font-bold">IG</a>
-            <a href="https://youtube.com/@kayzenfry" class="text-red-500 font-bold">YT</a>
-            <a href="https://tiktok.com/@scz_kayzen" class="text-white font-bold">TT</a>
-            <span class="text-gray-500">|</span>
-            <a href="https://instagram.com/h___rvn" class="text-pink-300 font-bold">Bini IG</a>
-        </div>
+            <div class="grid md:grid-cols-2 gap-8 mb-16">
+                <div class="bg-black bg-opacity-50 backdrop-blur-md rounded-2xl p-8 border border-purple-500 shadow-lg">
+                    <h3 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                        <span class="text-purple-400">🎭</span> Cosplayer Gallery
+                    </h3>
+                    <div class="slide-container" id="cosplayerSlider">
+                    </div>
+                    <div class="flex justify-center gap-2 mt-4" id="cosplayerDots"></div>
+                </div>
 
-        <div class="mb-24 mt-8">
-            <a href="/docs" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all animate-pulse">
-                Buka Dokumentasi API & Playground 🚀
-            </a>
+                <div class="bg-black bg-opacity-50 backdrop-blur-md rounded-2xl p-8 border border-pink-500 shadow-lg">
+                    <h3 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                        <span class="text-pink-400">💝</span> My Bini Gallery
+                    </h3>
+                    <div class="slide-container" id="biniSlider">
+                    </div>
+                    <div class="flex justify-center gap-2 mt-4" id="biniDots"></div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="bg-black bg-opacity-50 backdrop-blur-md rounded-2xl p-8 border border-purple-500">
+                    <h3 class="text-2xl font-bold mb-4">👨‍💻 About Me</h3>
+                    <p class="text-gray-300 leading-relaxed">
+                        Halo! Saya Kayzen Izumi, seorang developer yang passionate dalam membuat API dan tools yang bermanfaat. 
+                        Saya senang berbagi project open source dan membantu komunitas developer Indonesia berkembang.
+                    </p>
+                </div>
+
+                <div class="bg-black bg-opacity-50 backdrop-blur-md rounded-2xl p-8 border border-pink-500">
+                    <h3 class="text-2xl font-bold mb-4">💖 About My Bini</h3>
+                    <p class="text-gray-300 leading-relaxed">
+                        Special shoutout to my bini <a href="https://instagram.com/h___rvn" target="_blank" class="text-pink-400 hover:text-pink-300">@h___rvn</a> 
+                        yang selalu support dan memberikan inspirasi dalam setiap project yang saya kerjakan. Love you! 💕
+                    </p>
+                </div>
+
+                <div class="bg-black bg-opacity-50 backdrop-blur-md rounded-2xl p-8 border border-blue-500">
+                    <h3 class="text-2xl font-bold mb-4">🚀 About This API</h3>
+                    <p class="text-gray-300 leading-relaxed">
+                        Kayzen API menyediakan berbagai endpoint gratis untuk download media, AI tools, dan image search. 
+                        Dibuat dengan teknologi modern dan mudah digunakan oleh developer manapun.
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-16">
+                <div class="bg-black bg-opacity-50 backdrop-blur-md rounded-2xl p-8 border border-purple-500">
+                    <h3 class="text-2xl font-bold mb-6">📱 My Social Media</h3>
+                    <div class="space-y-4">
+                        <a href="https://wa.me/628152313006" target="_blank" class="flex items-center gap-4 p-4 bg-green-600 rounded-xl hover:bg-green-700 transition-all">
+                            <i class="fab fa-whatsapp text-2xl"></i>
+                            <span class="font-semibold">WhatsApp: +62 815-2313-006</span>
+                        </a>
+                        <a href="https://t.me/nonewpo" target="_blank" class="flex items-center gap-4 p-4 bg-blue-500 rounded-xl hover:bg-blue-600 transition-all">
+                            <i class="fab fa-telegram text-2xl"></i>
+                            <span class="font-semibold">Telegram: @nonewpo</span>
+                        </a>
+                        <a href="https://instagram.com/kayzenfry" target="_blank" class="flex items-center gap-4 p-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl hover:opacity-90 transition-all">
+                            <i class="fab fa-instagram text-2xl"></i>
+                            <span class="font-semibold">Instagram: @kayzenfry</span>
+                        </a>
+                        <a href="https://youtube.com/@kayzenfry" target="_blank" class="flex items-center gap-4 p-4 bg-red-600 rounded-xl hover:bg-red-700 transition-all">
+                            <i class="fab fa-youtube text-2xl"></i>
+                            <span class="font-semibold">YouTube: @kayzenfry</span>
+                        </a>
+                        <a href="https://tiktok.com/@scz_kayzen" target="_blank" class="flex items-center gap-4 p-4 bg-black rounded-xl hover:bg-gray-900 transition-all">
+                            <i class="fab fa-tiktok text-2xl"></i>
+                            <span class="font-semibold">TikTok: @scz_kayzen</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-black bg-opacity-50 backdrop-blur-md rounded-2xl p-8 border border-pink-500">
+                    <h3 class="text-2xl font-bold mb-6">💖 Bini's Social Media</h3>
+                    <div class="space-y-4">
+                        <a href="https://instagram.com/h___rvn" target="_blank" class="flex items-center gap-4 p-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl hover:opacity-90 transition-all">
+                            <i class="fab fa-instagram text-2xl"></i>
+                            <span class="font-semibold">Instagram: @h___rvn</span>
+                        </a>
+                    </div>
+                    
+                    <h3 class="text-2xl font-bold mb-6 mt-8">📢 API Updates</h3>
+                    <a href="https://whatsapp.com/channel/0029VbBRpUN8F2pMzHjQqz3S" target="_blank" class="flex items-center gap-4 p-4 bg-green-600 rounded-xl hover:bg-green-700 transition-all">
+                        <i class="fab fa-whatsapp text-2xl"></i>
+                        <span class="font-semibold">WhatsApp Channel</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-black bg-opacity-50 backdrop-blur-md rounded-2xl p-8 border border-purple-500 text-center">
+                <h3 class="text-2xl font-bold mb-4">✨ Ready to Get Started?</h3>
+                <p class="text-gray-300 mb-6">Explore our API documentation and start building amazing things!</p>
+                <a href="/docs.html" class="inline-block px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg font-semibold text-lg hover:shadow-lg hover:shadow-purple-500/50 transition-all">
+                    View API Documentation
+                </a>
+            </div>
         </div>
     </div>
+
+    <footer class="relative z-10 bg-black bg-opacity-80 border-t border-purple-500 py-8 mt-16">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-gray-400">© 2024 Kayzen API. Made with 💜 by Kayzen Izumi</p>
+            <p class="text-gray-500 mt-2">All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function initSlider(containerId, dotsId, imagePrefix, count) {
+            const container = document.getElementById(containerId);
+            const dotsContainer = document.getElementById(dotsId);
+            let currentIndex = 0;
+
+            for (let i = 1; i <= count; i++) {
+                const slide = document.createElement('div');
+                slide.className = 'slide' + (i === 1 ? ' active' : '');
+                const img = document.createElement('img');
+                img.src = `${imagePrefix}${i}.jpg`;
+                img.alt = `${imagePrefix} ${i}`;
+                img.onerror = function() {
+                    this.src = `https://via.placeholder.com/600x800/${imagePrefix === 'slide' ? '8b5cf6' : 'ec4899'}/ffffff?text=${imagePrefix}+${i}`;
+                };
+                slide.appendChild(img);
+                container.appendChild(slide);
+
+                const dot = document.createElement('button');
+                dot.className = `w-2 h-2 rounded-full transition-all ${i === 1 ? 'bg-purple-500 w-8' : 'bg-gray-400'}`;
+                dot.onclick = () => goToSlide(i - 1);
+                dotsContainer.appendChild(dot);
+            }
+
+            const slides = container.querySelectorAll('.slide');
+            const dots = dotsContainer.querySelectorAll('button');
+
+            function goToSlide(index) {
+                slides[currentIndex].classList.remove('active');
+                dots[currentIndex].classList.remove('bg-purple-500', 'w-8');
+                dots[currentIndex].classList.add('bg-gray-400');
+                
+                currentIndex = index;
+                
+                slides[currentIndex].classList.add('active');
+                dots[currentIndex].classList.add('bg-purple-500', 'w-8');
+                dots[currentIndex].classList.remove('bg-gray-400');
+            }
+
+            setInterval(() => {
+                goToSlide((currentIndex + 1) % count);
+            }, 3000);
+        }
+
+        initSlider('cosplayerSlider', 'cosplayerDots', 'slide', 15);
+        initSlider('biniSlider', 'biniDots', 'bini', 5);
+    </script>
 </body>
 </html>
