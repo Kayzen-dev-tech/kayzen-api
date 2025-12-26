@@ -1,0 +1,10 @@
+body{margin:0;font-family:Arial;background:#0f0f0f;color:#fff}
+.banner{background:url(public/banner.jpg) center/cover;padding:60px;text-align:center}
+.profile{width:120px;border-radius:50%;border:4px solid #fff}
+.about,.slider{padding:30px}
+.slides{display:flex;overflow:auto;gap:10px}
+.slides img{height:200px;border-radius:12px}
+footer{text-align:center;padding:20px}
+.tester{padding:20px}
+input,select,button{padding:10px;margin:5px;width:100%}
+pre{background:#111;padding:15px;overflow:auto}
