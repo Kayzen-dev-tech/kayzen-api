@@ -16,7 +16,7 @@
   Optimized for Serverless functions.
 </p>
 
-[🌐 Live Demo](#) &nbsp;•&nbsp; [📖 Documentation](/public/docs.html) &nbsp;•&nbsp; [🐛 Report Bug](#)
+[🌐 Live Demo](https://kayzen-api.my.id) &nbsp;•&nbsp; [📖 Documentation](/public/docs.html) &nbsp;•&nbsp; [🐛 Report Bug](#)
 
 </div>
 
