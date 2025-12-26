@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayzen Izumi - Web API Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        body { font-family: 'Poppins', sans-serif; background-color: #0f172a; color: white; }
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .slider-container { overflow-x: scroll; scroll-snap-type: x mandatory; -ms-overflow-style: none; scrollbar-width: none; }
+        .slider-container::-webkit-scrollbar { display: none; }
+        .slide { scroll-snap-align: center; flex-shrink: 0; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center">
+    
+    <div class="w-full h-64 relative">
+        <img src="banner.jpg" alt="Banner" class="w-full h-full object-cover opacity-70">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[#0f172a]"></div>
+    </div>
+
+    <div class="relative -mt-24 text-center z-10 w-full max-w-4xl px-4">
+        <div class="relative inline-block">
+            <img src="profile.jpg" alt="Profile" class="w-40 h-40 rounded-full border-4 border-blue-500 object-cover shadow-2xl">
+        </div>
+        <h1 class="text-3xl font-bold mt-4">Kayzen Izumi</h1>
+        <p class="text-gray-400">Professional Developer & API Creator</p>
+        
+        <div class="mt-6 glass p-6 rounded-xl text-left space-y-4">
+            <h2 class="text-xl font-bold text-blue-400">About Me</h2>
+            <p class="text-sm">Hai, saya Kayzen Izumi. Pengembang Web API yang berfokus pada fungsionalitas dan integrasi modern.</p>
+            
+            <h2 class="text-xl font-bold text-pink-400">About My Bini (@h___rvn)</h2>
+            <p class="text-sm">Dia adalah inspirasi terbesarku. Support system terbaik dalam setiap project.</p>
+            
+            <h2 class="text-xl font-bold text-green-400">About This API</h2>
+            <p class="text-sm">API ini menyediakan berbagai fitur mulai dari download media (TikTok, Pinterest) hingga integrasi AI canggih. Gratis untuk digunakan dengan bijak.</p>
+            <p class="text-xs text-yellow-400 mt-2">Update Info: <a href="https://whatsapp.com/channel/0029VbBRpUN8F2pMzHjQqz3S" class="underline">Channel WhatsApp</a></p>
+        </div>
+
+        <div class="mt-8">
+            <h3 class="text-lg font-bold mb-4 text-left border-l-4 border-blue-500 pl-3">Cosplayer Gallery</h3>
+            <div class="slider-container flex space-x-4 pb-4">
+                <script>
+                    for(let i=1; i<=15; i++) {
+                        document.write(`<img src="slide${i}.jpg" class="slide w-48 h-72 object-cover rounded-lg shadow-lg hover:scale-105 transition-transform" alt="Cosplayer ${i}">`);
+                    }
+                </script>
+            </div>
+        </div>
+
+        <div class="mt-8 mb-12">
+            <h3 class="text-lg font-bold mb-4 text-left border-l-4 border-pink-500 pl-3">My Bini Gallery</h3>
+            <div class="slider-container flex space-x-4 pb-4">
+                <script>
+                    for(let i=1; i<=5; i++) {
+                        document.write(`<img src="bini${i}.jpg" class="slide w-48 h-72 object-cover rounded-lg shadow-lg border-2 border-pink-500" alt="Bini ${i}">`);
+                    }
+                </script>
+            </div>
+        </div>
+
+        <div class="fixed bottom-0 left-0 w-full glass p-4 flex justify-center space-x-6 z-50">
+            <a href="https://wa.me/628152313006" class="text-green-500 font-bold">WA</a>
+            <a href="https://t.me/nonewpo" class="text-blue-400 font-bold">TG</a>
+            <a href="https://instagram.com/kayzenfry" class="text-pink-500 font-bold">IG</a>
+            <a href="https://youtube.com/@kayzenfry" class="text-red-500 font-bold">YT</a>
+            <a href="https://tiktok.com/@scz_kayzen" class="text-white font-bold">TT</a>
+            <span class="text-gray-500">|</span>
+            <a href="https://instagram.com/h___rvn" class="text-pink-300 font-bold">Bini IG</a>
+        </div>
+
+        <div class="mb-24 mt-8">
+            <a href="/docs" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all animate-pulse">
+                Buka Dokumentasi API & Playground 🚀
+            </a>
+        </div>
+    </div>
+</body>
+</html>
