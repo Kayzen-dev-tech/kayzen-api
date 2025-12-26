@@ -1,8 +1,7 @@
-{
-  "version": 2,
+"version": 2,
   "builds": [
     {
-      "src": "index.js",
+      "src": "api/**/*.js",
       "use": "@vercel/node"
     },
     {
@@ -12,16 +11,22 @@
   ],
   "routes": [
     {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
       "src": "/docs",
       "dest": "/public/docs.html"
     },
     {
-      "src": "/",
-      "dest": "/public/index.html"
-    },
-    {
       "src": "/(.*)",
-      "dest": "/index.js"
+      "dest": "/public/$1"
     }
-  ]
+  ],
+  "functions": {
+    "api/**/*.js": {
+      "memory": 1024,
+      "maxDuration": 10
+    }
+  }
 }
