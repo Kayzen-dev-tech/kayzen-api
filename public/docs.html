@@ -3,84 +3,339 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Docs & Playground - Kayzen</title>
+    <meta name="description" content="Kayzen API Documentation - REST API Documentation">
+    <meta name="keywords" content="API Documentation, REST API, Developer Guide">
+    <meta name="author" content="Kayzen Izumi">
+    <title>Kayzen API - Documentation</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background-color: #1e293b; color: #e2e8f0; font-family: monospace; }
-        .endpoint-card { background: #334155; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; }
-        pre { background: #0f172a; padding: 10px; border-radius: 5px; overflow-x: auto; color: #a5b4fc; }
+        .gradient-text {
+            background: linear-gradient(to right, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        pre {
+            background: #1a1a1a;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+        code {
+            font-family: 'Courier New', monospace;
+        }
     </style>
 </head>
-<body class="p-6 max-w-5xl mx-auto pb-20">
-    
-    <div class="flex justify-between items-center mb-10">
-        <h1 class="text-3xl font-bold text-blue-400">Kayzen API Playground</h1>
-        <a href="/" class="text-gray-400 hover:text-white">&larr; Back Home</a>
-    </div>
+<body class="bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 text-white">
+    <nav class="bg-black bg-opacity-50 backdrop-blur-md border-b border-purple-500">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <h1 class="text-3xl font-bold gradient-text">Kayzen API - Documentation</h1>
+                <a href="/index.html" class="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all flex items-center gap-2">
+                    <i class="fas fa-home"></i> Home
+                </a>
+            </div>
+        </div>
+    </nav>
 
-    <div class="endpoint-card">
-        <h3 class="text-xl font-bold text-red-400">Pinterest Search</h3>
-        <p class="text-sm mb-2">Method: GET | Endpoint: /api/pinterest</p>
-        <div class="flex gap-2">
-            <input type="text" id="pinInput" placeholder="ex: anime girl" class="w-full p-2 rounded bg-slate-800 text-white border border-slate-600">
-            <button onclick="testApi('/api/pinterest?q=' + document.getElementById('pinInput').value)" class="bg-blue-600 px-4 py-2 rounded">Test</button>
+    <div class="container mx-auto px-6 py-12">
+        <div class="bg-black bg-opacity-50 backdrop-blur-md rounded-2xl p-8 border border-purple-500 mb-8">
+            <div class="flex items-center gap-3 mb-4">
+                <i class="fas fa-key text-yellow-400 text-3xl"></i>
+                <h2 class="text-3xl font-bold">API Key</h2>
+            </div>
+            <p class="text-gray-300 mb-4">
+                Masukkan API Key Anda untuk testing endpoint. Dapatkan API Key gratis dengan menghubungi admin.
+            </p>
+            <div class="flex gap-4">
+                <input type="text" id="apiKeyInput" placeholder="Masukkan API Key Anda..." class="flex-1 px-4 py-3 bg-gray-800 border border-purple-500 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
+                <button onclick="generateDemoKey()" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all">
+                    Generate Demo Key
+                </button>
+            </div>
+        </div>
+
+        <div class="space-y-8">
+            <div class="bg-black bg-opacity-50 backdrop-blur-md rounded-2xl p-8 border border-purple-500">
+                <div class="flex items-center gap-3 mb-6">
+                    <i class="fas fa-download text-green-400 text-3xl"></i>
+                    <h2 class="text-3xl font-bold">Downloader</h2>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-purple-400">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-2xl font-bold text-purple-300">TikTok Downloader</h3>
+                            <span class="px-4 py-1 bg-green-600 rounded-full text-sm font-semibold">GET</span>
+                        </div>
+
+                        <div class="mb-4">
+                            <p class="text-gray-400 mb-2">Endpoint:</p>
+                            <div class="flex items-center gap-2">
+                                <code class="flex-1 px-4 py-2 bg-gray-900 rounded-lg text-purple-300 text-sm">/api/tikwm/download</code>
+                                <button onclick="copyText('/api/tikwm/download')" class="p-2 bg-purple-600 rounded-lg hover:bg-purple-700 transition-all">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <p class="text-gray-400 mb-2">Parameters:</p>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-start gap-3">
+                                    <span class="px-2 py-1 bg-purple-600 rounded text-xs font-semibold">url</span>
+                                    <span class="px-2 py-1 bg-red-600 rounded text-xs font-semibold">Required</span>
+                                    <span class="text-gray-300">TikTok video URL</span>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <span class="px-2 py-1 bg-yellow-600 rounded text-xs font-semibold">apikey</span>
+                                    <span class="px-2 py-1 bg-red-600 rounded text-xs font-semibold">Required</span>
+                                    <span class="text-gray-300">Your API Key</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <p class="text-gray-400 mb-2">Example:</p>
+                            <pre class="text-green-300 text-xs"><code id="tikwm-example"></code></pre>
+                        </div>
+
+                        <div class="flex gap-3 mb-4">
+                            <input type="text" id="tikwm-url" placeholder="https://vt.tiktok.com/ZSYxxx" class="flex-1 px-4 py-2 bg-gray-800 border border-purple-500 rounded-lg text-white">
+                            <button onclick="testAPI('tikwm-download', 'tikwm-url')" class="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all">
+                                Test API
+                            </button>
+                        </div>
+
+                        <div id="tikwm-download-result" class="hidden">
+                            <p class="text-gray-400 mb-2">Response:</p>
+                            <pre class="text-green-300 text-xs max-h-64 overflow-y-auto"><code id="tikwm-download-response"></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-purple-400">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-2xl font-bold text-purple-300">TikTok Search</h3>
+                            <span class="px-4 py-1 bg-green-600 rounded-full text-sm font-semibold">GET</span>
+                        </div>
+
+                        <div class="mb-4">
+                            <p class="text-gray-400 mb-2">Endpoint:</p>
+                            <code class="px-4 py-2 bg-gray-900 rounded-lg text-purple-300 text-sm block">/api/tikwm/search</code>
+                        </div>
+
+                        <div class="flex gap-3 mb-4">
+                            <input type="text" id="tikwm-query" placeholder="cosplay" class="flex-1 px-4 py-2 bg-gray-800 border border-purple-500 rounded-lg text-white">
+                            <button onclick="testAPI('tikwm-search', 'tikwm-query')" class="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all">
+                                Test API
+                            </button>
+                        </div>
+
+                        <div id="tikwm-search-result" class="hidden">
+                            <p class="text-gray-400 mb-2">Response:</p>
+                            <pre class="text-green-300 text-xs max-h-64 overflow-y-auto"><code id="tikwm-search-response"></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-purple-400">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-2xl font-bold text-purple-300">MXDrop Downloader</h3>
+                            <span class="px-4 py-1 bg-green-600 rounded-full text-sm font-semibold">GET</span>
+                        </div>
+
+                        <div class="mb-4">
+                            <code class="px-4 py-2 bg-gray-900 rounded-lg text-purple-300 text-sm block">/api/mxdrop/download</code>
+                        </div>
+
+                        <div class="flex gap-3 mb-4">
+                            <input type="text" id="mxdrop-url" placeholder="https://mxdrop.to/xxx" class="flex-1 px-4 py-2 bg-gray-800 border border-purple-500 rounded-lg text-white">
+                            <button onclick="testAPI('mxdrop-download', 'mxdrop-url')" class="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all">
+                                Test API
+                            </button>
+                        </div>
+
+                        <div id="mxdrop-download-result" class="hidden">
+                            <pre class="text-green-300 text-xs max-h-64 overflow-y-auto"><code id="mxdrop-download-response"></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-black bg-opacity-50 backdrop-blur-md rounded-2xl p-8 border border-purple-500">
+                <div class="flex items-center gap-3 mb-6">
+                    <i class="fas fa-brain text-purple-400 text-3xl"></i>
+                    <h2 class="text-3xl font-bold">AI Tools</h2>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-purple-400">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-2xl font-bold text-purple-300">ChatGPT</h3>
+                            <span class="px-4 py-1 bg-green-600 rounded-full text-sm font-semibold">GET</span>
+                        </div>
+
+                        <code class="px-4 py-2 bg-gray-900 rounded-lg text-purple-300 text-sm block mb-4">/api/ai/chatgpt</code>
+
+                        <div class="flex gap-3 mb-4">
+                            <input type="text" id="chatgpt-text" placeholder="Hello, how are you?" class="flex-1 px-4 py-2 bg-gray-800 border border-purple-500 rounded-lg text-white">
+                            <button onclick="testAPI('ai-chatgpt', 'chatgpt-text')" class="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all">
+                                Test API
+                            </button>
+                        </div>
+
+                        <div id="ai-chatgpt-result" class="hidden">
+                            <pre class="text-green-300 text-xs max-h-64 overflow-y-auto"><code id="ai-chatgpt-response"></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-purple-400">
+                            <h3 class="text-xl font-bold text-purple-300 mb-4">Gemini AI</h3>
+                            <code class="text-sm block mb-4">/api/ai/gemini</code>
+                            <button onclick="testAISimple('gemini')" class="px-4 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 w-full">Test</button>
+                        </div>
+
+                        <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-purple-400">
+                            <h3 class="text-xl font-bold text-purple-300 mb-4">Claude AI</h3>
+                            <code class="text-sm block mb-4">/api/ai/claude</code>
+                            <button onclick="testAISimple('claude')" class="px-4 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 w-full">Test</button>
+                        </div>
+
+                        <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-purple-400">
+                            <h3 class="text-xl font-bold text-purple-300 mb-4">GPT-4</h3>
+                            <code class="text-sm block mb-4">/api/ai/gpt4</code>
+                            <button onclick="testAISimple('gpt4')" class="px-4 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 w-full">Test</button>
+                        </div>
+
+                        <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-purple-400">
+                            <h3 class="text-xl font-bold text-purple-300 mb-4">Llama AI</h3>
+                            <code class="text-sm block mb-4">/api/ai/llama</code>
+                            <button onclick="testAISimple('llama')" class="px-4 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 w-full">Test</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-black bg-opacity-50 backdrop-blur-md rounded-2xl p-8 border border-purple-500">
+                <div class="flex items-center gap-3 mb-6">
+                    <i class="fas fa-image text-pink-400 text-3xl"></i>
+                    <h2 class="text-3xl font-bold">Image Search</h2>
+                </div>
+
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-purple-400">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-purple-300">Pinterest Search</h3>
+                        <span class="px-4 py-1 bg-green-600 rounded-full text-sm font-semibold">GET</span>
+                    </div>
+
+                    <code class="px-4 py-2 bg-gray-900 rounded-lg text-purple-300 text-sm block mb-4">/api/pinterest</code>
+
+                    <div class="p-3 bg-blue-900 bg-opacity-30 border border-blue-500 rounded-lg mb-4">
+                        <p class="text-blue-300 text-sm">ℹ️ Returns 5 image URLs</p>
+                    </div>
+
+                    <div class="flex gap-3 mb-4">
+                        <input type="text" id="pinterest-query" placeholder="anime wallpaper" class="flex-1 px-4 py-2 bg-gray-800 border border-purple-500 rounded-lg text-white">
+                        <button onclick="testAPI('pinterest', 'pinterest-query')" class="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all">
+                            Test API
+                        </button>
+                    </div>
+
+                    <div id="pinterest-result" class="hidden">
+                        <pre class="text-green-300 text-xs max-h-64 overflow-y-auto"><code id="pinterest-response"></code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-black bg-opacity-50 backdrop-blur-md rounded-2xl p-8 border border-purple-500">
+                <h2 class="text-3xl font-bold mb-4">📝 Usage Guidelines</h2>
+                <ul class="space-y-3 text-gray-300">
+                    <li>• API Key diperlukan untuk semua endpoint</li>
+                    <li>• Rate limit: 100 requests per menit</li>
+                    <li>• Response format: JSON</li>
+                    <li>• Gunakan HTTPS untuk semua request</li>
+                    <li>• Untuk mendapatkan API Key gratis, hubungi admin via WhatsApp atau Telegram</li>
+                </ul>
+            </div>
         </div>
     </div>
 
-    <div class="endpoint-card">
-        <h3 class="text-xl font-bold text-white">TikWM Downloader</h3>
-        <p class="text-sm mb-2">Method: GET | Endpoint: /api/tikwm</p>
-        <div class="flex gap-2">
-            <input type="text" id="tikInput" placeholder="TikTok URL" class="w-full p-2 rounded bg-slate-800 text-white border border-slate-600">
-            <button onclick="testApi('/api/tikwm?url=' + document.getElementById('tikInput').value)" class="bg-blue-600 px-4 py-2 rounded">Test</button>
+    <footer class="bg-black bg-opacity-80 border-t border-purple-500 py-8 mt-16">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-gray-400">© 2024 Kayzen API. Made with 💜 by Kayzen Izumi</p>
         </div>
-    </div>
-
-    <div class="endpoint-card">
-        <h3 class="text-xl font-bold text-green-400">AI Chat</h3>
-        <p class="text-sm mb-2">Method: GET | Endpoint: /api/ai-chat</p>
-        <div class="flex gap-2">
-            <input type="text" id="chatInput" placeholder="Ask something..." class="w-full p-2 rounded bg-slate-800 text-white border border-slate-600">
-            <button onclick="testApi('/api/ai-chat?text=' + document.getElementById('chatInput').value)" class="bg-blue-600 px-4 py-2 rounded">Test</button>
-        </div>
-    </div>
-
-    <div class="endpoint-card">
-        <h3 class="text-xl font-bold text-pink-400">AI Image Generator</h3>
-        <p class="text-sm mb-2">Method: GET | Endpoint: /api/ai-image</p>
-        <div class="flex gap-2">
-            <input type="text" id="imgInput" placeholder="ex: cyberpunk cat" class="w-full p-2 rounded bg-slate-800 text-white border border-slate-600">
-            <button onclick="testApi('/api/ai-image?prompt=' + document.getElementById('imgInput').value)" class="bg-blue-600 px-4 py-2 rounded">Test</button>
-        </div>
-    </div>
-
-    <div class="endpoint-card">
-        <h3 class="text-xl font-bold text-yellow-400">AI Translator</h3>
-        <p class="text-sm mb-2">Method: GET | Endpoint: /api/ai-translate</p>
-        <div class="flex gap-2">
-            <input type="text" id="transText" placeholder="Text" class="w-1/2 p-2 rounded bg-slate-800 text-white border border-slate-600">
-            <input type="text" id="transLang" placeholder="id/en/ja" class="w-1/4 p-2 rounded bg-slate-800 text-white border border-slate-600">
-            <button onclick="testApi('/api/ai-translate?text=' + document.getElementById('transText').value + '&target=' + document.getElementById('transLang').value)" class="bg-blue-600 px-4 py-2 rounded">Test</button>
-        </div>
-    </div>
-
-    <div class="mt-8">
-        <h3 class="text-lg font-bold">Result JSON:</h3>
-        <pre id="jsonOutput">Waiting for test...</pre>
-    </div>
+    </footer>
 
     <script>
-        async function testApi(endpoint) {
-            const output = document.getElementById('jsonOutput');
-            output.textContent = "Fetching...";
+        const baseURL = window.location.origin;
+
+        function generateDemoKey() {
+            const key = 'DEMO-KEY-' + Math.random().toString(36).substr(2, 9);
+            document.getElementById('apiKeyInput').value = key;
+            updateExamples();
+        }
+
+        function updateExamples() {
+            const apiKey = document.getElementById('apiKeyInput').value || 'YOUR_API_KEY';
+            document.getElementById('tikwm-example').textContent = 
+                `${baseURL}/api/tikwm/download?url=https://vt.tiktok.com/ZSYxxx&apikey=${apiKey}`;
+        }
+
+        function copyText(text) {
+            navigator.clipboard.writeText(baseURL + text);
+            alert('Copied to clipboard!');
+        }
+
+        async function testAPI(endpoint, inputId) {
+            const apiKey = document.getElementById('apiKeyInput').value;
+            if (!apiKey) {
+                alert('Please enter or generate an API key first!');
+                return;
+            }
+
+            const inputValue = document.getElementById(inputId)?.value;
+            if (!inputValue) {
+                alert('Please enter a value to test!');
+                return;
+            }
+
+            let url = '';
+            const paramName = endpoint.includes('download') ? 'url' : (endpoint.includes('search') || endpoint === 'pinterest' ? 'query' : 'text');
+            
+            url = `${baseURL}/api/${endpoint.replace('-', '/')}?${paramName}=${encodeURIComponent(inputValue)}&apikey=${apiKey}`;
+
             try {
-                const res = await fetch(endpoint);
-                const data = await res.json();
-                output.textContent = JSON.stringify(data, null, 2);
-            } catch (err) {
-                output.textContent = "Error: " + err.message;
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                document.getElementById(`${endpoint}-result`).classList.remove('hidden');
+                document.getElementById(`${endpoint}-response`).textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById(`${endpoint}-result`).classList.remove('hidden');
+                document.getElementById(`${endpoint}-response`).textContent = JSON.stringify({ error: error.message }, null, 2);
             }
         }
+
+        function testAISimple(model) {
+            const text = prompt(`Enter your question for ${model.toUpperCase()}:`, 'Hello');
+            if (!text) return;
+
+            const apiKey = document.getElementById('apiKeyInput').value;
+            if (!apiKey) {
+                alert('Please enter or generate an API key first!');
+                return;
+            }
+
+            const url = `${baseURL}/api/ai/${model}?text=${encodeURIComponent(text)}&apikey=${apiKey}`;
+            
+            fetch(url)
+                .then(res => res.json())
+                .then(data => alert(JSON.stringify(data, null, 2)))
+                .catch(err => alert('Error: ' + err.message));
+        }
+
+        updateExamples();
     </script>
 </body>
 </html>
