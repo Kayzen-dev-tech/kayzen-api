@@ -1,6 +1,6 @@
 # 📡 API Endpoints Reference
 
-![Status](https://img.shields.io/badge/API%20STATUS-ONLINE-brightgreen?style=flat-square&logo=vercel)
+[![Kayzen API](https://img.shields.io/badge/API%20STATUS-ONLINE-brightgreen?style=flat-square&logo=vercel)](https://kayzen-api.my.id)
 ![Endpoints](https://img.shields.io/badge/endpoints-20+-blueviolet?style=flat-square)
 
 [← Back to Main README](README.md) | [View Interactive Docs →](/docs)
