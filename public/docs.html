@@ -12,6 +12,10 @@
         .method-get { border-color: #3b82f6; }
         .method-post { border-color: #22c55e; }
         pre { background: #1e293b; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; }
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #0f172a; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #475569; }
     </style>
 </head>
 <body class="p-6 md:p-12">
@@ -36,27 +40,28 @@
     <script>
         const endpoints = [
             { method: 'GET', path: '/api/tiktok', params: [{name: 'url', desc: 'Video URL'}], category: 'TikTok', title: 'TikTok Download' },
-            { method: 'GET', path: '/api/tiktok', params: [{name: 'type', value: 'search', desc: 'Must be "search"'}, {name: 'query', desc: 'Keywords (e.g., jedag jedug)'}], category: 'TikTok', title: 'TikTok Search' },
-            { method: 'GET', path: '/api/tiktok', params: [{name: 'type', value: 'stalk', desc: 'Must be "stalk"'}, {name: 'username', desc: 'Username (e.g., scz_kayzen)'}], category: 'TikTok', title: 'TikTok Stalk' },
+            { method: 'GET', path: '/api/tiktok', params: [{name: 'type', value: 'search', desc: 'Fixed Value'}, {name: 'query', desc: 'Keywords (e.g., jedag jedug)'}], category: 'TikTok', title: 'TikTok Search' },
+            { method: 'GET', path: '/api/tiktok', params: [{name: 'type', value: 'stalk', desc: 'Fixed Value'}, {name: 'username', desc: 'Username (e.g., scz_kayzen)'}], category: 'TikTok', title: 'TikTok Stalk' },
             
             { method: 'GET', path: '/api/youtube', params: [{name: 'url', desc: 'YouTube URL'}], category: 'YouTube', title: 'YouTube Video DL' },
-            { method: 'GET', path: '/api/youtube', params: [{name: 'type', value: 'audio', desc: 'Must be "audio"'}, {name: 'url', desc: 'YouTube URL'}], category: 'YouTube', title: 'YouTube Audio (MP3)' },
-            { method: 'GET', path: '/api/youtube', params: [{name: 'type', value: 'search', desc: 'Must be "search"'}, {name: 'query', desc: 'Song/Video Title'}], category: 'YouTube', title: 'YouTube Search' },
+            { method: 'GET', path: '/api/youtube', params: [{name: 'type', value: 'audio', desc: 'Fixed Value'}, {name: 'url', desc: 'YouTube URL'}], category: 'YouTube', title: 'YouTube Audio (MP3)' },
+            { method: 'GET', path: '/api/youtube', params: [{name: 'type', value: 'search', desc: 'Fixed Value'}, {name: 'query', desc: 'Song/Video Title'}], category: 'YouTube', title: 'YouTube Search' },
             
             { method: 'GET', path: '/api/instagram', params: [{name: 'url', desc: 'Post/Reel/Story URL'}], category: 'Instagram', title: 'Instagram Download' },
-            { method: 'GET', path: '/api/instagram', params: [{name: 'type', value: 'stalk', desc: 'Must be "stalk"'}, {name: 'username', desc: 'Username'}], category: 'Instagram', title: 'Instagram Stalk' },
+            { method: 'GET', path: '/api/instagram', params: [{name: 'type', value: 'stalk', desc: 'Fixed Value'}, {name: 'username', desc: 'Username'}], category: 'Instagram', title: 'Instagram Stalk' },
 
             { method: 'GET', path: '/api/pinterest', params: [{name: 'query', desc: 'Search Query'}], category: 'Pinterest', title: 'Pinterest Search' },
-            { method: 'GET', path: '/api/pinterest', params: [{name: 'type', value: 'download', desc: 'Must be "download"'}, {name: 'url', desc: 'Pin URL'}], category: 'Pinterest', title: 'Pinterest Download' },
+            { method: 'GET', path: '/api/pinterest', params: [{name: 'type', value: 'download', desc: 'Fixed Value'}, {name: 'url', desc: 'Pin URL'}], category: 'Pinterest', title: 'Pinterest Download' },
 
             { method: 'GET', path: '/api/twitter', params: [{name: 'url', desc: 'Tweet URL'}], category: 'Twitter', title: 'Twitter Download' },
-            { method: 'GET', path: '/api/twitter', params: [{name: 'type', value: 'stalk', desc: 'Must be "stalk"'}, {name: 'username', desc: 'Username'}], category: 'Twitter', title: 'Twitter Stalk' },
-            { method: 'GET', path: '/api/twitter', params: [{name: 'type', value: 'search', desc: 'Must be "search"'}, {name: 'query', desc: 'Keywords'}], category: 'Twitter', title: 'Twitter Search' },
+            { method: 'GET', path: '/api/twitter', params: [{name: 'type', value: 'stalk', desc: 'Fixed Value'}, {name: 'username', desc: 'Username'}], category: 'Twitter', title: 'Twitter Stalk' },
+            { method: 'GET', path: '/api/twitter', params: [{name: 'type', value: 'search', desc: 'Fixed Value'}, {name: 'query', desc: 'Keywords'}], category: 'Twitter', title: 'Twitter Search' },
 
             { method: 'GET', path: '/api/ai/chat', params: [{name: 'prompt', desc: 'Chat Message'}], category: 'AI', title: 'Kayzen AI Chat' },
             { method: 'GET', path: '/api/ai/image', params: [{name: 'prompt', desc: 'Image Description'}], category: 'AI', title: 'AI Image Gen' },
             { method: 'GET', path: '/api/ai/grammar', params: [{name: 'text', desc: 'Text to fix'}], category: 'AI', title: 'Grammar Corrector' },
-            { method: 'GET', path: '/api/ai/code', params: [{name: 'code', desc: 'Code Snippet'}], category: 'AI', title: 'Code Explainer' }
+            { method: 'GET', path: '/api/ai/code', params: [{name: 'code', desc: 'Code Snippet'}], category: 'AI', title: 'Code Explainer' },
+            { method: 'GET', path: '/api/ai/summary', params: [{name: 'text', desc: 'Long Text'}], category: 'AI', title: 'Text Summarizer' }
         ];
 
         const container = document.getElementById('endpoints');
@@ -66,11 +71,13 @@
             let inputsHtml = '';
             
             ep.params.forEach(p => {
-                const isFixed = p.value ? `value="${p.value}" readonly class="opacity-50 cursor-not-allowed"` : '';
+                const isFixed = p.value ? `value="${p.value}" readonly class="opacity-50 cursor-not-allowed bg-slate-950"` : 'class="bg-slate-900"';
+                const labelText = p.value ? `${p.name} (Required)` : p.name;
+                
                 inputsHtml += `
                     <div class="mt-3">
-                        <label class="text-xs text-slate-400 block uppercase font-bold mb-1">${p.name}</label>
-                        <input type="text" ${isFixed} class="inp-${index} w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white focus:border-cyan-500 outline-none" placeholder="${p.desc}">
+                        <label class="text-xs text-slate-400 block uppercase font-bold mb-1">${labelText}</label>
+                        <input type="text" ${isFixed} class="inp-${index} w-full border border-slate-700 rounded p-2 text-sm text-white focus:border-cyan-500 outline-none transition" placeholder="${p.desc}">
                     </div>
                 `;
             });
