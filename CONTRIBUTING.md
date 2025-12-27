@@ -3,6 +3,8 @@
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)
 ![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)
 
+[← Back to Main README](README.md)
+
 First off, thanks for taking the time to contribute! 🎉
 
 The following is a set of guidelines for contributing to **Kayzen API**. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
