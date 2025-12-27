@@ -63,3 +63,22 @@ public/
 views/
  ├─ index.html
  ├─ docs.html
+```
+
+🌍 Live Preview
+
+Home: /
+
+Docs: /docs
+
+🚀 Deploy Instantly
+
+👤 Author
+
+Kayzen Izumi
+Instagram: @kayzenfry
+TikTok: @scz_kayzen
+
+🛡 License
+
+Released under the MIT License.
