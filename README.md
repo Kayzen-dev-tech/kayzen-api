@@ -89,19 +89,16 @@ Note: Make sure to include your assets (images) in the public folder before depl
 
 ---
 
-### 📬 Connect with Me
-Kayzen Izumi
+## 📬 Connect with Me
 
-WhatsApp: Chat Me
+**Kayzen Izumi**
 
-WhatsApp Channel: Join Here
-
-Telegram: @nonewpo
-
-Instagram: @kayzenfry
-
-TikTok: @scz_kayzen
-
+* **WhatsApp:** [Chat Me](https://wa.me/628152313006)
+* **WhatsApp Channel:** [Join Here](https://whatsapp.com/channel/0029VbBRpUN8F2pMzHjQqz3S)
+* **Telegram:** [@nonewpo](https://t.me/nonewpo)
+* **Instagram:** [@kayzenfry](https://instagram.com/kayzenfry)
+* **TikTok:** [@scz_kayzen](https://tiktok.com/@scz_kayzen)
+* 
 ---
 
 <p align="center">Made with ❤️ by Kayzen & inspired by @h___rvn</p>
