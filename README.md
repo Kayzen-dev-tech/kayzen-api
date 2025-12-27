@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/username/kayzen-api"><img src="https://img.shields.io/badge/build-passing-brightgreen?style=flat-square&logo=github"></a>
+    <a href="https://github.com/Kayzen-dev-tech/kayzen-api"><img src="https://img.shields.io/badge/build-passing-brightgreen?style=flat-square&logo=github"></a>
     <a href="https://nodejs.org"><img src="https://img.shields.io/badge/node-20.x-blue?style=flat-square&logo=node.js"></a>
     <a href="https://expressjs.com"><img src="https://img.shields.io/badge/express-4.x-white?style=flat-square&logo=express"></a>
     <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-orange?style=flat-square"></a>
