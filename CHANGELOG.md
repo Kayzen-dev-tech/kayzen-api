@@ -30,4 +30,5 @@ All notable changes to this project will be documented in this file.
 -   **Docs:** Interactive Documentation page.
 
 ---
+
 *Based on Keep a Changelog.*
