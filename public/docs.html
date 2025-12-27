@@ -40,8 +40,8 @@
     <script>
         const endpoints = [
             { method: 'GET', path: '/api/tiktok', params: [{name: 'url', desc: 'Video URL'}], category: 'TikTok', title: 'TikTok Download' },
-            { method: 'GET', path: '/api/tiktok', params: [{name: 'type', value: 'search', desc: 'Fixed Value'}, {name: 'query', desc: 'Keywords (e.g., jedag jedug)'}], category: 'TikTok', title: 'TikTok Search' },
-            { method: 'GET', path: '/api/tiktok', params: [{name: 'type', value: 'stalk', desc: 'Fixed Value'}, {name: 'username', desc: 'Username (e.g., scz_kayzen)'}], category: 'TikTok', title: 'TikTok Stalk' },
+            { method: 'GET', path: '/api/tiktok', params: [{name: 'type', value: 'search', desc: 'Fixed Value'}, {name: 'query', desc: 'Keywords'}], category: 'TikTok', title: 'TikTok Search' },
+            { method: 'GET', path: '/api/tiktok', params: [{name: 'type', value: 'stalk', desc: 'Fixed Value'}, {name: 'username', desc: 'Username'}], category: 'TikTok', title: 'TikTok Stalk' },
             
             { method: 'GET', path: '/api/youtube', params: [{name: 'url', desc: 'YouTube URL'}], category: 'YouTube', title: 'YouTube Video DL' },
             { method: 'GET', path: '/api/youtube', params: [{name: 'type', value: 'audio', desc: 'Fixed Value'}, {name: 'url', desc: 'YouTube URL'}], category: 'YouTube', title: 'YouTube Audio (MP3)' },
@@ -65,6 +65,7 @@
         ];
 
         const container = document.getElementById('endpoints');
+        let htmlContent = '';
 
         endpoints.forEach((ep, index) => {
             const id = `resp-${index}`;
@@ -82,7 +83,7 @@
                 `;
             });
 
-            const html = `
+            htmlContent += `
                 <div class="endpoint-card method-get p-6 rounded-lg hover:bg-slate-800 transition duration-300">
                     <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
                         <div class="flex items-center gap-3">
@@ -98,7 +99,7 @@
                         <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700/50">
                             <h4 class="text-sm font-bold text-cyan-400 mb-4 border-b border-slate-700 pb-2">PARAMETERS</h4>
                             ${inputsHtml}
-                            <button onclick="testEndpoint(${index}, '${ep.path}')" class="mt-6 w-full py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-sm font-bold rounded shadow-lg transform hover:-translate-y-0.5 transition-all">
+                            <button onclick="requestApi(this, ${index}, '${ep.path}')" class="mt-6 w-full py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-sm font-bold rounded shadow-lg transform hover:-translate-y-0.5 transition-all">
                                 <i class="fas fa-bolt mr-2"></i> Execute
                             </button>
                         </div>
@@ -109,14 +110,14 @@
                     </div>
                 </div>
             `;
-            container.innerHTML += html;
         });
 
-        async function testEndpoint(index, path) {
+        container.innerHTML = htmlContent;
+
+        async function requestApi(btn, index, path) {
             const apiKey = document.getElementById('globalApiKey').value;
             const inputs = document.querySelectorAll(`.inp-${index}`);
             const respBox = document.getElementById(`resp-${index}`);
-            const btn = event.currentTarget;
             
             let query = `?apikey=${apiKey}`;
             endpoints[index].params.forEach((p, i) => {
