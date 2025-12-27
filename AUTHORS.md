@@ -2,7 +2,7 @@
 
 ![Followers](https://img.shields.io/github/followers/username?style=social)
 
-[← Back to Main README](../README.md)
+[← Back to Main README](README.md)
 
 ## Core Team
 
