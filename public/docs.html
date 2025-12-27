@@ -1,753 +1,112 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Documentation - Kayzen</title>
+    <title>API Documentation | Kayzen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #00d4ff;
-            --secondary: #ff006e;
-            --bg: #0a0e27;
-            --bg-dark: #050812;
-            --text: #e0e0e0;
-            --text-light: #a0a0a0;
-            --success: #00ff41;
-            --error: #ff006e;
-            --warning: #ffa500;
-        }
-
-        body {
-            background: linear-gradient(135deg, var(--bg) 0%, var(--bg-dark) 100%);
-            color: var(--text);
-            font-family: 'Courier New', monospace;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        header {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--primary);
-            padding: 40px;
-            border-radius: 10px;
-            margin-bottom: 40px;
-            text-align: center;
-        }
-
-        h1 {
-            font-size: 3rem;
-            color: var(--primary);
-            margin-bottom: 10px;
-            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
-        }
-
-        .subtitle {
-            color: var(--text-light);
-            font-size: 1.1rem;
-        }
-
-        .nav-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 10px;
-        }
-
-        .nav-tab {
-            padding: 10px 20px;
-            background: rgba(0, 212, 255, 0.1);
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            cursor: pointer;
-            border-radius: 5px 5px 0 0;
-            transition: all 0.3s;
-            font-weight: 600;
-        }
-
-        .nav-tab.active {
-            background: var(--primary);
-            color: var(--bg);
-        }
-
-        .nav-tab:hover {
-            background: rgba(0, 212, 255, 0.3);
-        }
-
-        .content-section {
-            display: none;
-        }
-
-        .content-section.active {
-            display: block;
-        }
-
-        .endpoint-card {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid var(--primary);
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 30px;
-            transition: all 0.3s;
-        }
-
-        .endpoint-card:hover {
-            border-color: var(--secondary);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
-        }
-
-        .endpoint-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-
-        .method-badge {
-            padding: 5px 15px;
-            border-radius: 5px;
-            font-weight: 700;
-            font-size: 0.9rem;
-        }
-
-        .method-get {
-            background: rgba(0, 255, 65, 0.2);
-            color: var(--success);
-            border: 1px solid var(--success);
-        }
-
-        .method-post {
-            background: rgba(0, 212, 255, 0.2);
-            color: var(--primary);
-            border: 1px solid var(--primary);
-        }
-
-        .endpoint-path {
-            font-size: 1.2rem;
-            color: var(--text);
-            font-weight: 600;
-            word-break: break-all;
-        }
-
-        .endpoint-description {
-            color: var(--text-light);
-            margin: 15px 0;
-        }
-
-        .param-section, .response-section {
-            margin-top: 20px;
-        }
-
-        .section-title {
-            color: var(--secondary);
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-
-        .param-item {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 12px;
-            margin: 8px 0;
-            border-left: 3px solid var(--primary);
-            border-radius: 5px;
-        }
-
-        .param-name {
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .param-type {
-            color: var(--warning);
-            font-size: 0.9rem;
-        }
-
-        .param-required {
-            color: var(--error);
-            font-weight: 700;
-        }
-
-        .tester-section {
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid var(--secondary);
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-
-        .input-group {
-            margin-bottom: 15px;
-        }
-
-        .input-group label {
-            display: block;
-            color: var(--primary);
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
-
-        .input-group input, .input-group textarea {
-            width: 100%;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid var(--primary);
-            color: var(--text);
-            border-radius: 5px;
-            font-family: 'Courier New', monospace;
-            resize: vertical;
-        }
-
-        .input-group textarea {
-            min-height: 80px;
-        }
-
-        .test-button {
-            padding: 12px 30px;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            color: var(--bg);
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-
-        .test-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
-        }
-
-        .response-output {
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid var(--success);
-            padding: 15px;
-            border-radius: 5px;
-            margin-top: 15px;
-            max-height: 300px;
-            overflow-y: auto;
-            display: none;
-        }
-
-        .response-output.show {
-            display: block;
-        }
-
-        .response-output pre {
-            margin: 0;
-            color: var(--success);
-            font-size: 0.9rem;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            color: var(--primary);
-            font-weight: 700;
-        }
-
-        .loading.show {
-            display: block;
-        }
-
-        .api-key-section {
-            background: rgba(255, 0, 110, 0.1);
-            border: 2px solid var(--secondary);
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-        }
-
-        .api-key-section h3 {
-            color: var(--secondary);
-            margin-bottom: 10px;
-        }
-
-        .api-key-input {
-            width: 100%;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid var(--secondary);
-            color: var(--text);
-            border-radius: 5px;
-            margin-top: 10px;
-            font-family: 'Courier New', monospace;
-        }
-
-        .copy-btn {
-            padding: 8px 15px;
-            background: var(--secondary);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-            margin-top: 10px;
-        }
-
-        .copy-btn:hover {
-            opacity: 0.8;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-left: 10px;
-        }
-
-        .status-success {
-            background: rgba(0, 255, 65, 0.2);
-            color: var(--success);
-            border: 1px solid var(--success);
-        }
-
-        .endpoint-example {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 15px;
-            border-radius: 5px;
-            margin: 15px 0;
-            border-left: 3px solid var(--primary);
-            overflow-x: auto;
-        }
-
-        .endpoint-example code {
-            color: var(--primary);
-            font-size: 0.9rem;
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
-
-            .endpoint-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .nav-tabs {
-                flex-direction: column;
-            }
-
-            .nav-tab {
-                width: 100%;
-            }
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: var(--text-light);
-            border-top: 1px solid var(--primary);
-            margin-top: 50px;
-        }
-
-        .endpoint-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .endpoint-link {
-            background: rgba(0, 212, 255, 0.1);
-            border: 1px solid var(--primary);
-            padding: 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-        }
-
-        .endpoint-link:hover {
-            background: rgba(0, 212, 255, 0.2);
-            transform: translateY(-5px);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-        }
-
-        .endpoint-link h3 {
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-
-        .endpoint-link p {
-            color: var(--text-light);
-            font-size: 0.9rem;
-        }
+        body { background-color: #0f172a; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        .endpoint-card { border-left: 4px solid; background: rgba(30, 41, 59, 0.5); }
+        .method-get { border-color: #3b82f6; }
+        .method-post { border-color: #22c55e; }
+        pre { background: #1e293b; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; }
     </style>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1>🚀 KAYZEN API DOCUMENTATION</h1>
-            <p class="subtitle">Professional REST API - Interactive Testing Platform</p>
+<body class="p-6 md:p-12">
+    <div class="max-w-5xl mx-auto">
+        <header class="mb-12 flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-bold text-white">API Docs</h1>
+                <p class="text-slate-400">Interactive Documentation for Kayzen API</p>
+            </div>
+            <a href="/" class="text-cyan-400 hover:text-cyan-300"><i class="fas fa-home"></i> Back Home</a>
         </header>
 
-        <div class="api-key-section">
-            <h3>🔐 API Key Configuration</h3>
-            <p>Masukkan API Key Anda untuk mengakses endpoint yang dilindungi:</p>
-            <input type="text" id="apiKey" class="api-key-input" placeholder="Gunakan: demo-key-123 untuk testing" value="demo-key-123">
-            <button class="copy-btn" onclick="copyApiKey()">Copy API Key</button>
-            <p style="margin-top: 10px; color: var(--text-light); font-size: 0.9rem;">
-                💡 Semua request harus include parameter <code>?apikey=YOUR_KEY</code> atau header <code>X-API-Key</code>
-            </p>
+        <div class="mb-8 p-4 bg-slate-800 rounded-lg border border-slate-700">
+            <label class="block text-sm text-slate-400 mb-2">Global API Key</label>
+            <input type="text" id="globalApiKey" value="kayzen" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white focus:outline-none focus:border-cyan-500" placeholder="Enter API Key">
         </div>
 
-        <div class="nav-tabs">
-            <button class="nav-tab active" onclick="switchTab('overview')">Overview</button>
-            <button class="nav-tab" onclick="switchTab('tiktok')">TikTok</button>
-            <button class="nav-tab" onclick="switchTab('youtube')">YouTube</button>
-            <button class="nav-tab" onclick="switchTab('pinterest')">Pinterest</button>
-            <button class="nav-tab" onclick="switchTab('ai')">AI Features</button>
-            <button class="nav-tab" onclick="switchTab('misc')">Miscellaneous</button>
+        <div class="space-y-6" id="endpoints">
         </div>
+    </div>
 
-        <div id="overview" class="content-section active">
-            <h2 style="color: var(--primary); margin-bottom: 20px;">📋 API Overview</h2>
-            <p style="color: var(--text-light); margin-bottom: 20px;">Kayzen API menyediakan akses ke berbagai fitur powerful termasuk social media tools dan AI services.</p>
+    <script>
+        const endpoints = [
+            { method: 'GET', path: '/api/tiktok', params: [{name: 'url', desc: 'TikTok Video URL'}], category: 'Downloader' },
+            { method: 'GET', path: '/api/youtube', params: [{name: 'url', desc: 'YouTube Video URL'}], category: 'Downloader' },
+            { method: 'GET', path: '/api/ytmp3', params: [{name: 'url', desc: 'YouTube Video URL'}], category: 'Downloader' },
+            { method: 'GET', path: '/api/pinterest', params: [{name: 'query', desc: 'Search Query'}], category: 'Search' },
+            { method: 'GET', path: '/api/ai/chat', params: [{name: 'prompt', desc: 'Message'}], category: 'AI' },
+            { method: 'GET', path: '/api/ai/image', params: [{name: 'prompt', desc: 'Image Description'}], category: 'AI' },
+            { method: 'GET', path: '/api/ai/grammar', params: [{name: 'text', desc: 'Text to fix'}], category: 'AI' },
+            { method: 'GET', path: '/api/ai/code', params: [{name: 'code', desc: 'Code snippet'}], category: 'AI' },
+            { method: 'GET', path: '/api/ai/summary', params: [{name: 'text', desc: 'Long text'}], category: 'AI' }
+        ];
+
+        const container = document.getElementById('endpoints');
+
+        endpoints.forEach((ep, index) => {
+            const id = `resp-${index}`;
+            let inputsHtml = '';
+            ep.params.forEach(p => {
+                inputsHtml += `
+                    <div class="mt-2">
+                        <label class="text-xs text-slate-400 block">${p.name} (${p.desc})</label>
+                        <input type="text" class="inp-${index} w-full bg-slate-900 border border-slate-700 rounded p-2 mt-1 text-sm" placeholder="${p.desc}">
+                    </div>
+                `;
+            });
+
+            const html = `
+                <div class="endpoint-card method-get p-6 rounded-lg">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <span class="px-3 py-1 bg-blue-900 text-blue-200 text-xs font-bold rounded uppercase">${ep.method}</span>
+                            <code class="text-lg font-mono text-white">${ep.path}</code>
+                        </div>
+                        <span class="text-xs text-slate-500 bg-slate-800 px-2 py-1 rounded">${ep.category}</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-300 mb-2">Parameters</h4>
+                            ${inputsHtml}
+                            <button onclick="testEndpoint(${index}, '${ep.path}')" class="mt-4 px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-bold rounded transition w-full">
+                                <i class="fas fa-play mr-2"></i> Try it out
+                            </button>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-300 mb-2">Response</h4>
+                            <pre id="${id}" class="text-xs text-green-400 h-40 overflow-y-auto">Waiting for request...</pre>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.innerHTML += html;
+        });
+
+        async function testEndpoint(index, path) {
+            const apiKey = document.getElementById('globalApiKey').value;
+            const inputs = document.querySelectorAll(`.inp-${index}`);
+            const respBox = document.getElementById(`resp-${index}`);
             
-            <h3 style="color: var(--secondary); margin: 30px 0 20px;">Available Endpoints:</h3>
-            <div class="endpoint-list">
-                <div class="endpoint-link" onclick="switchTab('tiktok')">
-                    <h3>🎵 TikTok</h3>
-                    <p>Download video, search content, dan dapatkan metadata</p>
-                </div>
-                <div class="endpoint-link" onclick="switchTab('youtube')">
-                    <h3>🎬 YouTube</h3>
-                    <p>Download video, konversi ke MP3, dan search</p>
-                </div>
-                <div class="endpoint-link" onclick="switchTab('pinterest')">
-                    <h3>🖼️ Pinterest</h3>
-                    <p>Search gambar berkualitas tinggi dari Pinterest</p>
-                </div>
-                <div class="endpoint-link" onclick="switchTab('ai')">
-                    <h3>🤖 AI Features</h3>
-                    <p>Chat, Image Generation, Translation, Summarize, Sentiment Analysis</p>
-                </div>
-                <div class="endpoint-link" onclick="switchTab('misc')">
-                    <h3>⚙️ Miscellaneous</h3>
-                    <p>Quote, Weather, Meme, QR Code, Joke</p>
-                </div>
-            </div>
-        </div>
+            let query = `?apikey=${apiKey}`;
+            endpoints[index].params.forEach((p, i) => {
+                query += `&${p.name}=${encodeURIComponent(inputs[i].value)}`;
+            });
 
-        <div id="tiktok" class="content-section">
-            <h2 style="color: var(--primary); margin-bottom: 30px;">🎵 TikTok Endpoints</h2>
-
-            <div class="endpoint-card">
-                <div class="endpoint-header">
-                    <span class="method-badge method-get">GET</span>
-                    <span class="endpoint-path">/api/tiktok/download</span>
-                    <span class="status-badge status-success">AVAILABLE</span>
-                </div>
-                <p class="endpoint-description">Download video dari TikTok dengan semua metadata</p>
-
-                <div class="param-section">
-                    <div class="section-title">Parameters:</div>
-                    <div class="param-item">
-                        <span class="param-name">url</span> 
-                        <span class="param-type">(string)</span> 
-                        <span class="param-required">REQUIRED</span>
-                        <p style="margin-top: 5px; color: var(--text-light);">URL TikTok video (e.g., https://www.tiktok.com/@user/video/1234567890)</p>
-                    </div>
-                    <div class="param-item">
-                        <span class="param-name">apikey</span> 
-                        <span class="param-type">(string)</span> 
-                        <span class="param-required">REQUIRED</span>
-                        <p style="margin-top: 5px; color: var(--text-light);">API Key untuk authentication</p>
-                    </div>
-                </div>
-
-                <div class="endpoint-example">
-                    <code>curl "https://your-api.com/api/tiktok/download?url=https://www.tiktok.com/@user/video/123&apikey=demo-key-123"</code>
-                </div>
-
-                <div class="tester-section">
-                    <div class="section-title">🧪 Try It Out</div>
-                    <div class="input-group">
-                        <label>TikTok URL:</label>
-                        <input type="text" id="tiktok-url" placeholder="https://www.tiktok.com/@user/video/123">
-                    </div>
-                    <button class="test-button" onclick="testEndpoint('tiktok-download')">Send Request</button>
-                    <div class="loading" id="tiktok-download-loading">⏳ Memproses...</div>
-                    <div class="response-output" id="tiktok-download-response">
-                        <pre id="tiktok-download-content"></pre>
-                    </div>
-                </div>
-            </div>
-
-            <div class="endpoint-card">
-                <div class="endpoint-header">
-                    <span class="method-badge method-get">GET</span>
-                    <span class="endpoint-path">/api/tiktok/search</span>
-                    <span class="status-badge status-success">AVAILABLE</span>
-                </div>
-                <p class="endpoint-description">Search video di TikTok dengan query</p>
-
-                <div class="param-section">
-                    <div class="section-title">Parameters:</div>
-                    <div class="param-item">
-                        <span class="param-name">query</span> 
-                        <span class="param-type">(string)</span> 
-                        <span class="param-required">REQUIRED</span>
-                        <p style="margin-top: 5px; color: var(--text-light);">Search keyword</p>
-                    </div>
-                </div>
-
-                <div class="tester-section">
-                    <div class="section-title">🧪 Try It Out</div>
-                    <div class="input-group">
-                        <label>Search Query:</label>
-                        <input type="text" id="tiktok-query" placeholder="cyberpunk anime">
-                    </div>
-                    <button class="test-button" onclick="testEndpoint('tiktok-search')">Send Request</button>
-                    <div class="loading" id="tiktok-search-loading">⏳ Memproses...</div>
-                    <div class="response-output" id="tiktok-search-response">
-                        <pre id="tiktok-search-content"></pre>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="youtube" class="content-section">
-            <h2 style="color: var(--primary); margin-bottom: 30px;">🎬 YouTube Endpoints</h2>
-
-            <div class="endpoint-card">
-                <div class="endpoint-header">
-                    <span class="method-badge method-get">GET</span>
-                    <span class="endpoint-path">/api/youtube/download</span>
-                    <span class="status-badge status-success">AVAILABLE</span>
-                </div>
-                <p class="endpoint-description">Download video dari YouTube</p>
-
-                <div class="param-section">
-                    <div class="section-title">Parameters:</div>
-                    <div class="param-item">
-                        <span class="param-name">url</span> 
-                        <span class="param-type">(string)</span> 
-                        <span class="param-required">REQUIRED</span>
-                        <p style="margin-top: 5px; color: var(--text-light);">YouTube video URL</p>
-                    </div>
-                </div>
-
-                <div class="tester-section">
-                    <div class="section-title">🧪 Try It Out</div>
-                    <div class="input-group">
-                        <label>YouTube URL:</label>
-                        <input type="text" id="youtube-url" placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
-                    </div>
-                    <button class="test-button" onclick="testEndpoint('youtube-download')">Send Request</button>
-                    <div class="loading" id="youtube-download-loading">⏳ Memproses...</div>
-                    <div class="response-output" id="youtube-download-response">
-                        <pre id="youtube-download-content"></pre>
-                    </div>
-                </div>
-            </div>
-
-            <div class="endpoint-card">
-                <div class="endpoint-header">
-                    <span class="method-badge method-get">GET</span>
-                    <span class="endpoint-path">/api/youtube/mp3</span>
-                    <span class="status-badge status-success">AVAILABLE</span>
-                </div>
-                <p class="endpoint-description">Convert YouTube video ke MP3</p>
-
-                <div class="tester-section">
-                    <div class="section-title">🧪 Try It Out</div>
-                    <div class="input-group">
-                        <label>YouTube URL:</label>
-                        <input type="text" id="youtube-mp3-url" placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
-                    </div>
-                    <button class="test-button" onclick="testEndpoint('youtube-mp3')">Send Request</button>
-                    <div class="loading" id="youtube-mp3-loading">⏳ Memproses...</div>
-                    <div class="response-output" id="youtube-mp3-response">
-                        <pre id="youtube-mp3-content"></pre>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="pinterest" class="content-section">
-            <h2 style="color: var(--primary); margin-bottom: 30px;">🖼️ Pinterest Endpoints</h2>
-
-            <div class="endpoint-card">
-                <div class="endpoint-header">
-                    <span class="method-badge method-get">GET</span>
-                    <span class="endpoint-path">/api/pinterest/search</span>
-                    <span class="status-badge status-success">AVAILABLE</span>
-                </div>
-                <p class="endpoint-description">Search gambar dari Pinterest (Returns 5 images)</p>
-
-                <div class="param-section">
-                    <div class="section-title">Parameters:</div>
-                    <div class="param-item">
-                        <span class="param-name">query</span> 
-                        <span class="param-type">(string)</span> 
-                        <span class="param-required">REQUIRED</span>
-                        <p style="margin-top: 5px; color: var(--text-light);">Search keyword untuk gambar</p>
-                    </div>
-                </div>
-
-                <div class="tester-section">
-                    <div class="section-title">🧪 Try It Out</div>
-                    <div class="input-group">
-                        <label>Search Query:</label>
-                        <input type="text" id="pinterest-query" placeholder="aesthetic anime girls">
-                    </div>
-                    <button class="test-button" onclick="testEndpoint('pinterest-search')">Send Request</button>
-                    <div class="loading" id="pinterest-search-loading">⏳ Memproses...</div>
-                    <div class="response-output" id="pinterest-search-response">
-                        <pre id="pinterest-search-content"></pre>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="ai" class="content-section">
-            <h2 style="color: var(--primary); margin-bottom: 30px;">🤖 AI Features Endpoints</h2>
-
-            <div class="endpoint-card">
-                <div class="endpoint-header">
-                    <span class="method-badge method-post">POST</span>
-                    <span class="endpoint-path">/api/ai/chat</span>
-                    <span class="status-badge status-success">AVAILABLE</span>
-                </div>
-                <p class="endpoint-description">Chat dengan AI Assistant</p>
-
-                <div class="tester-section">
-                    <div class="section-title">🧪 Try It Out</div>
-                    <div class="input-group">
-                        <label>Message:</label>
-                        <textarea id="ai-chat-message" placeholder="Halo, apa kabar?"></textarea>
-                    </div>
-                    <button class="test-button" onclick="testEndpoint('ai-chat')">Send Request</button>
-                    <div class="loading" id="ai-chat-loading">⏳ Memproses...</div>
-                    <div class="response-output" id="ai-chat-response">
-                        <pre id="ai-chat-content"></pre>
-                    </div>
-                </div>
-            </div>
-
-            <div class="endpoint-card">
-                <div class="endpoint-header">
-                    <span class="method-badge method-post">POST</span>
-                    <span class="endpoint-path">/api/ai/translate</span>
-                    <span class="status-badge status-success">AVAILABLE</span>
-                </div>
-                <p class="endpoint-description">Translate teks ke bahasa lain</p>
-
-                <div class="tester-section">
-                    <div class="section-title">🧪 Try It Out</div>
-                    <div class="input-group">
-                        <label>Text to Translate:</label>
-                        <textarea id="ai-translate-text" placeholder="Hello world"></textarea>
-                    </div>
-                    <div class="input-group">
-                        <label>Target Language (en, id, es, fr, de, ja):</label>
-                        <input type="text" id="ai-translate-lang" placeholder="id" value="id">
-                    </div>
-                    <button class="test-button" onclick="testEndpoint('ai-translate')">Send Request</button>
-                    <div class="loading" id="ai-translate-loading">⏳ Memproses...</div>
-                    <div class="response-output" id="ai-translate-response">
-                        <pre id="ai-translate-content"></pre>
-                    </div>
-                </div>
-            </div>
-
-            <div class="endpoint-card">
-                <div class="endpoint-header">
-                    <span class="method-badge method-post">POST</span>
-                    <span class="endpoint-path">/api/ai/summarize</span>
-                    <span class="status-badge status-success">AVAILABLE</span>
-                </div>
-                <p class="endpoint-description">Summarize teks panjang</p>
-
-                <div class="tester-section">
-                    <div class="section-title">🧪 Try It Out</div>
-                    <div class="input-group">
-                        <label>Text to Summarize:</label>
-                        <textarea id="ai-summarize-text" placeholder="Paste teks panjang di sini..."></textarea>
-                    </div>
-                    <button class="test-button" onclick="testEndpoint('ai-summarize')">Send Request</button>
-                    <div class="loading" id="ai-summarize-loading">⏳ Memproses...</div>
-                    <div class="response-output" id="ai-summarize-response">
-                        <pre id="ai-summarize-content"></pre>
-                    </div>
-                </div>
-            </div>
-
-            <div class="endpoint-card">
-                <div class="endpoint-header">
-                    <span class="method-badge method-post">POST</span>
-                    <span class="endpoint-path">/api/ai/sentiment</span>
-                    <span class="status-badge status-success">AVAILABLE</span>
-                </div>
-                <p class="endpoint-description">Analisis sentiment dari teks</p>
-
-                <div class="tester-section">
-                    <div class="section-title">🧪 Try It Out</div>
-                    <div class="input-group">
-                        <label>Text to Analyze:</label>
-                        <textarea id="ai-sentiment-text" placeholder="Saya sangat senang dengan produk ini!"></textarea>
-                    </div>
-                    <button class="test-button" onclick="testEndpoint('ai-sentiment')">Send Request</button>
-                    <div class="loading" id="ai-sentiment-loading">⏳ Memproses...</div>
-                    <div class="response-output" id="ai-sentiment-response">
-                        <pre id="ai-sentiment-content"></pre>
-                    </div>
-                </div>
-            </div>
-
-            <div class="endpoint-card">
-                <div class="endpoint-header">
-                    <span class="method-badge method-post">POST</span>
-                    <span class="endpoint-path">/api/ai/image-gen</span>
-                    <span class="status-badge status-success">AVAILABLE</span>
-                </div>
-                <p class="endpoint-description">Generate gambar dari text prompt</p>
-
-                <div class="tester-section">
-                    <div class="section-title">🧪 Try It Out</div>
-                    <div class="input-group">
-                        <label>Image Prompt:</label>
-                        <textarea id="ai-imagegen-prompt" placeholder="A beautiful cyberpunk city at night"></textarea>
-                    </div>
-                    <button class="test-button" onclick="testEndpoint('ai-imagegen')">Send Request</button>
-                    <div class="loading" id="ai-imagegen-loading">⏳ Memproses...</div>
-                    <div class="response-output" id="ai-imagegen-response">
-                        <pre id="ai-imagegen-content"></pre>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="misc" class="content-section">
-            <h2 style="color: var(--primary); margin-bottom: 30px;">⚙️ Miscellaneous Endpoints</h2>
-
-            <div class="endpoint-card">
-                <div class="endpoint-header">
-                    <span class="method-badge method-get">GET</span>
-                    <span class="endpoint-path">/api/misc/quote</span>
-                    <span class="status-badge status-success">AVAILABLE</span>
-                </div>
-                <p class="endpoint-description">Dapatkan random
+            respBox.innerText = "Processing...";
+            
+            try {
+                const res = await fetch(path + query);
+                const data = await res.json();
+                respBox.innerText = JSON.stringify(data, null, 2);
+            } catch (err) {
+                respBox.innerText = "Error: " + err.message;
+            }
+        }
+    </script>
+</body>
+</html>
