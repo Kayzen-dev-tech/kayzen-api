@@ -4,7 +4,7 @@
 ![NPM](https://img.shields.io/npm/v/npm?style=flat-square&logo=npm)
 ![Platform](https://img.shields.io/badge/platform-linux%20%7C%20win%20%7C%20macos-lightgrey?style=flat-square)
 
-[← Back to Main README](../README.md)
+[← Back to Main README](EADME.md)
 
 ## Prerequisites
 
@@ -19,7 +19,7 @@ Follow these steps to run the API locally on your machine.
 ### 1. Clone the Repository
 
 ```bash
-git clone [https://github.com/username/kayzen-api.git](https://github.com/username/kayzen-api.git)
+git clone [https://github.com/Kayzen-dev-tech/kayzen-api.git](https://github.com/username/kayzen-api.git)
 cd kayzen-apI
 ```
 
