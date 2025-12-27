@@ -2,7 +2,7 @@
 
 ![Security Support](https://img.shields.io/badge/security-supported-success?style=flat-square)
 
-[← Back to Main README](../README.md)
+[← Back to Main README](README.md)
 
 ## Supported Versions
 
