@@ -43,10 +43,10 @@ To keep this repository clean, detailed documentation is separated into the foll
 * **Live Docs:** Try-it-out feature directly on the website (`/docs`).
 
 ### ⚙️ Backend (API)
-* **Modular Architecture:** Logic separated into `api/` (routes) and `lib/` (functions).
-* **Scrapers:** Built-in support for TikTok, Pinterest, and YouTube.
+* **All-in-One Downloader:** Support for TikTok, Instagram, YouTube, Twitter, and Pinterest.
+* **Stalking Tools:** Get profile data from TikTok, Instagram, and Twitter.
+* **Search Engine:** Search content across multiple social platforms.
 * **Artificial Intelligence:** 5+ Endpoints including Chat, Image Gen, and Code Explanation.
-* **Security:** Simple API Key authentication middleware.
 
 ---
 
@@ -69,7 +69,7 @@ kayzen-api/
 │   └── index.js          # Main Express App
 ├── lib/                  # Helper Functions
 │   ├── ai.js             # AI Logic
-│   └── scraper.js        # Scraper Logic
+│   └── scraper.js        # Scraper Logic (TikTok, IG, YT, etc)
 ├── public/               # Static Assets
 │   ├── index.html        # Landing Page
 │   ├── docs.html         # Documentation Page
@@ -77,25 +77,3 @@ kayzen-api/
 ├── vercel.json           # Vercel Config
 ├── package.json          # Dependencies
 └── README.md             # Main Documentation
-
-### 🚀 Deployment
-
-You can deploy this project to Vercel in just one click.
-
-Note: Make sure to include your assets (images) in the public folder before deploying.
-
-### 📬 Connect with Me
-
-Kayzen Izumi
-
-WhatsApp: Chat Me
-
-WhatsApp Channel: Join Here
-
-Telegram: @nonewpo
-
-Instagram: @kayzenfry
-
-TikTok: @scz_kayzen
-
-<p align="center">Made with ❤️ by Kayzen & inspired by @h___rvn</p>
