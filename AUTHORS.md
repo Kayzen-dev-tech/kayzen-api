@@ -1,6 +1,6 @@
 # 👥 Authors & Credits
 
-![Followers](https://img.shields.io/github/followers/username?style=social)
+![Followers](https://img.shields.io/github/followers/Kayzen-dev-tech?style=social)
 
 [← Back to Main README](README.md)
 
