@@ -1,6 +1,6 @@
 # 📡 API Endpoints Reference
 
-![API Status](https://img.shields.io/website?down_message=offline&label=API%20Status&style=flat-square&up_message=online&url=https%3A%2F%2Fkayzen-api.my.id)
+[![Kayzen API](https://img.shields.io/badge/API%20STATUS-ONLINE-brightgreen?style=flat-square&logo=vercel)](https://kayzen-api.my.id)
 ![Endpoints](https://img.shields.io/badge/endpoints-9+-blueviolet?style=flat-square)
 
 [← Back to Main README](README.md) | [View Interactive Docs →](/docs)
