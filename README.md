@@ -98,7 +98,7 @@ Note: Make sure to include your assets (images) in the public folder before depl
 * **Telegram:** [@nonewpo](https://t.me/nonewpo)
 * **Instagram:** [@kayzenfry](https://instagram.com/kayzenfry)
 * **TikTok:** [@scz_kayzen](https://tiktok.com/@scz_kayzen)
-* 
+
 ---
 
 <p align="center">Made with ❤️ by Kayzen & inspired by @h___rvn</p>
