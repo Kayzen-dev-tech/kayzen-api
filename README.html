@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayzen API - Documentation Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00d4ff;
+            --secondary: #ff006e;
+            --bg: #0a0e27;
+            --bg-dark: #050812;
+            --text: #e0e0e0;
+            --text-light: #a0a0a0;
+            --success: #00ff41;
+            --warning: #ffa500;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg) 0%, var(--bg-dark) 100%);
+            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 40px;
+            border-radius: 15px;
+            border: 2px solid var(--primary);
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+        }
+
+        .badges-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .badge {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(255, 0, 110, 0.1));
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .badge:hover::before {
+            left: 100%;
+        }
+
+        .badge:hover {
+            border-color: var(--secondary);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+            transform: translateY(-8px);
+        }
+
+        .badge.active {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.4), rgba(255, 0, 110, 0.4));
+            border-color: var(--secondary);
+            box-shadow: 0 0 40px rgba(255, 0, 110, 0.5);
+        }
+
+        .badge-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+
+        .badge-title {
+            font-size: 1.2rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .badge-desc {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .content-wrapper {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--primary);
+            border-radius: 15px;
+            padding: 40px;
+            min-height: 500px;
+            position: relative;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .doc-content {
+            display: none;
+        }
+
+        .doc-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .doc-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .doc-header-icon {
+            font-size: 4rem;
+        }
+
+        .doc-header-text h2 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .doc-header-text p {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        .doc-text {
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .doc-text h3 {
+            color: var(--secondary);
+            margin: 25px 0 15px 0;
+            font-size: 1.3rem;
+        }
+
+        .doc-text h4 {
+            color: var(--primary);
+            margin: 20px 0 10px 0;
+            font-size: 1.1rem;
+        }
+
+        .doc-text p {
+            margin-bottom: 15px;
+        }
+
+        .doc-text ul, .doc-text ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        .doc-text li {
+            margin-bottom: 8px;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.8);
+            border-left: 3px solid var(--primary);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: var(--success);
+        }
+
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid var(--primary);
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-button {
+            padding: 12px 25px;
+            background: rgba(0, 212, 255, 0.2);
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .nav-button:hover:not(:disabled) {
+            background: var(--primary);
+            color: var(--bg);
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .nav-button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .breadcrumb {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb span {
+            color: var(--text-light);
+        }
+
+        .breadcrumb button {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .breadcrumb button:hover {
+            background: rgba(0, 212, 255, 0.2);
+            text-decoration: underline;
+        }
+
+        .related-docs {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(0, 212, 255, 0.1);
+            border-left: 3px solid var(--primary);
+            border-radius: 8px;
+        }
+
+        .related-docs h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .related-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .related-link {
+            padding: 8px 16px;
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .related-link:hover {
+            background: var(--primary);
+            color: var(--bg);
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-box {
+            background: rgba(0, 212, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid var(--primary);
+            text-align: center;
+        }
+
+        .stat-number {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+
+        .progress-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+
+        .progress-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .progress-step {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 10px;
+            background: rgba(0, 212, 255, 0.2);
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .progress-item.active .progress-step {
+            background: var(--primary);
+            color: var(--bg);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+        }
+
+        .progress-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        th {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .checklist-item input {
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .checklist-item input:checked + label {
+            color: var(--success);
+            text-decoration: line-through;
+        }
+
+        .checklist-item label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 60px;
+            border-top: 1px solid var(--primary);
+            color: var(--text-light);
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 12px 16px;
+            background: var(--primary);
+            color: var(--bg);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+            transition: all 0.3s;
+        }
+
+        .scroll-top.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.7);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .badges-container {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+
+            .content-wrapper {
+                padding: 20px;
+                min-height: auto;
+            }
+
+            .doc-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .nav-footer {
+                flex-direction: column;
+            }
+
+            .nav-button {
+                width: 100%;
+            }
+
+            .related-links {
+                flex-direction: column;
+            }
+
+            .related-link {
+                width: 100%;
+                text-align: center;
+            }
+
+            .progress-indicator {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Kayzen API Documentation Hub</h1>
+            <p class="subtitle">Integrated Documentation - All Guides Connected</p>
+        </header>
+
+        <div class="badges-container">
+            <div class="badge active" data-doc="readme" onclick="switchDoc('readme', this)">
+                <div class="badge-icon">📖</div>
+                <div class="badge-title">README</div>
+                <div class="badge-desc">Main Overview</div>
+            </div>
+
+            <div class="badge" data-doc="quickstart" onclick="switchDoc('quickstart', this)">
+                <div class="badge-icon">⚡</div>
+                <div class="badge-title">Quick Start</div>
+                <div class="badge-desc">5-Minute Setup</div>
+            </div>
+
+            <div class="badge" data-doc="setup" onclick="switchDoc('setup', this)">
+                <div class="badge-icon">🔧</div>
+                <div class="badge-title">Setup Guide</div>
+                <div class="badge-desc">Detailed Steps</div>
+            </div>
+
+            <div class="badge" data-doc="folder" onclick="switchDoc('folder', this)">
+                <div class="badge-icon">📁</div>
+                <div class="badge-title">Folder Structure</div>
+                <div class="badge-desc">Project Layout</div>
+            </div>
+
+            <div class="badge" data-doc="project" onclick="switchDoc('project', this)">
+                <div class="badge-icon">📊</div>
+                <div class="badge-title">Project Summary</div>
+                <div class="badge-desc">Complete Overview</div>
+            </div>
+
+            <div class="badge" data-doc="github" onclick="switchDoc('github', this)">
+                <div class="badge-icon">🐙</div>
+                <div class="badge-title">GitHub Setup</div>
+                <div class="badge-desc">Version Control</div>
+            </div>
+
+            <div class="badge" data-doc="architecture" onclick="switchDoc('architecture', this)">
+                <div class="badge-icon">🏗️</div>
+                <div class="badge-title">Architecture</div>
+                <div class="badge-desc">System Design</div>
+            </div>
+
+            <div class="badge" data-doc="checklist" onclick="switchDoc('checklist', this)">
+                <div class="badge-icon">✅</div>
+                <div class="badge-title">Final Checklist</div>
+                <div class="badge-desc">Pre-Launch</div>
+            </div>
+
+            <div class="badge" data-doc="reference" onclick="switchDoc('reference', this)">
+                <div class="badge-icon">⚡</div>
+                <div class="badge-title">Quick Reference</div>
+                <div class="badge-desc">Cheat Sheet</div>
+            </div>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- README -->
+            <div class="doc-content active" id="readme">
+                <div class="doc-header">
+                    <div class="doc-header-icon">📖</div>
+                    <div class="doc-header-text">
+                        <h2>README - Main Documentation</h2>
+                        <p>Professional overview & feature list</p>
+                    </div>
+                </div>
+
+                <div class="doc-text">
+                    <h3>🚀 Kayzen API - Professional REST API</h3>
+                    <p>REST API professional dengan fitur-fitur powerful untuk TikTok, YouTube, Pinterest, dan AI integration.</p>
+
+                    <h4>📋 Features</h4>
+                    <ul>
+                        <li>📥 Social Media Tools - TikTok, YouTube, Pinterest</li>
+                        <li>🤖 AI Features - Chat, Image Gen, Translation, Summarize, Sentiment</li>
+                        <li>🔒 Security - API Key Authentication</li>
+                        <li>🎨 Modern UI - Cyberpunk dark theme</li>
+                        <li>📱 Responsive - Mobile-friendly interface</li>
+                        <li>📊 15+ Endpoints - Comprehensive API</li>
+                    </ul>
+
+                    <h4>🛠️ Tech Stack</h4>
+                    <div class="code-block">Runtime: Node.js 18+
+Framework: Express.js 4.18+
+Deployment: Vercel (Serverless)
+Scraping: Axios + Cheerio
+Auth: API Key</div>
+
+                    <h4>📊 Quick Stats</h4>
+                    <div class="stat-grid">
+                        <div class="stat-box">
+                            <div class="stat-number">15+</div>
+                            <div class="stat-label">Endpoints</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">5</div>
+                            <div class="stat-label">Routes</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">2000+</div>
+                            <div class="stat-label">Lines of Code</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">25+</div>
+                            <div class="stat-label">Files</div>
+                        </div>
+                    </div>
+
+                    <h4>🎯 Get Started</h4>
+                    <p>Ready to launch? Check the <strong>Quick Start</strong> guide or <strong>Setup Guide</strong> for detailed instructions.</p>
+                </div>
+
+                <div class="nav-footer">
+                    <div class="breadcrumb">
+                        <span>📍 Currently:</span>
+                        <span style="color: var(--primary); font-weight: 600;">README</span>
+                    </div>
+                    <button class="nav-button" onclick="switchDoc('quickstart', document.querySelector('[data-doc=quickstart]'))">Next: Quick Start →</button>
+                </div>
+
+                <div class="related-docs">
+                    <h4>📚 Related Documentation</h4>
+                    <div class="related-links">
+                        <button class="related-link" onclick="switchDoc('project', document.querySelector('[data-doc=project]'))">📊 Project Summary</button>
+                        <button class="related-link" onclick="switchDoc('folder', document.querySelector('[data-doc=folder]'))">📁 Folder Structure</button>
+                        <button class="related-link" onclick="switchDoc('setup', document.querySelector('[data-doc=setup]'))">🔧 Setup Guide</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QUICK START -->
+            <div class="doc-content" id="quickstart">
+                <div class="doc-header">
+                    <div class="doc-header-icon">⚡</div>
+                    <div class="doc-header-text">
+                        <h2>Quick Start - 5 Minutes Setup</h2>
+                        <p>Panduan super cepat untuk mulai development</p>
+                    </div>
+                </div>
+
+                <div class="doc-text">
+                    <h3>🚀 Installation (2 menit)</h3>
+                    <div class="code-block">git clone https://github.com/kayzenfry/kayzen-api.git
+cd kayzen-api
+npm install</div>
+
+                    <h3>🔧 Setup (1 menit)</h3>
+                    <div class="code-block">cp .env.example .env</div>
+                    <p>Default API key sudah ada: <code>demo-key-123</code></p>
+
+                    <h3>▶️ Run (1 menit)</h3>
+                    <div class="code-block">npm run dev</div>
+                    <p>Open browser:</p>
+                    <ul>
+                        <li><strong>Home:</strong> http://localhost:3000</li>
+                        <li><strong>Docs:</strong> http://localhost:3000/docs</li>
+                    </ul>
+
+                    <h3>🧪 Test (1 menit)</h3>
+                    <p>Visit docs page dan coba "Try it out" feature untuk semua endpoints.</p>
+
+                    <h3>✅ Quick Checklist</h3>
+                    <div class="checklist">
+                        <div class="checklist-item">
+                            <input type="checkbox" id="ch1">
+                            <label for="ch1">Node.js 18+ installed</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="ch2">
+                            <label for="ch2">Repository cloned</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="ch3">
+                            <label for="ch3">npm install completed</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="ch4">
+                            <label for="ch4">.env created</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="ch5">
+                            <label for="ch5">Server running (npm run dev)</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="ch6">
+                            <label for="ch6">Can access http://localhost:3000</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="ch7">
+                            <label for="ch7">Test API endpoints work</label>
+                        </div>
+                    </div>
+
+                    <h3>🎯 Next Steps</h3>
+                    <ol>
+                        <li>Customize images di <code>/public/images/</code></li>
+                        <li>Update social links di <code>index.html</code></li>
+                        <li>Change API key di <code>.env</code></li>
+                        <li>Deploy to Vercel</li>
+                        <li>Share with team!</li>
+                    </ol>
+                </div>
+
+                <div class="nav-footer">
+                    <button class="nav-button" onclick="switchDoc('readme', document.querySelector('[data-doc=readme]'))">← Back to README</button>
+                    <div class="breadcrumb">
+                        <span>📍 Currently:</span>
+                        <span style="color: var(--primary); font-weight: 600;">Quick Start</span>
+                    </div>
+                    <button class="nav-button" onclick="switchDoc('setup', document.querySelector('[data-doc=setup]'))">Next: Setup → </button>
+                </div>
+
+                <div class="related-docs">
+                    <h4>📚 Related Documentation</h4>
+                    <div class="related-links">
+                        <button class="related-link" onclick="switchDoc('setup', document.querySelector('[data-doc=setup]'))">🔧 Detailed Setup</button>
+                        <button class="related-link" onclick="switchDoc('reference', document.querySelector('[data-doc=reference]'))">⚡ Quick Reference</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SETUP GUIDE -->
+            <div class="doc-content" id="setup">
+                <div class="doc-header">
+                    <div class="doc-header-icon">🔧</div>
+                    <div class="doc-header-text">
+                        <h2>Setup Guide - Detailed Instructions</h2>
+                        <p>Panduan lengkap step-by-step</p>
+                    </div>
+                </div>
+
+                <div class="doc-text">
+                    <h3>📋 Prerequisites</h3>
+                    <ul>
+                        <li>Node.js v18+ installed</li>
+                        <li>npm atau yarn</li>
+                        <li>Git installed</li>
+                        <li>Text Editor (VSCode recommended)</li>
+                        <li>Vercel CLI (optional): npm install -g vercel</li>
+                    </ul>
+
+                    <h3>Verifikasi Installation</h3>
+                    <div class="code-block">node --version    # Should show v18.x or higher
+npm --version     # Should show 9.x or higher
+git --version     # Should show 2.x or higher</div>
+
+                    <h3>🎯 Step 1: Clone Repository</h3>
+                    <div class="code-block">git clone https://github.com/kayzenfry/kayzen-api.git
+cd kayzen-api</div>
+
+                    <h3>🎯 Step 2: Install Dependencies</h3>
+                    <div class="code-block">npm install</div>
+                    <p>Ini akan install: express, axios, dotenv, cors, morgan, cheerio</p>
+
+                    <h3>🎯 Step 3: Setup Environment Variables</h3>
+                    <div class="code-block">cp .env.example .env</div>
+                    <p>Edit file <code>.env</code> dengan text editor</p>
+
+                    <h3>🎯 Step 4: Prepare Image Assets</h3>
+                    <p>Folder <code>/public/images</code> harus berisi:</p>
+                    <ul>
+                        <li><code>profile.jpg</code> (200x200 px)</li>
+                        <li><code>banner.jpg</code> (1920x1080 px)</li>
+                        <li><code>cosplay/slide1-15.jpg</code> (15 gambar, 800x600 px)</li>
+                        <li><code>bini/bini1-5.jpg</code> (5 gambar, 600x800 px)</li>
+                    </ul>
+
+                    <h3>🎯 Step 5: Run Development Server</h3>
+                    <div class="code-block">npm run dev</div>
+                    <p>Expected output:</p>
+                    <div class="code-block">🚀 Server running on port 3000
+📄 Visit http://localhost:3000/docs for documentation</div>
+
+                    <h3>🎯 Step 6: Test API</h3>
+                    <ul>
+                        <li>Home Page: http://localhost:3000</li>
+                        <li>API Documentation: http://localhost:3000/docs</li>
+                        <li>Test Endpoint: http://localhost:3000/api/status</li>
+                    </ul>
+
+                    <h3>🔐 Common Development Tasks</h3>
+                    <h4>Add New Endpoint</h4>
+                    <ol>
+                        <li>Create file di <code>/api/routes/</code></li>
+                        <li>Import di <code>api/index.js</code></li>
+                        <li>Add route: <code>app.use('/api/new', newRoutes);</code></li>
+                        <li>Test dengan curl atau docs page</li>
+                    </ol>
+
+                    <h4>Update API Key</h4>
+                    <ol>
+                        <li>Edit <code>.env</code> file</li>
+                        <li>Change <code>API_KEY=new-key</code></li>
+                        <li>Restart server</li>
+                    </ol>
+
+                    <h4>Add Dependencies</h4>
+                    <div class="code-block">npm install package-name</div>
+                </div>
+
+                <div class="nav-footer">
+                    <button class="nav-button" onclick="switchDoc('quickstart', document.querySelector('[data-doc=quickstart]'))">← Back</button>
+                    <div class="breadcrumb">
+                        <span>📍 Currently:</span>
+                        <span style="color: var(--primary); font-weight: 600;">Setup Guide</span>
+                    </div>
+                    <button class="nav-button" onclick="switchDoc('folder', document.querySelector('[data-doc=folder]'))">Next →</button>
+                </div>
+
+                <div class="related-docs">
+                    <h4>📚 Related Documentation</h4>
+                    <div class="related-links">
+                        <button class="related-link" onclick="switchDoc('quickstart', document.querySelector('[data-doc=quickstart]'))">⚡ Quick Start</button>
+                        <button class="related-link" onclick="switchDoc('folder', document.querySelector('[data-doc=folder]'))">📁 Folder Structure</button>
+                        <button class="related-link" onclick="switchDoc('github', document.querySelector('[data-doc=github]'))">🐙 GitHub Setup</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FOLDER STRUCTURE -->
+            <div class="doc-content" id="folder">
+                <div class="doc-header">
+                    <div class="doc-header-icon">📁</div>
+                    <div class="doc-header-text">
+                        <h2>Folder Structure - Project Layout</h2>
+                        <p>Penjelasan lengkap struktur folder project</p>
+                    </div>
+                </div>
+
+                <div class="doc-text">
+                    <h3>🗂️ Complete Folder Structure</h3>
+                    <div class="code-block">kayzen-api/
+├── api/
+│   ├── index.js                 # Main server
+│   ├── routes/
+│   │   ├── tiktok.js           # TikTok endpoints
+│   │   ├── youtube.js          # YouTube endpoints
+│   │   ├── pinterest.js        # Pinterest endpoints
+│   │   ├── ai.js               # AI endpoints
+│   │   └── misc.js             # Utility endpoints
+│   └── lib/
+│       └── scrapers.js         # Helper functions
+│
+├── public/
+│   ├── index.html              # Home page
+│   ├── docs.html               # API documentation
+│   └── images/
+│       ├── profile.jpg
+│       ├── banner.jpg
+│       ├── cosplay/
+│       │   ├── slide1-15.jpg
+│       └── bini/
+│           └── bini1-5.jpg
+│
+├── package.json
+├── vercel.json
+├── .env
+├── .env.example
+├── .gitignore
+├── LICENSE
+└── Documentation (8 files)</div>
+
+                    <h3>📂 Penjelasan Setiap Folder</h3>
+
+                    <h4>/api</h4>
+                    <p>Backend yang berisi logic Express.js</p>
+                    <ul>
+                        <li><strong>index.js</strong> - Server utama, middleware, routing</li>
+                        <li><strong>/routes</strong> - Endpoint logic (5 files)</li>
+                        <li><strong>/lib</strong> - Helper functions untuk scraping</li>
+                    </ul>
+
+                    <h4>/public</h4>
+                    <p>Frontend static assets yang di-serve</p>
+                    <ul>
+                        <li><strong>index.html</strong> - Home page dengan portfolio</li>
+                        <li><strong>docs.html</strong> - API documentation interaktif</li>
+                        <li><strong>/images</strong> - Foto & gambar assets</li>
+                    </ul>
+
+                    <h3>📸 Image Size Recommendations</h3>
+                    <table>
+                        <tr>
+                            <th>File</th>
+                            <th>Size</th>
+                            <th>Format</th>
+                            <th>Location</th>
+                        </tr>
+                        <tr>
+                            <td>profile.jpg</td>
+                            <td>200x200 px</td>
+                            <td>JPG</td>
+                            <td>/public/images/</td>
+                        </tr>
+                        <tr>
+                            <td>banner.jpg</td>
+                            <td>1920x1080 px</td>
+                            <td>JPG</td>
+                            <td>/public/images/</td>
+                        </tr>
+                        <tr>
+                            <td>slide*.jpg</td>
+                            <td>800x600 px</td>
+                            <td>JPG</td>
+                            <td>/public/images/cosplay/</td>
+                        </tr>
+                        <tr>
+                            <td>bini*.jpg</td>
+                            <td>600x800 px</td>
+                            <td>JPG</td>
+                            <td>/public/images/bini/</td>
+                        </tr>
+                    </table>
+
+                    <h3>🚀 Cara Setup Folder</h3>
+                    <div class="code-block">mkdir -p public/images/cosplay
+mkdir -p public/images/bini</div>
+
+                    <p>Kemudian letakkan file gambar di folder yang sesuai.</p>
+
+                    <h3>💡 Development Notes</h3>
+                    <ul>
+                        <li>✅ <code>/api</code> folder WAJIB ada untuk Vercel</li>
+                        <li>✅ <code>/public</code> folder untuk static files</li>
+                        <li>❌ Jangan membuat CSS/JS terpisah (sudah inline)</li>
+                        <li>❌ Jangan membuat database folder (stateless API)</li>
+                    </ul>
+                </div>
+
+                <div class="nav-footer">
+                    <button class="nav-button" onclick="switchDoc('setup', document.querySelector('[data-doc=setup]'))">← Back</button>
+                    <div class="breadcrumb">
+                        <span>📍 Currently:</span>
+                        <span style="color: var(--primary); font-weight: 600;">Folder Structure</span>
+                    </div>
+                    <button class="nav-button" onclick="switchDoc('project', document.querySelector('[data-doc=project]'))">Next →</button>
+                </div>
+
+                <div class="related-docs">
+                    <h4>📚 Related Documentation</h4>
+                    <div class="related-links">
+                        <button class="related-link" onclick="switchDoc('setup', document.querySelector('[data-doc=setup]'))">🔧 Setup Guide</button>
+                        <button class="related-link" onclick="switchDoc('project', document.querySelector('[data-doc=project]'))">📊 Project Summary</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJECT SUMMARY -->
+            <div class="doc-content" id="project">
+                <div class="doc-header">
+                    <div class="doc-header-icon">📊</div>
+                    <div class="doc-header-text">
+                        <h2>Project Summary - Complete Overview</h2>
+                        <p>Ringkasan lengkap semua file & struktur</p>
+                    </div>
+                </div>
+
+                <div class="doc-text">
+                    <h3>📦 Total Files Created: 25+</h3>
+
+                    <h4>Backend Files (7)</h4>
+                    <table>
+                        <tr>
+                            <th>File</th>
+                            <th>Purpose</th>
+                            <th>Status</th>
+                        </tr>
+                        <tr>
+                            <td>api/index.js</td>
+                            <td>Main Express server</td>
+                            <td>✅ Ready</td>
+                        </tr>
+                        <tr>
+                            <td>api/routes/tiktok.js</td>
+                            <td>TikTok endpoints</td>
+                            <td>✅ Ready</td>
+                        </tr>
+                        <tr>
+                            <td>api/routes/youtube.js</td>
+                            <td>YouTube endpoints</td>
+                            <td>✅ Ready</td>
+                        </tr>
+                        <tr>
+                            <td>api/routes/pinterest.js</td>
+                            <td>Pinterest endpoints</td>
+                            <td>✅ Ready</td>
+                        </tr>
+                        <tr>
+                            <td>api/routes/ai.js</td>
+                            <td>AI endpoints (5)</td>
+                            <td>✅ Ready</td>
+                        </tr>
+                        <tr>
+                            <td>api/routes/misc.js</td>
+                            <td>Utility endpoints</td>
+                            <td>✅ Ready</td>
+                        </tr>
+                        <tr>
+                            <td>api/lib/scrapers.js</td>
+                            <td>Helper functions</td>
+                            <td>✅ Ready</td>
+                        </tr>
+                    </table>
+
+                    <h4>Frontend Files (2)</h4>
+                    <table>
+                        <tr>
+                            <th>File</th>
+                            <th>Purpose</th>
+                            <th>Lines</th>
+                        </tr>
+                        <tr>
+                            <td>public/index.html</td>
+                            <td>Home page portfolio</td>
+                            <td>500+</td>
+                        </tr>
+                        <tr>
+                            <td>public/docs.html</td>
+                            <td>API documentation</td>
+                            <td>800+</td>
+                        </tr>
+                    </table>
+
+                    <h4>Configuration Files (7)</h4>
+                    <ul>
+                        <li>package.json - Dependencies</li>
+                        <li>vercel.json - Deployment config</li>
+                        <li>.env - Local variables</li>
+                        <li>.env.example - Template</li>
+                        <li>.gitignore - Git rules</li>
+                        <li>LICENSE - MIT License</li>
+                        <li>CNAME - Domain (optional)</li>
+                    </ul>
+
+                    <h4>Documentation Files (8)</h4>
+                    <ul>
+                        <li>📖 README.md - Main docs</li>
+                        <li>⚡ QUICK_START.md - 5-min setup</li>
+                        <li>🔧 SETUP_GUIDE.md - Detailed setup</li>
+                        <li>📁 FOLDER_STRUCTURE.md - Folder guide</li>
+                        <li>📊 PROJECT_SUMMARY.md - This file</li>
+                        <li>🐙 GITHUB_SETUP.md - GitHub guide</li>
+                        <li>🏗️ ARCHITECTURE.md - System design</li>
+                        <li>✅ FINAL_CHECKLIST.md - Pre-launch</li>
+                    </ul>
+
+                    <h3>🎯 15+ Endpoints</h3>
+                    <div class="stat-grid">
+                        <div class="stat-box">
+                            <div class="stat-number">2</div>
+                            <div class="stat-label">TikTok</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">3</div>
+                            <div class="stat-label">YouTube</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">2</div>
+                            <div class="stat-label">Pinterest</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">5</div>
+                            <div class="stat-label">AI</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">4</div>
+                            <div class="stat-label">Utils</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">2</div>
+                            <div class="stat-label">System</div>
+                        </div>
+                    </div>
+
+                    <h3>📈 Project Statistics</h3>
+                    <ul>
+                        <li><strong>Total Files:</strong> 25+</li>
+                        <li><strong>Lines of Code:</strong> 2000+</li>
+                        <li><strong>API Endpoints:</strong> 15+</li>
+                        <li><strong>Routes:</strong> 5</li>
+                        <li><strong>Dependencies:</strong> 7</li>
+                        <li><strong>Documentation:</strong> 8 guides</li>
+                    </ul>
+
+                    <h3>🔐 Code Quality Standards</h3>
+                    <ul>
+                        <li>✅ No comments policy (clean code)</li>
+                        <li>✅ Self-explanatory code</li>
+                        <li>✅ Modular structure</li>
+                        <li>✅ Error handling everywhere</li>
+                        <li>✅ Input validation</li>
+                        <li>✅ Professional formatting</li>
+                    </ul>
+                </div>
+
+                <div class="nav-footer">
+                    <button class="nav-button" onclick="switchDoc('folder', document.querySelector('[data-doc=folder]'))">← Back</button>
+                    <div class="breadcrumb">
+                        <span>📍 Currently:</span>
+                        <span style="color: var(--primary); font-weight: 600;">Project Summary</span>
+                    </div>
+                    <button class="nav-button" onclick="switchDoc('github', document.querySelector('[data-doc=github]'))">Next →</button>
+                </div>
+
+                <div class="related-docs">
+                    <h4>📚 Related Documentation</h4>
+                    <div class="related-links">
+                        <button class="related-link" onclick="switchDoc('readme', document.querySelector('[data-doc=readme]'))">📖 README</button>
+                        <button class="related-link" onclick="switchDoc('folder', document.querySelector('[data-doc=folder]'))">📁 Folder Structure</button>
+                        <button class="related-link" onclick="switchDoc('checklist', document.querySelector('[data-doc=checklist]'))">✅ Final Checklist</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GITHUB SETUP -->
+            <div class="doc-content" id="github">
+                <div class="doc-header">
+                    <div class="doc-header-icon">🐙</div>
+                    <div class="doc-header-text">
+                        <h2>GitHub Setup - Version Control Guide</h2>
+                        <p>Panduan upload & setup GitHub repository</p>
+                    </div>
+                </div>
+
+                <div class="doc-text">
+                    <h3>🎯 Step 1: Create GitHub Repository</h3>
+                    <ol>
+                        <li>Go to https://github.com/new</li>
+                        <li>Repository name: <code>kayzen-api</code></li>
+                        <li>Description: Professional REST API</li>
+                        <li>Visibility: Public</li>
+                        <li>Click "Create repository"</li>
+                    </ol>
+
+                    <h3>🎯 Step 2: Configure Local Repository</h3>
+                    <div class="code-block">cd kayzen-api
+git init
+git config user.name "Your Name"
+git config user.email "your.email@example.com"</div>
+
+                    <h3>🎯 Step 3: Add & Commit Files</h3>
+                    <div class="code-block">git add .
+git commit -m "🚀 Initial commit: Kayzen API v1.0.0"</div>
+
+                    <h3>🎯 Step 4: Connect to Remote</h3>
+                    <div class="code-block">git remote add origin https://github.com/YOUR_USERNAME/kayzen-api.git
+git branch -M main
+git push -u origin main</div>
+
+                    <h3>🎯 Step 5: Useful Git Commands</h3>
+                    <table>
+                        <tr>
+                            <th>Command</th>
+                            <th>Purpose</th>
+                        </tr>
+                        <tr>
+                            <td>git status</td>
+                            <td>Check status</td>
+                        </tr>
+                        <tr>
+                            <td>git add .</td>
+                            <td>Stage all files</td>
+                        </tr>
+                        <tr>
+                            <td>git commit -m "msg"</td>
+                            <td>Commit changes</td>
+                        </tr>
+                        <tr>
+                            <td>git push</td>
+                            <td>Push to remote</td>
+                        </tr>
+                        <tr>
+                            <td>git pull</td>
+                            <td>Pull latest</td>
+                        </tr>
+                        <tr>
+                            <td>git log</td>
+                            <td>View history</td>
+                        </tr>
+                    </table>
+
+                    <h3>🚀 Deploy to Vercel from GitHub</h3>
+                    <ol>
+                        <li>Go to https://vercel.com/new</li>
+                        <li>Click "Import Project"</li>
+                        <li>Select GitHub (connect if needed)</li>
+                        <li>Choose <code>kayzen-api</code> repository</li>
+                        <li>Click "Import"</li>
+                        <li>Set environment variables (if needed)</li>
+                        <li>Click "Deploy"</li>
+                    </ol>
+
+                    <p><strong>Auto-deploys on every push to main! 🚀</strong></p>
+
+                    <h3>📊 GitHub Statistics You'll Get</h3>
+                    <ul>
+                        <li>📊 Commit history</li>
+                        <li>📈 Traffic analytics</li>
+                        <li>🔗 Network graph</li>
+                        <li>👥 Contributors</li>
+                        <li>⭐ Stars & forks</li>
+                    </ul>
+
+                    <h3>🔥 Social Media Share</h3>
+                    <div class="code-block">🚀 Just launched Kayzen API - Professional REST API with 15+ endpoints!
+
+Features:
+✨ TikTok, YouTube, Pinterest integration
+🤖 AI Chat, Image Gen, Translation
+🎨 Modern cyberpunk UI
+🔗 Ready to deploy on Vercel
+
+GitHub: github.com/YOUR_USERNAME/kayzen-api
+Docs: https://kayzen-api.vercel.app/docs</div>
+                </div>
+
+                <div class="nav-footer">
+                    <button class="nav-button" onclick="switchDoc('project', document.querySelector('[data-doc=project]'))">← Back</button>
+                    <div class="breadcrumb">
+                        <span>📍 Currently:</span>
+                        <span style="color: var(--primary); font-weight: 600;">GitHub Setup</span>
+                    </div>
+                    <button class="nav-button" onclick="switchDoc('architecture', document.querySelector('[data-doc=architecture]'))">Next →</button>
+                </div>
+
+                <div class="related-docs">
+                    <h4>📚 Related Documentation</h4>
+                    <div class="related-links">
+                        <button class="related-link" onclick="switchDoc('setup', document.querySelector('[data-doc=setup]'))">🔧 Setup Guide</button>
+                        <button class="related-link" onclick="switchDoc('checklist', document.querySelector('[data-doc=checklist]'))">✅ Final Checklist</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ARCHITECTURE -->
+            <div class="doc-content" id="architecture">
+                <div class="doc-header">
+                    <div class="doc-header-icon">🏗️</div>
+                    <div class="doc-header-text">
+                        <h2>Architecture - System Design</h2>
+                        <p>Diagram & penjelasan arsitektur sistem</p>
+                    </div>
+                </div>
+
+                <div class="doc-text">
+                    <h3>📊 Request Flow</h3>
+                    <div class="code-block">User/Client
+    │ HTTP Request
+    ▼
+Vercel Platform
+    │
+    ▼
+api/index.js (Express)
+    │
+    ├─► CORS Middleware
+    ├─► Morgan Logging
+    ├─► JSON Parser
+    ├─► API Key Auth
+    │
+    ▼
+Route Handler
+    ├─► /api/tiktok/*
+    ├─► /api/youtube/*
+    ├─► /api/pinterest/*
+    ├─► /api/ai/*
+    └─► /api/misc/*
+    │
+    ▼
+Business Logic
+    ├─► Input Validation
+    ├─► Helper Functions
+    ├─► External API Call
+    └─► Data Processing
+    │
+    ▼
+Response (JSON)
+    └─► 200/400/401/403/500</div>
+
+                    <h3>🔀 API Routes Architecture</h3>
+                    <div class="code-block">api/index.js
+    ├─► tiktok routes (2 endpoints)
+    ├─► youtube routes (3 endpoints)
+    ├─► pinterest routes (2 endpoints)
+    ├─► ai routes (5 endpoints)
+    ├─► misc routes (4 endpoints)
+    ├─► /api/status
+    └─► /api/endpoints</div>
+
+                    <h3>🌐 Frontend Architecture</h3>
+                    <div class="code-block">public/
+    ├─► index.html
+    │   ├─► Header (profile + banner)
+    │   ├─► About sections
+    │   ├─► Carousels (2x galleries)
+    │   ├─► Social links (7 platforms)
+    │   └─► Footer
+    │
+    └─► docs.html
+        ├─► API Key section
+        ├─► Navigation tabs
+        ├─► Endpoints (grouped)
+        ├─► Try-it-out testers
+        └─► Response viewer</div>
+
+                    <h3>🚀 Deployment Architecture</h3>
+                    <div class="code-block">Local Development
+    │ (npm run dev)
+    ▼
+Your Computer (localhost:3000)
+    │ (git push)
+    ▼
+GitHub Repository
+    │ (Vercel webhook)
+    ▼
+Vercel Platform
+    ├─► Build: npm install
+    ├─► Deploy: Serverless functions
+    └─► Live: https://kayzen-api.vercel.app</div>
+
+                    <h3>🔐 Security Layers</h3>
+                    <div class="code-block">Request
+    │
+    ▼
+HTTPS (Vercel SSL)
+    │
+    ▼
+CORS Validation
+    │
+    ▼
+API Key Middleware
+    │
+    ▼
+Input Validation
+    │
+    ▼
+Error Handling
+    │
+    ▼
+Safe Response</div>
+
+                    <h3>💾 Technology Stack</h3>
+                    <table>
+                        <tr>
+                            <th>Layer</th>
+                            <th>Technology</th>
+                        </tr>
+                        <tr>
+                            <td>Frontend</td>
+                            <td>HTML5, CSS3, Vanilla JS</td>
+                        </tr>
+                        <tr>
+                            <td>Backend</td>
+                            <td>Node.js, Express.js</td>
+                        </tr>
+                        <tr>
+                            <td>HTTP Client</td>
+                            <td>Axios</td>
+                        </tr>
+                        <tr>
+                            <td>Parsing</td>
+                            <td>Cheerio</td>
+                        </tr>
+                        <tr>
+                            <td>Deployment</td>
+                            <td>Vercel Serverless</td>
+                        </tr>
+                        <tr>
+                            <td>VCS</td>
+                            <td>Git + GitHub</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="nav-footer">
+                    <button class="nav-button" onclick="switchDoc('github', document.querySelector('[data-doc=github]'))">← Back</button>
+                    <div class="breadcrumb">
+                        <span>📍 Currently:</span>
+                        <span style="color: var(--primary); font-weight: 600;">Architecture</span>
+                    </div>
+                    <button class="nav-button" onclick="switchDoc('checklist', document.querySelector('[data-doc=checklist]'))">Next →</button>
+                </div>
+
+                <div class="related-docs">
+                    <h4>📚 Related Documentation</h4>
+                    <div class="related-links">
+                        <button class="related-link" onclick="switchDoc('readme', document.querySelector('[data-doc=readme]'))">📖 README</button>
+                        <button class="related-link" onclick="switchDoc('project', document.querySelector('[data-doc=project]'))">📊 Project Summary</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FINAL CHECKLIST -->
+            <div class="doc-content" id="checklist">
+                <div class="doc-header">
+                    <div class="doc-header-icon">✅</div>
+                    <div class="doc-header-text">
+                        <h2>Final Checklist - Pre-Launch</h2>
+                        <p>Verifikasi sebelum production deployment</p>
+                    </div>
+                </div>
+
+                <div class="doc-text">
+                    <h3>📋 Project Setup</h3>
+                    <div class="checklist">
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check1">
+                            <label for="check1">Node.js 18+ installed</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check2">
+                            <label for="check2">Git initialized</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check3">
+                            <label for="check3">npm install completed</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check4">
+                            <label for="check4">.env file created</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check5">
+                            <label for="check5">.gitignore configured</label>
+                        </div>
+                    </div>
+
+                    <h3>🧪 API Testing</h3>
+                    <div class="checklist">
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check6">
+                            <label for="check6">All 15+ endpoints tested</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check7">
+                            <label for="check7">Error handling works</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check8">
+                            <label for="check8">API key authentication works</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check9">
+                            <label for="check9">CORS working</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check10">
+                            <label for="check10">Response formats correct</label>
+                        </div>
+                    </div>
+
+                    <h3>🎨 Frontend Testing</h3>
+                    <div class="checklist">
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check11">
+                            <label for="check11">Home page loads correctly</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check12">
+                            <label for="check12">Documentation page works</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check13">
+                            <label for="check13">Carousels working</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check14">
+                            <label for="check14">Social links correct</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check15">
+                            <label for="check15">Mobile responsive</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check16">
+                            <label for="check16">Images displaying</label>
+                        </div>
+                    </div>
+
+                    <h3>🚀 Deployment Readiness</h3>
+                    <div class="checklist">
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check17">
+                            <label for="check17">All tests pass locally</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check18">
+                            <label for="check18">Production API key generated</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check19">
+                            <label for="check19">Code committed to Git</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check20">
+                            <label for="check20">vercel.json configured</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check21">
+                            <label for="check21">Vercel deployment successful</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check22">
+                            <label for="check22">Production URL accessible</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check23">
+                            <label for="check23">All endpoints working on production</label>
+                        </div>
+                    </div>
+
+                    <h3>🎉 Success Criteria</h3>
+                    <ul>
+                        <li>✅ Website loads without errors</li>
+                        <li>✅ All pages accessible</li>
+                        <li>✅ APIs respond correctly</li>
+                        <li>✅ Documentation clear</li>
+                        <li>✅ Images display correctly</li>
+                        <li>✅ API key required for protected endpoints</li>
+                        <li>✅ No sensitive data exposed</li>
+                        <li>✅ HTTPS enabled (Vercel)</li>
+                        <li>✅ Mobile responsive</li>
+                        <li>✅ Performance fast (&lt;2s load)</li>
+                    </ul>
+
+                    <h3>⏱️ Time Estimates</h3>
+                    <table>
+                        <tr>
+                            <th>Task</th>
+                            <th>Time</th>
+                        </tr>
+                        <tr>
+                            <td>Add images</td>
+                            <td>15 min</td>
+                        </tr>
+                        <tr>
+                            <td>Setup & test locally</td>
+                            <td>10 min</td>
+                        </tr>
+                        <tr>
+                            <td>Upload to GitHub</td>
+                            <td>5 min</td>
+                        </tr>
+                        <tr>
+                            <td>Deploy to Vercel</td>
+                            <td>5 min</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total</strong></td>
+                            <td><strong>~45 min</strong></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="nav-footer">
+                    <button class="nav-button" onclick="switchDoc('architecture', document.querySelector('[data-doc=architecture]'))">← Back</button>
+                    <div class="breadcrumb">
+                        <span>📍 Currently:</span>
+                        <span style="color: var(--primary); font-weight: 600;">Final Checklist</span>
+                    </div>
+                    <button class="nav-button" onclick="switchDoc('reference', document.querySelector('[data-doc=reference]'))">Next →</button>
+                </div>
+
+                <div class="related-docs">
+                    <h4>📚 Related Documentation</h4>
+                    <div class="related-links">
+                        <button class="related-link" onclick="switchDoc('github', document.querySelector('[data-doc=github]'))">🐙 GitHub Setup</button>
+                        <button class="related-link" onclick="switchDoc('reference', document.querySelector('[data-doc=reference]'))">⚡ Quick Reference</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QUICK REFERENCE -->
+            <div class="doc-content" id="reference">
+                <div class="doc-header">
+                    <div class="doc-header-icon">⚡</div>
+                    <div class="doc-header-text">
+                        <h2>Quick Reference - Cheat Sheet</h2>
+                        <p>Panduan cepat & command penting</p>
+                    </div>
+                </div>
+
+                <div class="doc-text">
+                    <h3>🚀 Essential Commands</h3>
+                    <div class="code-block">npm install          # Install dependencies
+npm run dev         # Start dev server
+npm start           # Start production
+git init            # Initialize git
+git add .           # Stage all files
+git commit -m "msg" # Commit changes
+git push            # Push to remote
+vercel              # Deploy to Vercel</div>
+
+                    <h3>🌐 Important URLs</h3>
+                    <table>
+                        <tr>
+                            <th>Environment</th>
+                            <th>URL</th>
+                        </tr>
+                        <tr>
+                            <td>Local Home</td>
+                            <td>http://localhost:3000</td>
+                        </tr>
+                        <tr>
+                            <td>Local Docs</td>
+                            <td>http://localhost:3000/docs</td>
+                        </tr>
+                        <tr>
+                            <td>Production</td>
+                            <td>https://kayzen-api.vercel.app</td>
+                        </tr>
+                        <tr>
+                            <td>Production Docs</td>
+                            <td>https://kayzen-api.vercel.app/docs</td>
+                        </tr>
+                    </table>
+
+                    <h3>🔑 API Key</h3>
+                    <div class="code-block">Default: demo-key-123</div>
+
+                    <h3>📁 Key Files</h3>
+                    <ul>
+                        <li><code>api/index.js</code> - Main server</li>
+                        <li><code>public/index.html</code> - Home page</li>
+                        <li><code>public/docs.html</code> - API docs</li>
+                        <li><code>package.json</code> - Dependencies</li>
+                        <li><code>.env</code> - Environment variables</li>
+                        <li><code>vercel.json</code> - Deployment config</li>
+                    </ul>
+
+                    <h3>🔌 Example Endpoints</h3>
+                    <div class="code-block"># Get Quote
+curl "http://localhost:3000/api/misc/quote?apikey=demo-key-123"
+
+# AI Chat
+curl -X POST http://localhost:3000/api/ai/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message":"Hello!"}'
+
+# QR Code
+curl -X POST http://localhost:3000/api/misc/qrcode \
+  -H "Content-Type: application/json" \
+  -d '{"text":"https://github.com"}'</div>
+
+                    <h3>🐛 Quick Fixes</h3>
+                    <h4>Port Already in Use</h4>
+                    <div class="code-block">PORT=3001 npm run dev</div>
+
+                    <h4>Module Not Found</h4>
+                    <div class="code-block">rm -rf node_modules && npm install</div>
+
+                    <h4>Clear npm Cache</h4>
+                    <div class="code-block">npm cache clean --force</div>
+
+                    <h3>📊 Project Stats</h3>
+                    <div class="stat-grid">
+                        <div class="stat-box">
+                            <div class="stat-number">25+</div>
+                            <div class="stat-label">Files</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">15+</div>
+                            <div class="stat-label">Endpoints</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">2000+</div>
+                            <div class="stat-label">Lines</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">7</div>
+                            <div class="stat-label">Dependencies</div>
+                        </div>
+                    </div>
+
+                    <h3>🎓 Learning Resources</h3>
+                    <ul>
+                        <li>Express.js: https://expressjs.com/</li>
+                        <li>Vercel: https://vercel.com/docs</li>
+                        <li>Node.js: https://nodejs.org/</li>
+                        <li>npm: https://docs.npmjs.com/</li>
+                    </ul>
+
+                    <h3>🎉 Quick Wins</h3>
+                    <ol>
+                        <li>✅ Get first 10 GitHub stars</li>
+                        <li>✅ Share on social media</li>
+                        <li>✅ Add to portfolio</li>
+                        <li>✅ Get feedback</li>
+                        <li>✅ Deploy to production</li>
+                    </ol>
+                </div>
+
+                <div class="nav-footer">
+                    <button class="nav-button" onclick="switchDoc('checklist', document.querySelector('[data-doc=checklist]'))">← Back</button>
+                    <div class="breadcrumb">
+                        <span>📍 Currently:</span>
+                        <span style="color: var(--primary); font-weight: 600;">Quick Reference</span>
+                    </div>
+                    <button class="nav-button" onclick="switchDoc('readme', document.querySelector('[data-doc=readme]'))">Jump to Start →</button>
+                </div>
+
+                <div class="related-docs">
+                    <h4>📚 Related Documentation</h4>
+                    <div class="related-links">
+                        <button class="related-link" onclick="switchDoc('quickstart', document.querySelector('[data-doc=quickstart]'))">⚡ Quick Start</button>
+                        <button class="related-link" onclick="switchDoc('setup', document.querySelector('[data-doc=setup]'))">🔧 Setup Guide</button>
+                        <button class="related-link" onclick="switchDoc('checklist', document.querySelector('[data-doc=checklist]'))">✅ Final Checklist</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>📚 Kayzen API Documentation Hub - All Guides Connected</p>
+            <p>Professional REST API | 25+ Files | 15+ Endpoints | Production Ready</p>
+            <p>Made with ❤️ by Kayzen Izumi | 2024</p>
+        </footer>
+    </div>
+
+    <button class="scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
+
+    <script>
+        function switchDoc(docId, element) {
+            document.querySelectorAll('.doc-content').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.querySelectorAll('.badge').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            document.getElementById(docId).classList.add('active');
+            if (element) {
+                element.classList.add('active');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.querySelector('.scroll-top');
+            if (window.pageYOffset > 300) {
+                scrollTop.classList.add('show');
+            } else {
+                scrollTop.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>
