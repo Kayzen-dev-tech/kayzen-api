@@ -1,7 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const { tiktok, pinterest, youtube, ytmp3 } = require('../lib/scraper');
+const { 
+  tiktokDl, tiktokSearch, tiktokStalk, 
+  youtubeSearch, youtubeDl, ytmp3,
+  instaDl, instaStalk, 
+  pinterestDl, pinterestSearch, 
+  twitterDl, twitterStalk, twitterSearch
+} = require('../lib/scraper');
 const { chatAi, imageGen, grammarFix, codeExplain, summarize } = require('../lib/ai');
 
 const app = express();
@@ -31,67 +37,74 @@ app.get('/docs', (req, res) => {
 });
 
 app.get('/api/tiktok', checkApiKey, async (req, res) => {
-  const { url } = req.query;
-  if (!url) return res.json({ status: false, message: "URL parameter required" });
-  const result = await tiktok(url);
-  res.json(result);
+  const { type, url, query, username } = req.query;
+  if (type === 'search' && query) return res.json(await tiktokSearch(query));
+  if (type === 'stalk' && username) return res.json(await tiktokStalk(username));
+  if (url) return res.json(await tiktokDl(url));
+  res.json({ status: false, message: "Parameters missing. Need url, query (type=search), or username (type=stalk)." });
 });
 
 app.get('/api/youtube', checkApiKey, async (req, res) => {
-  const { url } = req.query;
-  if (!url) return res.json({ status: false, message: "URL parameter required" });
-  const result = await youtube(url);
-  res.json(result);
+  const { type, url, query } = req.query;
+  if (type === 'search' && query) return res.json(await youtubeSearch(query));
+  if (type === 'audio' && url) return res.json(await ytmp3(url));
+  if (url) return res.json(await youtubeDl(url));
+  res.json({ status: false, message: "Parameters missing. Need url or query (type=search)." });
 });
 
-app.get('/api/ytmp3', checkApiKey, async (req, res) => {
-  const { url } = req.query;
-  if (!url) return res.json({ status: false, message: "URL parameter required" });
-  const result = await ytmp3(url);
-  res.json(result);
+app.get('/api/instagram', checkApiKey, async (req, res) => {
+  const { type, url, username } = req.query;
+  if (type === 'stalk' && username) return res.json(await instaStalk(username));
+  if (url) return res.json(await instaDl(url));
+  res.json({ status: false, message: "Parameters missing. Need url or username (type=stalk)." });
 });
 
 app.get('/api/pinterest', checkApiKey, async (req, res) => {
-  const { query } = req.query;
-  if (!query) return res.json({ status: false, message: "Query parameter required" });
-  const result = await pinterest(query);
-  res.json({ status: true, results: result });
+  const { type, url, query } = req.query;
+  if (type === 'download' && url) return res.json(await pinterestDl(url));
+  if (query) return res.json({ status: true, results: await pinterestSearch(query) });
+  res.json({ status: false, message: "Parameters missing. Need query or url (type=download)." });
+});
+
+app.get('/api/twitter', checkApiKey, async (req, res) => {
+  const { type, url, query, username } = req.query;
+  if (type === 'search' && query) return res.json(await twitterSearch(query));
+  if (type === 'stalk' && username) return res.json(await twitterStalk(username));
+  if (url) return res.json(await twitterDl(url));
+  res.json({ status: false, message: "Parameters missing. Need url, query (type=search), or username (type=stalk)." });
 });
 
 app.get('/api/ai/chat', checkApiKey, async (req, res) => {
   const { prompt } = req.query;
   if (!prompt) return res.json({ status: false, message: "Prompt parameter required" });
-  const result = await chatAi(prompt);
-  res.json(result);
+  res.json(await chatAi(prompt));
 });
 
 app.get('/api/ai/image', checkApiKey, async (req, res) => {
   const { prompt } = req.query;
   if (!prompt) return res.json({ status: false, message: "Prompt parameter required" });
-  const result = await imageGen(prompt);
-  res.json(result);
+  res.json(await imageGen(prompt));
 });
 
 app.get('/api/ai/grammar', checkApiKey, async (req, res) => {
   const { text } = req.query;
   if (!text) return res.json({ status: false, message: "Text parameter required" });
-  const result = await grammarFix(text);
-  res.json(result);
+  res.json(await grammarFix(text));
 });
 
 app.get('/api/ai/code', checkApiKey, async (req, res) => {
   const { code } = req.query;
   if (!code) return res.json({ status: false, message: "Code parameter required" });
-  const result = await codeExplain(code);
-  res.json(result);
+  res.json(await codeExplain(code));
 });
 
 app.get('/api/ai/summary', checkApiKey, async (req, res) => {
   const { text } = req.query;
   if (!text) return res.json({ status: false, message: "Text parameter required" });
-  const result = await summarize(text);
-  res.json(result);
+  res.json(await summarize(text));
 });
+
+app.use((req, res) => res.status(404).json({ status: false, message: "Endpoint not found" }));
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
