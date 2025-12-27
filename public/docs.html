@@ -10,12 +10,10 @@
         body { background-color: #0f172a; color: #e2e8f0; font-family: 'Inter', sans-serif; }
         .endpoint-card { border-left: 4px solid; background: rgba(30, 41, 59, 0.5); }
         .method-get { border-color: #3b82f6; }
-        .method-post { border-color: #22c55e; }
         pre { background: #1e293b; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; }
         .custom-scrollbar::-webkit-scrollbar { width: 8px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #0f172a; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #475569; }
     </style>
 </head>
 <body class="p-6 md:p-12">
@@ -71,14 +69,15 @@
             const id = `resp-${index}`;
             let inputsHtml = '';
             
-            ep.params.forEach(p => {
+            ep.params.forEach((p, paramIndex) => {
                 const isFixed = p.value ? `value="${p.value}" readonly class="opacity-50 cursor-not-allowed bg-slate-950"` : 'class="bg-slate-900"';
                 const labelText = p.value ? `${p.name} (Required)` : p.name;
+                const inputId = `input-${index}-${paramIndex}`;
                 
                 inputsHtml += `
                     <div class="mt-3">
                         <label class="text-xs text-slate-400 block uppercase font-bold mb-1">${labelText}</label>
-                        <input type="text" ${isFixed} class="inp-${index} w-full border border-slate-700 rounded p-2 text-sm text-white focus:border-cyan-500 outline-none transition" placeholder="${p.desc}">
+                        <input type="text" id="${inputId}" ${isFixed} class="w-full border border-slate-700 rounded p-2 text-sm text-white focus:border-cyan-500 outline-none transition" placeholder="${p.desc}">
                     </div>
                 `;
             });
@@ -99,7 +98,7 @@
                         <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700/50">
                             <h4 class="text-sm font-bold text-cyan-400 mb-4 border-b border-slate-700 pb-2">PARAMETERS</h4>
                             ${inputsHtml}
-                            <button onclick="requestApi(this, ${index}, '${ep.path}')" class="mt-6 w-full py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-sm font-bold rounded shadow-lg transform hover:-translate-y-0.5 transition-all">
+                            <button onclick="requestApi(this, ${index})" class="mt-6 w-full py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-sm font-bold rounded shadow-lg transform hover:-translate-y-0.5 transition-all">
                                 <i class="fas fa-bolt mr-2"></i> Execute
                             </button>
                         </div>
@@ -114,32 +113,35 @@
 
         container.innerHTML = htmlContent;
 
-        async function requestApi(btn, index, path) {
-            const apiKey = document.getElementById('globalApiKey').value;
-            const inputs = document.querySelectorAll(`.inp-${index}`);
+        window.requestApi = async function(btn, index) {
             const respBox = document.getElementById(`resp-${index}`);
-            
-            let query = `?apikey=${apiKey}`;
-            endpoints[index].params.forEach((p, i) => {
-                query += `&${p.name}=${encodeURIComponent(inputs[i].value)}`;
-            });
-
             const originalBtnText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-            btn.disabled = true;
-            respBox.innerText = "Processing request...";
             
             try {
-                const res = await fetch(path + query);
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                btn.disabled = true;
+                respBox.innerText = "Processing request...";
+
+                const apiKey = document.getElementById('globalApiKey').value;
+                const ep = endpoints[index];
+                let query = `?apikey=${apiKey}`;
+
+                ep.params.forEach((p, paramIndex) => {
+                    const inputVal = document.getElementById(`input-${index}-${paramIndex}`).value;
+                    query += `&${p.name}=${encodeURIComponent(inputVal)}`;
+                });
+
+                const res = await fetch(ep.path + query);
                 const data = await res.json();
+                
                 respBox.innerText = JSON.stringify(data, null, 2);
             } catch (err) {
-                respBox.innerText = "Error: " + err.message;
+                respBox.innerText = "Client Error: " + err.message;
             } finally {
                 btn.innerHTML = originalBtnText;
                 btn.disabled = false;
             }
-        }
+        };
     </script>
 </body>
 </html>
