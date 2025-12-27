@@ -77,3 +77,31 @@ kayzen-api/
 ├── vercel.json           # Vercel Config
 ├── package.json          # Dependencies
 └── README.md             # Main Documentation
+```
+
+---
+
+### 🚀 Deployment
+
+You can deploy this project to Vercel in just one click.
+
+Note: Make sure to include your assets (images) in the public folder before deploying.
+
+---
+
+### 📬 Connect with Me
+Kayzen Izumi
+
+WhatsApp: Chat Me
+
+WhatsApp Channel: Join Here
+
+Telegram: @nonewpo
+
+Instagram: @kayzenfry
+
+TikTok: @scz_kayzen
+
+---
+
+<p align="center">Made with ❤️ by Kayzen & inspired by @h___rvn</p>
