@@ -1,9 +1,9 @@
 # 📡 API Endpoints Reference
 
-![Status](https://img.shields.io/website?down_message=offline&label=API%20Status&style=flat-square&up_message=online&url=https%3A%2F%2Fgoogle.com)
+![API Status](https://img.shields.io/website?down_message=offline&label=API%20Status&style=flat-square&up_message=online&url=https%3A%2F%2Fkayzen-api.my.id)
 ![Endpoints](https://img.shields.io/badge/endpoints-9+-blueviolet?style=flat-square)
 
-[← Back to Main README](../README.md) | [View Interactive Docs →](/docs)
+[← Back to Main README](README.md) | [View Interactive Docs →](/docs)
 
 ## Authentication
 Add `?apikey=kayzen` to all requests.
