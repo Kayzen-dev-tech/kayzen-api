@@ -1,7 +1,7 @@
 # 📝 Changelog
 
 ![Version](https://img.shields.io/badge/version-1.1.0-blue?style=flat-square)
-![Last Commit](https://img.shields.io/github/last-commit/username/kayzen-api?style=flat-square)
+![Last Commit](https://img.shields.io/github/last-commit/Kayzen-dev-tech/kayzen-api?style=flat-square)
 
 [← Back to Main README](README.md)
 
