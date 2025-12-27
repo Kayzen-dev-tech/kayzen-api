@@ -15,35 +15,48 @@
     </style>
 </head>
 <body class="p-6 md:p-12">
-    <div class="max-w-5xl mx-auto">
-        <header class="mb-12 flex justify-between items-center">
+    <div class="max-w-6xl mx-auto">
+        <header class="mb-12 flex justify-between items-center border-b border-slate-700 pb-6">
             <div>
-                <h1 class="text-3xl font-bold text-white">API Docs</h1>
-                <p class="text-slate-400">Interactive Documentation for Kayzen API</p>
+                <h1 class="text-3xl font-bold text-white bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">Kayzen API Docs</h1>
+                <p class="text-slate-400 mt-2">Interactive Documentation & Playground</p>
             </div>
-            <a href="/" class="text-cyan-400 hover:text-cyan-300"><i class="fas fa-home"></i> Back Home</a>
+            <a href="/" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 transition text-cyan-400"><i class="fas fa-home mr-2"></i> Back Home</a>
         </header>
 
-        <div class="mb-8 p-4 bg-slate-800 rounded-lg border border-slate-700">
-            <label class="block text-sm text-slate-400 mb-2">Global API Key</label>
-            <input type="text" id="globalApiKey" value="kayzen" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white focus:outline-none focus:border-cyan-500" placeholder="Enter API Key">
+        <div class="mb-8 p-6 bg-slate-800 rounded-lg border border-slate-700 shadow-lg">
+            <h3 class="text-lg font-bold text-white mb-2"><i class="fas fa-key text-yellow-500 mr-2"></i> Authentication</h3>
+            <p class="text-sm text-slate-400 mb-4">Enter your API Key below to test the endpoints.</p>
+            <input type="text" id="globalApiKey" value="kayzen" class="w-full md:w-1/2 bg-slate-900 border border-slate-600 rounded p-3 text-white focus:outline-none focus:border-cyan-500 transition" placeholder="Enter API Key">
         </div>
 
-        <div class="space-y-6" id="endpoints">
-        </div>
+        <div class="space-y-6" id="endpoints"></div>
     </div>
 
     <script>
         const endpoints = [
-            { method: 'GET', path: '/api/tiktok', params: [{name: 'url', desc: 'TikTok Video URL'}], category: 'Downloader' },
-            { method: 'GET', path: '/api/youtube', params: [{name: 'url', desc: 'YouTube Video URL'}], category: 'Downloader' },
-            { method: 'GET', path: '/api/ytmp3', params: [{name: 'url', desc: 'YouTube Video URL'}], category: 'Downloader' },
-            { method: 'GET', path: '/api/pinterest', params: [{name: 'query', desc: 'Search Query'}], category: 'Search' },
-            { method: 'GET', path: '/api/ai/chat', params: [{name: 'prompt', desc: 'Message'}], category: 'AI' },
-            { method: 'GET', path: '/api/ai/image', params: [{name: 'prompt', desc: 'Image Description'}], category: 'AI' },
-            { method: 'GET', path: '/api/ai/grammar', params: [{name: 'text', desc: 'Text to fix'}], category: 'AI' },
-            { method: 'GET', path: '/api/ai/code', params: [{name: 'code', desc: 'Code snippet'}], category: 'AI' },
-            { method: 'GET', path: '/api/ai/summary', params: [{name: 'text', desc: 'Long text'}], category: 'AI' }
+            { method: 'GET', path: '/api/tiktok', params: [{name: 'url', desc: 'Video URL'}], category: 'TikTok', title: 'TikTok Download' },
+            { method: 'GET', path: '/api/tiktok', params: [{name: 'type', value: 'search', desc: 'Must be "search"'}, {name: 'query', desc: 'Keywords (e.g., jedag jedug)'}], category: 'TikTok', title: 'TikTok Search' },
+            { method: 'GET', path: '/api/tiktok', params: [{name: 'type', value: 'stalk', desc: 'Must be "stalk"'}, {name: 'username', desc: 'Username (e.g., scz_kayzen)'}], category: 'TikTok', title: 'TikTok Stalk' },
+            
+            { method: 'GET', path: '/api/youtube', params: [{name: 'url', desc: 'YouTube URL'}], category: 'YouTube', title: 'YouTube Video DL' },
+            { method: 'GET', path: '/api/youtube', params: [{name: 'type', value: 'audio', desc: 'Must be "audio"'}, {name: 'url', desc: 'YouTube URL'}], category: 'YouTube', title: 'YouTube Audio (MP3)' },
+            { method: 'GET', path: '/api/youtube', params: [{name: 'type', value: 'search', desc: 'Must be "search"'}, {name: 'query', desc: 'Song/Video Title'}], category: 'YouTube', title: 'YouTube Search' },
+            
+            { method: 'GET', path: '/api/instagram', params: [{name: 'url', desc: 'Post/Reel/Story URL'}], category: 'Instagram', title: 'Instagram Download' },
+            { method: 'GET', path: '/api/instagram', params: [{name: 'type', value: 'stalk', desc: 'Must be "stalk"'}, {name: 'username', desc: 'Username'}], category: 'Instagram', title: 'Instagram Stalk' },
+
+            { method: 'GET', path: '/api/pinterest', params: [{name: 'query', desc: 'Search Query'}], category: 'Pinterest', title: 'Pinterest Search' },
+            { method: 'GET', path: '/api/pinterest', params: [{name: 'type', value: 'download', desc: 'Must be "download"'}, {name: 'url', desc: 'Pin URL'}], category: 'Pinterest', title: 'Pinterest Download' },
+
+            { method: 'GET', path: '/api/twitter', params: [{name: 'url', desc: 'Tweet URL'}], category: 'Twitter', title: 'Twitter Download' },
+            { method: 'GET', path: '/api/twitter', params: [{name: 'type', value: 'stalk', desc: 'Must be "stalk"'}, {name: 'username', desc: 'Username'}], category: 'Twitter', title: 'Twitter Stalk' },
+            { method: 'GET', path: '/api/twitter', params: [{name: 'type', value: 'search', desc: 'Must be "search"'}, {name: 'query', desc: 'Keywords'}], category: 'Twitter', title: 'Twitter Search' },
+
+            { method: 'GET', path: '/api/ai/chat', params: [{name: 'prompt', desc: 'Chat Message'}], category: 'AI', title: 'Kayzen AI Chat' },
+            { method: 'GET', path: '/api/ai/image', params: [{name: 'prompt', desc: 'Image Description'}], category: 'AI', title: 'AI Image Gen' },
+            { method: 'GET', path: '/api/ai/grammar', params: [{name: 'text', desc: 'Text to fix'}], category: 'AI', title: 'Grammar Corrector' },
+            { method: 'GET', path: '/api/ai/code', params: [{name: 'code', desc: 'Code Snippet'}], category: 'AI', title: 'Code Explainer' }
         ];
 
         const container = document.getElementById('endpoints');
@@ -51,35 +64,40 @@
         endpoints.forEach((ep, index) => {
             const id = `resp-${index}`;
             let inputsHtml = '';
+            
             ep.params.forEach(p => {
+                const isFixed = p.value ? `value="${p.value}" readonly class="opacity-50 cursor-not-allowed"` : '';
                 inputsHtml += `
-                    <div class="mt-2">
-                        <label class="text-xs text-slate-400 block">${p.name} (${p.desc})</label>
-                        <input type="text" class="inp-${index} w-full bg-slate-900 border border-slate-700 rounded p-2 mt-1 text-sm" placeholder="${p.desc}">
+                    <div class="mt-3">
+                        <label class="text-xs text-slate-400 block uppercase font-bold mb-1">${p.name}</label>
+                        <input type="text" ${isFixed} class="inp-${index} w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white focus:border-cyan-500 outline-none" placeholder="${p.desc}">
                     </div>
                 `;
             });
 
             const html = `
-                <div class="endpoint-card method-get p-6 rounded-lg">
-                    <div class="flex items-center justify-between mb-4">
+                <div class="endpoint-card method-get p-6 rounded-lg hover:bg-slate-800 transition duration-300">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
                         <div class="flex items-center gap-3">
-                            <span class="px-3 py-1 bg-blue-900 text-blue-200 text-xs font-bold rounded uppercase">${ep.method}</span>
-                            <code class="text-lg font-mono text-white">${ep.path}</code>
+                            <span class="px-3 py-1 bg-blue-900 text-blue-200 text-xs font-bold rounded uppercase shadow">${ep.method}</span>
+                            <div>
+                                <h4 class="text-lg font-bold text-white">${ep.title}</h4>
+                                <code class="text-xs text-slate-400 font-mono">${ep.path}</code>
+                            </div>
                         </div>
-                        <span class="text-xs text-slate-500 bg-slate-800 px-2 py-1 rounded">${ep.category}</span>
+                        <span class="self-start md:self-center text-xs font-bold text-slate-900 bg-cyan-400 px-3 py-1 rounded-full uppercase tracking-wider shadow-lg shadow-cyan-500/20">${ep.category}</span>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <h4 class="text-sm font-bold text-slate-300 mb-2">Parameters</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                        <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700/50">
+                            <h4 class="text-sm font-bold text-cyan-400 mb-4 border-b border-slate-700 pb-2">PARAMETERS</h4>
                             ${inputsHtml}
-                            <button onclick="testEndpoint(${index}, '${ep.path}')" class="mt-4 px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-bold rounded transition w-full">
-                                <i class="fas fa-play mr-2"></i> Try it out
+                            <button onclick="testEndpoint(${index}, '${ep.path}')" class="mt-6 w-full py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-sm font-bold rounded shadow-lg transform hover:-translate-y-0.5 transition-all">
+                                <i class="fas fa-bolt mr-2"></i> Execute
                             </button>
                         </div>
-                        <div>
-                            <h4 class="text-sm font-bold text-slate-300 mb-2">Response</h4>
-                            <pre id="${id}" class="text-xs text-green-400 h-40 overflow-y-auto">Waiting for request...</pre>
+                        <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700/50 flex flex-col">
+                            <h4 class="text-sm font-bold text-green-400 mb-4 border-b border-slate-700 pb-2">RESPONSE</h4>
+                            <pre id="${id}" class="flex-1 text-xs text-slate-300 font-mono bg-slate-950 p-3 rounded border border-slate-800 overflow-y-auto custom-scrollbar h-64">Waiting for request...</pre>
                         </div>
                     </div>
                 </div>
@@ -91,13 +109,17 @@
             const apiKey = document.getElementById('globalApiKey').value;
             const inputs = document.querySelectorAll(`.inp-${index}`);
             const respBox = document.getElementById(`resp-${index}`);
+            const btn = event.currentTarget;
             
             let query = `?apikey=${apiKey}`;
             endpoints[index].params.forEach((p, i) => {
                 query += `&${p.name}=${encodeURIComponent(inputs[i].value)}`;
             });
 
-            respBox.innerText = "Processing...";
+            const originalBtnText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            btn.disabled = true;
+            respBox.innerText = "Processing request...";
             
             try {
                 const res = await fetch(path + query);
@@ -105,6 +127,9 @@
                 respBox.innerText = JSON.stringify(data, null, 2);
             } catch (err) {
                 respBox.innerText = "Error: " + err.message;
+            } finally {
+                btn.innerHTML = originalBtnText;
+                btn.disabled = false;
             }
         }
     </script>
