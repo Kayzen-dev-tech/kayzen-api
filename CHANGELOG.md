@@ -3,7 +3,7 @@
 ![Version](https://img.shields.io/badge/version-1.0.0-blue?style=flat-square)
 ![Last Commit](https://img.shields.io/github/last-commit/username/kayzen-api?style=flat-square)
 
-[← Back to Main README](../README.md)
+[← Back to Main README](README.md)
 
 All notable changes to this project will be documented in this file.
 
