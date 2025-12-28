@@ -7,12 +7,12 @@ const {
   tiktokDownloader, 
   youtubeDownloader,
   instagramDownloader 
-} = require('../lib/index')
+} = require('./lib/index')
 
 const app = express()
 app.use(cors())
 app.use(express.json())
-app.use(express.static(path.join(__dirname, '../public')))
+app.use(express.static(path.join(process.cwd(), 'public')))
 
 const isValidKey = (req, res, next) => {
   const { apikey } = req.query
@@ -22,7 +22,7 @@ const isValidKey = (req, res, next) => {
 }
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'))
+  res.sendFile(path.join(process.cwd(), 'public/index.html'))
 })
 
 app.get('/api/tiktok', isValidKey, async (req, res) => {
@@ -61,24 +61,10 @@ app.get('/api/ai/chat', isValidKey, (req, res) => {
   res.json({ status: true, model: 'Kayzen Izumi (18yo)', response: reply })
 })
 
-app.get('/api/ai/math', isValidKey, (req, res) => {
-   res.json({ status: true, message: 'Fitur itung-itungan (Coming Soon)' })
-})
-
-app.get('/api/ai/code', isValidKey, (req, res) => {
-   res.json({ status: true, message: 'Fitur coding helper (Coming Soon)' })
-})
-
-app.get('/api/ai/image', isValidKey, (req, res) => {
-   res.json({ status: true, message: 'Fitur text to image (Coming Soon)' })
-})
-
-app.get('/api/ai/translate', isValidKey, (req, res) => {
-   res.json({ status: true, message: 'Fitur translate gaul (Coming Soon)' })
-})
-
-app.get('/api/twitter', isValidKey, async (req, res) => {
-    res.json({ status: true, platform: 'Twitter', message: 'Endpoint Twitter Ready' })
-})
+app.get('/api/ai/math', isValidKey, (req, res) => res.json({ status: true, message: 'Coming Soon' }))
+app.get('/api/ai/code', isValidKey, (req, res) => res.json({ status: true, message: 'Coming Soon' }))
+app.get('/api/ai/image', isValidKey, (req, res) => res.json({ status: true, message: 'Coming Soon' }))
+app.get('/api/ai/translate', isValidKey, (req, res) => res.json({ status: true, message: 'Coming Soon' }))
+app.get('/api/twitter', isValidKey, (req, res) => res.json({ status: true, platform: 'Twitter', message: 'Coming Soon' }))
 
 module.exports = app
