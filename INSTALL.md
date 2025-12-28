@@ -1,3 +1,5 @@
+[← Back to Main Menu](README.md)
+
 # Installation Guide
 
 Follow these steps to set up the project locally or deploy it to Vercel.
@@ -12,40 +14,40 @@ Follow these steps to set up the project locally or deploy it to Vercel.
 
 1. **Clone the Repository**
    ```bash
-   git clone [https://github.com/kayzenfry/kayzen-api-pro.git](https://github.com/Kayzen-dev-tech/kayzen-api.git)
-   cd kayzen-api
-   ```
-
+   git clone [https://github.com/kayzenfry/kayzen-api-pro.git](https://github.com/kayzenfry/kayzen-api-pro.git)
+   cd kayzen-api-pro
+   
 2. **Install Dependencies**
    ```bash
    npm install
    ```
-
 3. **Start the Server**
    ```bash
    npm start
    ```
+   
 The server will run on http://localhost:3000.
 
-## ercel Deployment
+## Vercel Deployment
 
 1. **Install Vercel CLI:**
-  ```bash
-  npm i -g vercel
-  ```
+   ```bash
+   npm i -g vercel
+   ```
 
 2. **Login to Vercel:**
    ```bash
    vercel login
    ```
-   
-3. **Deploy:**
-   ```bash
-   vercel
-   ```
-   
+
+3.  **Deploy:**
+    ```bash
+    vercel
+    ```
+
 Folder Structure
 ```
+plaintext
 /
 ├── api/             # Backend Logic (Express)
 ├── lib/             # Helper Functions (Scrapers/AI)
