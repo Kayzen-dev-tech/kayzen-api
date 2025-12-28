@@ -5,10 +5,10 @@
 # Kayzen Izumi REST API 🚀
 **Professional Node.js API for Social Media Scraping & AI**
 
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.md)
 [![Vercel](https://img.shields.io/badge/Deploy-Vercel-black?logo=vercel)](https://vercel.com)
-[![Status](https://img.shields.io/badge/Status-Active-green)]()
 [![Node](https://img.shields.io/badge/Node.js-20.x-green?logo=nodedotjs)]()
+[![Status](https://img.shields.io/badge/Status-Active-success)]()
 
 <p align="center">
   <a href="https://github.com/Kayzen-dev-tech">
@@ -20,6 +20,13 @@
 
 ---
 
+## 📖 Table of Contents
+- [Features](#-features)
+- [Installation](#-installation)
+- [Documentation](#-documentation)
+- [Authors](#-authors)
+- [License](#-license)
+
 ## 🌟 Features
 
 | Feature | Description | Status |
@@ -29,52 +36,23 @@
 | **YouTube** | MP3/MP4 Downloader | ✅ |
 | **Pinterest** | Image Search & Download | ✅ |
 | **Kayzen AI** | Custom AI Persona (Bahasa Gaul/Slang) | ✅ |
-| **Docs** | Interactive Swagger-like UI | ✅ |
-
-## 🛠️ Tech Stack
-
-* **Runtime:** Node.js 20.x
-* **Framework:** Express.js
-* **Deployment:** Vercel Serverless
-* **Assets:** HTML5, CSS3 Glassmorphism
 
 ## 🚀 Installation
 
-1.  **Clone Repo**
-    ```bash
-    git clone [https://github.com/username/kayzen-api.git](https://github.com/Kayzen-dev-tech/kayzen-api.git)
-    cd kayzen-api
-    ```
+For detailed installation instructions, please read [INSTALL.md](INSTALL.md).
 
-2.  **Install Dependencies**
-    ```bash
-    npm install
-    ```
+## 📝 Documentation
 
-3.  **Run Locally**
-    ```bash
-    npm start
-    ```
+We provide interactive documentation. After deployment, visit `/docs`.
+For static reference, check [API_REFERENCE.md](API_REFERENCE.md).
 
-## 🌐 Deploy to Vercel
+## 🤝 Contributing
 
-Click the button below to deploy your own copy.
+Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FKayzen-dev-tech%2Fkayzen-api)
+## 🛡️ Security
 
-## 📝 Endpoints
-
-Access `/docs` for full interactive documentation.
-
-* `GET /api/tiktok?url=...&apikey=kayzen`
-* `GET /api/ai/chat?text=halo&apikey=kayzen`
-* `GET /api/pinterest?query=anime&apikey=kayzen`
-
-## 👤 Author
-
-* **Name:** Kayzen Izumi
-* **Age:** 18 y.o
-* **Bini:** @h___rvn
+If you discover any security related issues, please read [SECURITY.md](SECURITY.md).
 
 ---
 <div align="center">
