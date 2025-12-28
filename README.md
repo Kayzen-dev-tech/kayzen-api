@@ -1,104 +1,82 @@
-# Kayzen API Professional 🚀
+<div align="center">
+
+![Banner](public/banner.jpg)
+
+# Kayzen Izumi REST API 🚀
+**Professional Node.js API for Social Media Scraping & AI**
+
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Vercel](https://img.shields.io/badge/Deploy-Vercel-black?logo=vercel)](https://vercel.com)
+[![Status](https://img.shields.io/badge/Status-Active-green)]()
+[![Node](https://img.shields.io/badge/Node.js-20.x-green?logo=nodedotjs)]()
 
 <p align="center">
-  <img src="./public/banner.jpg" alt="Kayzen API Banner" width="100%" style="border-radius: 10px;">
+  <a href="https://github.com/Kayzen-dev-tech">
+    <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=00F2EA&center=true&vCenter=true&width=435&lines=TikTok+Downloader;Instagram+Stalker;Kayzen+AI+Chat;Professional+REST+API" alt="Typing SVG" />
+  </a>
 </p>
 
-<p align="center">
-    <a href="https://github.com/Kayzen-dev-tech/kayzen-api"><img src="https://img.shields.io/badge/build-passing-brightgreen?style=flat-square&logo=github"></a>
-    <a href="https://nodejs.org"><img src="https://img.shields.io/badge/node-20.x-blue?style=flat-square&logo=node.js"></a>
-    <a href="https://expressjs.com"><img src="https://img.shields.io/badge/express-4.x-white?style=flat-square&logo=express"></a>
-    <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-orange?style=flat-square"></a>
-    <a href="https://vercel.com"><img src="https://img.shields.io/badge/deploy-vercel-black?style=flat-square&logo=vercel"></a>
-</p>
-
-<p align="center">
-  <b>A High-Performance REST API built with Node.js, Express, and Vercel Serverless Functions.</b><br>
-  Features Modern UI, AI Integration, and Scraper Tools.
-</p>
+</div>
 
 ---
 
-## 📑 Quick Documentation
+## 🌟 Features
 
-To keep this repository clean, detailed documentation is separated into the following files:
-
-| 📂 Topic | 📝 Description |
-| :--- | :--- |
-| [**⚙️ Installation**](./INSTALLATION.md) | How to set up and run locally. |
-| [**📡 Endpoints**](./ENDPOINTS.md) | List of all available API routes (TikTok, AI, etc). |
-| [**🛡️ Security**](./SECURITY.md) | Security policies and reporting vulnerabilities. |
-| [**🤝 Contributing**](./CONTRIBUTING.md) | Guidelines for contributing to this project. |
-| [**👥 Authors**](./AUTHORS.md) | Credits to the developer and special thanks. |
-| [**📜 Changelog**](./CHANGELOG.md) | History of versions and updates. |
-
----
-
-## 🌟 Key Features
-
-### 🎨 Frontend (UI/UX)
-* **Modern Aesthetic:** Dark mode interface with Glassmorphism effects.
-* **Interactive Profile:** Dynamic typing text, social media hub, and profile showcase.
-* **Image Gallery:** Responsive carousel sliders for Cosplay & "My Bini" collections.
-* **Live Docs:** Try-it-out feature directly on the website (`/docs`).
-
-### ⚙️ Backend (API)
-* **All-in-One Downloader:** Support for TikTok, Instagram, YouTube, Twitter, and Pinterest.
-* **Stalking Tools:** Get profile data from TikTok, Instagram, and Twitter.
-* **Search Engine:** Search content across multiple social platforms.
-* **Artificial Intelligence:** 5+ Endpoints including Chat, Image Gen, and Code Explanation.
-
----
+| Feature | Description | Status |
+| :--- | :--- | :--- |
+| **TikTok** | Download No Watermark, Search, Stalk | ✅ |
+| **Instagram** | Reels, Post, Story Downloader | ✅ |
+| **YouTube** | MP3/MP4 Downloader | ✅ |
+| **Pinterest** | Image Search & Download | ✅ |
+| **Kayzen AI** | Custom AI Persona (Bahasa Gaul/Slang) | ✅ |
+| **Docs** | Interactive Swagger-like UI | ✅ |
 
 ## 🛠️ Tech Stack
 
-* **Runtime:** Node.js 20 (LTS)
-* **Framework:** Express.js (Serverless optimized)
-* **HTTP Client:** Axios
-* **Scraping:** Cheerio
-* **Styling:** Tailwind CSS (via CDN)
-* **Deployment:** Vercel
+* **Runtime:** Node.js 20.x
+* **Framework:** Express.js
+* **Deployment:** Vercel Serverless
+* **Assets:** HTML5, CSS3 Glassmorphism
+
+## 🚀 Installation
+
+1.  **Clone Repo**
+    ```bash
+    git clone [https://github.com/username/kayzen-api.git](https://github.com/Kayzen-dev-tech/kayzen-api.git)
+    cd kayzen-api
+    ```
+
+2.  **Install Dependencies**
+    ```bash
+    npm install
+    ```
+
+3.  **Run Locally**
+    ```bash
+    npm start
+    ```
+
+## 🌐 Deploy to Vercel
+
+Click the button below to deploy your own copy.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FKayzen-dev-tech%2Fkayzen-api)
+
+## 📝 Endpoints
+
+Access `/docs` for full interactive documentation.
+
+* `GET /api/tiktok?url=...&apikey=kayzen`
+* `GET /api/ai/chat?text=halo&apikey=kayzen`
+* `GET /api/pinterest?query=anime&apikey=kayzen`
+
+## 👤 Author
+
+* **Name:** Kayzen Izumi
+* **Age:** 18 y.o
+* **Bini:** @h___rvn
 
 ---
-
-## 📂 Project Structure
-
-```text
-kayzen-api/
-├── api/                  # Serverless Entry Points
-│   └── index.js          # Main Express App
-├── lib/                  # Helper Functions
-│   ├── ai.js             # AI Logic
-│   └── scraper.js        # Scraper Logic (TikTok, IG, YT, etc)
-├── public/               # Static Assets
-│   ├── index.html        # Landing Page
-│   ├── docs.html         # Documentation Page
-│   └── (images...)       # jpg assets
-├── vercel.json           # Vercel Config
-├── package.json          # Dependencies
-└── README.md             # Main Documentation
-```
-
----
-
-### 🚀 Deployment
-
-You can deploy this project to Vercel in just one click.
-
-Note: Make sure to include your assets (images) in the public folder before deploying.
-
----
-
-## 📬 Connect with Me
-
-**Kayzen Izumi**
-
-* **WhatsApp:** [Chat Me](https://wa.me/628152313006)
-* **WhatsApp Channel:** [Join Here](https://whatsapp.com/channel/0029VbBRpUN8F2pMzHjQqz3S)
-* **Telegram:** [@nonewpo](https://t.me/nonewpo)
-* **Instagram:** [@kayzenfry](https://instagram.com/kayzenfry)
-* **TikTok:** [@scz_kayzen](https://tiktok.com/@scz_kayzen)
-
----
-
-<p align="center">Made with ❤️ by Kayzen & inspired by @h___rvn</p>
+<div align="center">
+  Copyright © 2024 Kayzen Izumi. All rights reserved.
+</div>
