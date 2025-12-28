@@ -14,8 +14,8 @@ Follow these steps to set up the project locally or deploy it to Vercel.
 
 1. **Clone the Repository**
    ```bash
-   git clone [https://github.com/kayzenfry/kayzen-api-pro.git](https://github.com/kayzenfry/kayzen-api-pro.git)
-   cd kayzen-api-pro
+   git clone [https://github.com/Kayzen-dev-tech/kayzen-api.git](https://github.com/Kayzen-dev-tech/kayzen-api.git)
+   cd kayzen-api
    
 2. **Install Dependencies**
    ```bash
