@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>API Documentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #0f172a; color: #e2e8f0; }
+        .endpoint-card { background: #1e293b; border-radius: 12px; margin-bottom: 1rem; padding: 1rem; }
+    </style>
+</head>
+<body class="p-6">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8 text-blue-400">Kayzen Rest API</h1>
+        
+        <div class="endpoint-card">
+            <div class="flex justify-between items-center mb-4">
+                <span class="bg-green-600 px-3 py-1 rounded text-sm font-bold">GET</span>
+                <code class="text-blue-300">/api/ai/chat</code>
+            </div>
+            <input id="ai-input" type="text" placeholder="Tanya Kayzen..." class="w-full bg-slate-900 border border-slate-700 p-2 rounded mb-2">
+            <button onclick="testApi('/api/ai/chat', 'ai-input')" class="bg-blue-600 px-4 py-2 rounded font-bold">Try It Out</button>
+            <pre id="ai-res" class="mt-4 p-3 bg-black rounded hidden text-xs overflow-auto"></pre>
+        </div>
+
+        <div class="endpoint-card">
+            <div class="flex justify-between items-center mb-4">
+                <span class="bg-green-600 px-3 py-1 rounded text-sm font-bold">GET</span>
+                <code class="text-blue-300">/api/tiktok</code>
+            </div>
+            <input id="tt-input" type="text" placeholder="URL TikTok..." class="w-full bg-slate-900 border border-slate-700 p-2 rounded mb-2">
+            <button onclick="testApi('/api/tiktok', 'tt-input')" class="bg-blue-600 px-4 py-2 rounded font-bold">Try It Out</button>
+            <pre id="tt-res" class="mt-4 p-3 bg-black rounded hidden text-xs overflow-auto"></pre>
+        </div>
+    </div>
+
+    <script>
+        async function testApi(path, inputId) {
+            const val = document.getElementById(inputId).value;
+            const resDiv = document.getElementById(inputId.split('-')[0] + '-res');
+            resDiv.classList.remove('hidden');
+            resDiv.innerText = 'Loading...';
+            try {
+                const response = await fetch(`${path}?apikey=KAYZEN_99X_PRO&text=${val}&url=${val}`);
+                const data = await response.json();
+                resDiv.innerText = JSON.stringify(data, null, 2);
+            } catch (e) {
+                resDiv.innerText = 'Error: ' + e.message;
+            }
+        }
+    </script>
+</body>
+</html>
