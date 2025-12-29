@@ -3,65 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Documentation | Kayzen Izumi</title>
+    <title>Documentation | Kayzen API</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" href="/profile.jpg">
     <style>
-        body { background: #0f172a; color: #e2e8f0; }
-        .endpoint-card { background: #1e293b; border-left: 4px solid #38bdf8; transition: 0.3s; }
-        .endpoint-card:hover { transform: translateY(-2px); }
-        pre { background: #000; padding: 10px; border-radius: 8px; color: #10b981; overflow-x: auto; }
+        body { background: #020617; color: white; }
+        .card { background: #0f172a; border: 1px solid #1e293b; border-radius: 16px; padding: 20px; }
+        pre { background: #000; color: #10b981; padding: 15px; border-radius: 10px; font-size: 13px; overflow-x: auto; margin-top: 10px; }
     </style>
 </head>
-<body class="p-4 md:p-10">
-    <div class="max-w-5xl mx-auto">
-        <header class="mb-10 text-center">
-            <h1 class="text-4xl font-bold text-sky-400">REST API Docs</h1>
-            <p class="text-gray-400 mt-2">Professional & Interactive Endpoints</p>
-        </header>
-
+<body class="p-6 md:p-12">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-sky-400 mb-8">API Documentation</h1>
+        
         <div class="space-y-6">
-            <div class="endpoint-card p-6 rounded-xl">
-                <div class="flex justify-between items-center mb-4">
-                    <span class="bg-blue-600 px-3 py-1 rounded text-sm font-bold">GET</span>
+            <div class="card">
+                <div class="flex items-center gap-4 mb-4">
+                    <span class="bg-green-500 text-xs font-black px-3 py-1 rounded">GET</span>
                     <code class="text-sky-300">/api/ai/chat</code>
                 </div>
-                <p class="text-sm text-gray-300 mb-4">Ngobrol bareng Kayzen Izumi (AI Version).</p>
-                <div class="flex gap-2 mb-4">
-                    <input type="text" id="ai-input" placeholder="Tanya sesuatu..." class="bg-slate-900 border border-slate-700 p-2 rounded flex-1">
-                    <button onclick="testApi('/api/ai/chat', 'text', 'ai-input')" class="bg-sky-500 hover:bg-sky-600 px-4 py-2 rounded font-bold">Try</button>
+                <div class="flex gap-2">
+                    <input type="text" id="i-chat" placeholder="Halo Kayzen..." class="flex-1 bg-slate-900 border border-slate-700 p-3 rounded-xl outline-none">
+                    <button onclick="test('/api/ai/chat', 'text', 'i-chat')" class="bg-sky-500 px-6 rounded-xl font-bold">Try</button>
                 </div>
-                <pre id="ai-res">Result will appear here...</pre>
+                <pre id="r-chat">{}</pre>
             </div>
 
-            <div class="endpoint-card p-6 rounded-xl">
-                <div class="flex justify-between items-center mb-4">
-                    <span class="bg-blue-600 px-3 py-1 rounded text-sm font-bold">GET</span>
+            <div class="card">
+                <div class="flex items-center gap-4 mb-4">
+                    <span class="bg-green-500 text-xs font-black px-3 py-1 rounded">GET</span>
                     <code class="text-sky-300">/api/tiktok</code>
                 </div>
-                <p class="text-sm text-gray-300 mb-4">TikTok Downloader (Video/MP3).</p>
-                <div class="flex gap-2 mb-4">
-                    <input type="text" id="tt-input" placeholder="TikTok URL..." class="bg-slate-900 border border-slate-700 p-2 rounded flex-1">
-                    <button onclick="testApi('/api/tiktok', 'url', 'tt-input')" class="bg-sky-500 hover:bg-sky-600 px-4 py-2 rounded font-bold">Try</button>
+                <div class="flex gap-2">
+                    <input type="text" id="i-tt" placeholder="TikTok URL..." class="flex-1 bg-slate-900 border border-slate-700 p-3 rounded-xl outline-none">
+                    <button onclick="test('/api/tiktok', 'url', 'i-tt')" class="bg-sky-500 px-6 rounded-xl font-bold">Try</button>
                 </div>
-                <pre id="tt-res">Result will appear here...</pre>
+                <pre id="r-tt">{}</pre>
             </div>
         </div>
     </div>
 
     <script>
-        async function testApi(endpoint, paramName, inputId) {
-            const val = document.getElementById(inputId).value;
-            const resBox = document.getElementById(inputId.split('-')[0] + '-res');
-            if (!val) return alert('Input required!');
-            
-            resBox.innerText = 'Loading...';
+        async function test(path, param, elId) {
+            const val = document.getElementById(elId).value;
+            const res = document.getElementById('r-' + elId.split('-')[1]);
+            res.innerText = 'Processing...';
             try {
-                const response = await fetch(`${endpoint}?apikey=kayzen-secret&${paramName}=${val}`);
+                const response = await fetch(`${path}?apikey=kayzen-secret&${param}=${encodeURIComponent(val)}`);
                 const data = await response.json();
-                resBox.innerText = JSON.stringify(data, null, 2);
-            } catch (err) {
-                resBox.innerText = 'Error: ' + err.message;
+                res.innerText = JSON.stringify(data, null, 2);
+            } catch (e) {
+                res.innerText = 'Error: ' + e.message;
             }
         }
     </script>
