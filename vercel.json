@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "public": true,
   "rewrites": [
     { "source": "/", "destination": "/views/index.html" },
     { "source": "/docs", "destination": "/views/docs.html" },
