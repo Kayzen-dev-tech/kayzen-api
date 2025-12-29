@@ -57,6 +57,10 @@ app.get('/api/ai/logic', validateKey, async (req, res) => {
     res.json(result);
 });
 
+app.get('/docs', (req, res) => {
+    res.sendFile(path.join(__dirname, '../views/docs.html'));
+});
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../views/index.html'));
 });
