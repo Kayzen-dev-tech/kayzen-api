@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayzen Izumi | Project</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background: #0a0a0a; color: #fff; font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .carousel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 10px; }
+        .carousel img { flex-shrink: 0; width: 200px; height: 300px; object-fit: cover; border-radius: 15px; scroll-snap-align: start; }
+    </style>
+</head>
+<body class="p-4">
+    <div class="max-w-md mx-auto">
+        <div class="relative h-48 rounded-3xl overflow-hidden mb-16">
+            <img src="banner.jpg" class="w-full h-full object-cover">
+            <div class="absolute -bottom-12 left-1/2 -translate-x-1/2">
+                <img src="profile.jpg" class="w-24 h-24 rounded-full border-4 border-[#0a0a0a] object-cover">
+            </div>
+        </div>
+
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold">Kayzen Izumi</h1>
+            <p class="text-gray-400 text-sm">Fullstack Developer & API Provider</p>
+        </div>
+
+        <div class="glass p-5 rounded-3xl mb-6">
+            <h2 class="font-bold mb-2">About</h2>
+            <p class="text-gray-300 text-sm mb-2">Owner: Kayzen Izumi (18y.o)</p>
+            <p class="text-gray-300 text-sm mb-2">My Bini: <span class="text-pink-400">@h___rvn</span></p>
+            <p class="text-gray-400 text-xs">API ini dirancang untuk otomasi social media downloaders dan AI assistant yang responsif.</p>
+        </div>
+
+        <h3 class="font-bold mb-3 ml-2">Cosplayer Gallery</h3>
+        <div class="carousel mb-6 no-scrollbar">
+            <script>
+                for(let i=1; i<=15; i++) document.write(`<img src="slide${i}.jpg">`);
+            </script>
+        </div>
+
+        <h3 class="font-bold mb-3 ml-2">My Bini</h3>
+        <div class="carousel mb-8 no-scrollbar">
+            <script>
+                for(let i=1; i<=5; i++) document.write(`<img src="bini${i}.jpg">`);
+            </script>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 mb-10">
+            <a href="https://wa.me/628152313006" class="glass p-3 rounded-2xl flex items-center gap-3"><i class="fab fa-whatsapp text-green-500"></i> WhatsApp</a>
+            <a href="https://instagram.com/kayzenfry" class="glass p-3 rounded-2xl flex items-center gap-3"><i class="fab fa-instagram text-pink-500"></i> Instagram</a>
+            <a href="/docs" class="glass p-3 rounded-2xl flex items-center justify-center gap-3 col-span-2 border-blue-500/50"><i class="fas fa-code"></i> REST API DOCS</a>
+        </div>
+    </div>
+</body>
+</html>
