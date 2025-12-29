@@ -7,7 +7,16 @@ const searcher = require('../lib/searcher');
 
 const app = express();
 app.use(cors());
+
 app.use(express.static(path.join(__dirname, '../public')));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../views/index.html'));
+});
+
+app.get('/docs', (req, res) => {
+    res.sendFile(path.join(__dirname, '../views/docs.html'));
+});
 
 const validateKey = (req, res, next) => {
     const { apikey } = req.query;
