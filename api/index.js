@@ -1,70 +1,53 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const ai = require('../lib/ai');
-const downloader = require('../lib/downloader');
-const searcher = require('../lib/searcher');
+const scraper = require('../lib/scrapers');
 
 const app = express();
 app.use(cors());
-
+app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public')));
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../views/index.html'));
-});
-
-app.get('/docs', (req, res) => {
-    res.sendFile(path.join(__dirname, '../views/docs.html'));
-});
+const VALID_API_KEY = "KAYZEN_SECRET_8891";
 
 const validateKey = (req, res, next) => {
     const { apikey } = req.query;
-    if (apikey === 'kayzen-secret') {
-        return next();
-    }
-    res.status(403).json({ status: false, message: 'Invalid API Key' });
+    if (apikey === VALID_API_KEY) return next();
+    res.status(401).json({ status: false, message: "Invalid or missing API Key" });
 };
 
 app.get('/api/ai/chat', validateKey, async (req, res) => {
-    const result = await ai.kayzenChat(req.query.text);
-    res.json({ status: true, result });
-});
-
-app.get('/api/ai/logic', validateKey, async (req, res) => {
-    const result = await ai.aiLogic(req.query.text);
-    res.json({ status: true, result });
-});
-
-app.get('/api/ai/art', validateKey, async (req, res) => {
-    const result = await ai.aiArtPrompt(req.query.text);
-    res.json({ status: true, result });
-});
-
-app.get('/api/ai/translate', validateKey, async (req, res) => {
-    const result = await ai.aiTranslate(req.query.text);
-    res.json({ status: true, result });
-});
-
-app.get('/api/ai/code', validateKey, async (req, res) => {
-    const result = await ai.aiCode(req.query.text);
-    res.json({ status: true, result });
-});
-
-app.get('/api/tiktok', validateKey, async (req, res) => {
-    const result = await downloader.tiktok(req.query.url);
-    res.json({ status: true, result });
+    const { text } = req.query;
+    const prompt = `Nama lo Kayzen Izumi, umur 18 tahun. Gaya bicara lo asik, non-baku, pake lo-gue, dan santai banget kayak anak muda zaman sekarang. Jangan kaku.`;
+    try {
+        const result = await scraper.aiChat(text, prompt);
+        res.json({ status: true, creator: "Kayzen Izumi", result });
+    } catch (e) {
+        res.status(500).json({ status: false, error: e.message });
+    }
 });
 
 app.get('/api/pinterest', validateKey, async (req, res) => {
     const { query, url } = req.query;
-    const result = url ? await downloader.pinDl(url) : await searcher.pinSearch(query);
-    res.json({ status: true, result });
+    try {
+        const result = query ? await scraper.pinSearch(query) : await scraper.pinDl(url);
+        res.json({ status: true, creator: "Kayzen Izumi", result });
+    } catch (e) {
+        res.status(500).json({ status: false, error: e.message });
+    }
 });
 
-app.get('/api/youtube', validateKey, async (req, res) => {
-    const result = req.query.type === 'mp3' ? await downloader.ytmp3(req.query.url) : await downloader.ytmp4(req.query.url);
-    res.json({ status: true, result });
+app.get('/api/tiktok', validateKey, async (req, res) => {
+    const { url, query, username } = req.query;
+    try {
+        let result;
+        if (url) result = await scraper.ttDl(url);
+        else if (query) result = await scraper.ttSearch(query);
+        else if (username) result = await scraper.ttStalk(username);
+        res.json({ status: true, creator: "Kayzen Izumi", result });
+    } catch (e) {
+        res.status(500).json({ status: false, error: e.message });
+    }
 });
 
 module.exports = app;
