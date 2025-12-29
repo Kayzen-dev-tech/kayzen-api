@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayzen Izumi | API Portofolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .glass { background: rgba(20, 20, 20, 0.7); backdrop-filter: blur(10px); }
+        .slider-container { overflow-x: auto; scroll-behavior: smooth; }
+        .slider-container::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-black text-white font-sans">
+    <div class="relative w-full h-64 bg-cover bg-center" style="background-image: url('banner.jpg');">
+        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
+    </div>
+
+    <div class="max-w-4xl mx-auto -mt-20 relative z-10 px-4">
+        <div class="text-center">
+            <img src="profile.jpg" class="w-32 h-32 rounded-full mx-auto border-4 border-purple-600 object-cover">
+            <h1 class="text-3xl font-bold mt-4">Kayzen Izumi</h1>
+            <p class="text-purple-400">@kayzenfry</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-4 mt-8">
+            <div class="glass p-6 rounded-2xl border border-zinc-800">
+                <h3 class="text-xl font-bold mb-2">About Me</h3>
+                <p class="text-zinc-400">Junior Fullstack Dev & Tech Enthusiast.</p>
+            </div>
+            <div class="glass p-6 rounded-2xl border border-zinc-800">
+                <h3 class="text-xl font-bold mb-2">My Bini</h3>
+                <p class="text-zinc-400">Lovely partner: <span class="text-pink-400">@h___rvn</span></p>
+            </div>
+        </div>
+
+        <div class="mt-10">
+            <h2 class="text-2xl font-bold mb-4">Cosplayer Gallery</h2>
+            <div class="slider-container flex gap-4">
+                <script>
+                    for(let i=1; i<=15; i++) {
+                        document.write(`<img src="slide${i}.jpg" class="w-48 h-72 object-cover rounded-xl flex-shrink-0">`);
+                    }
+                </script>
+            </div>
+        </div>
+
+        <div class="mt-10 mb-20">
+            <h2 class="text-2xl font-bold mb-4">Social Media</h2>
+            <div class="flex flex-wrap gap-4">
+                <a href="https://wa.me/628152313006" class="p-4 glass rounded-xl flex items-center gap-2 hover:bg-zinc-800 transition">
+                    <i class="fab fa-whatsapp text-green-500"></i> WhatsApp
+                </a>
+                <a href="/docs" class="p-4 bg-purple-600 rounded-xl flex items-center gap-2 hover:bg-purple-700 transition">
+                    <i class="fas fa-code"></i> API Documentation
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
