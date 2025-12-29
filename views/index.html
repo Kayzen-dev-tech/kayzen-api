@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
-        body { background: #020617; color: #f8fafc; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: #020617; color: #f8fafc; }
         .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
     </style>
 </head>
@@ -16,13 +16,13 @@
     <div id="login-overlay" class="fixed inset-0 z-[999] bg-slate-950 flex items-center justify-center p-6">
         <div class="glass p-8 rounded-3xl max-w-md w-full text-center">
             <h2 class="text-2xl font-bold mb-6 text-sky-400">Restricted Access</h2>
-            <input type="password" id="access-key" placeholder="Enter Key..." class="w-full bg-slate-900 border border-slate-700 p-4 rounded-2xl mb-4 text-center outline-none focus:ring-2 ring-sky-500">
-            <button onclick="checkLogin()" class="w-full bg-sky-500 hover:bg-sky-600 p-4 rounded-2xl font-bold transition duration-300">Unlock Dashboard</button>
+            <input type="password" id="access-key" placeholder="Enter Key..." class="w-full bg-slate-900 border border-slate-700 p-4 rounded-2xl mb-4 text-center outline-none">
+            <button onclick="checkLogin()" class="w-full bg-sky-500 hover:bg-sky-600 p-4 rounded-2xl font-bold transition">Unlock Dashboard</button>
             <p id="err" class="text-red-500 mt-4 hidden">Key Incorrect</p>
         </div>
     </div>
 
-    <div class="relative h-64 md:h-80 w-full">
+    <div class="relative h-64 w-full">
         <img src="/banner.jpg" class="w-full h-full object-cover">
         <div class="absolute -bottom-16 left-1/2 -translate-x-1/2">
             <img src="/profile.jpg" class="w-32 h-32 rounded-full border-4 border-slate-950 shadow-2xl">
@@ -31,18 +31,14 @@
 
     <div class="mt-20 px-6 max-w-4xl mx-auto text-center">
         <h1 class="text-4xl font-bold">Kayzen Izumi</h1>
-        <p class="text-sky-400 font-medium">Fullstack Developer & @h___rvn's Bini</p>
-        <p class="mt-4 text-gray-400 leading-relaxed">High-performance REST API service for downloading and AI automation. Created with Node.js 20 and Express.</p>
+        <p class="text-sky-400">Fullstack Developer & @h___rvn's Hubby</p>
         
-        <div class="flex flex-wrap justify-center gap-4 mt-8">
-            <a href="https://wa.me/628152313006" class="glass p-3 rounded-full hover:scale-110 transition"><img src="https://img.icons8.com/color/48/whatsapp.png" class="w-6 h-6"></a>
-            <a href="https://t.me/nonewpo" class="glass p-3 rounded-full hover:scale-110 transition"><img src="https://img.icons8.com/color/48/telegram-app.png" class="w-6 h-6"></a>
-            <a href="https://instagram.com/kayzenfry" class="glass p-3 rounded-full hover:scale-110 transition"><img src="https://img.icons8.com/color/48/instagram-new.png" class="w-6 h-6"></a>
-            <a href="/docs" class="bg-sky-500 px-6 py-3 rounded-full font-bold shadow-lg shadow-sky-500/20">View API Docs</a>
+        <div class="flex justify-center gap-4 mt-8">
+            <a href="/docs" class="bg-sky-500 px-8 py-3 rounded-full font-bold">API Docs</a>
         </div>
 
         <div class="mt-16 text-left">
-            <h3 class="text-xl font-bold mb-6 text-pink-500">Gallery Cosplayer</h3>
+            <h3 class="text-xl font-bold mb-6 text-pink-500">Cosplayer Gallery</h3>
             <div class="swiper mySwiper h-96 rounded-2xl">
                 <div class="swiper-wrapper" id="cos-list"></div>
             </div>
@@ -75,11 +71,7 @@
             const b = document.getElementById('bini-list');
             for(let i=1; i<=5; i++) b.innerHTML += `<div class="swiper-slide"><img src="/bini${i}.jpg" class="w-full h-full object-cover"></div>`;
             
-            new Swiper(".mySwiper", {
-                effect: "cards",
-                grabCursor: true,
-                autoplay: { delay: 2000 }
-            });
+            new Swiper(".mySwiper", { effect: "coverflow", grabCursor: true, autoplay: { delay: 2000 }, loop: true });
         }
     </script>
 </body>
