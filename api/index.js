@@ -14,40 +14,47 @@ const validateKey = (req, res, next) => {
     if (apikey === 'kayzen-secret') {
         return next();
     }
-    res.status(403).json({ status: false, message: 'Invalid or missing API Key' });
+    res.status(403).json({ status: false, message: 'Invalid API Key' });
 };
 
 app.get('/api/ai/chat', validateKey, async (req, res) => {
-    const { text } = req.query;
-    const result = await ai.kayzenChat(text);
+    const result = await ai.kayzenChat(req.query.text);
     res.json({ status: true, result });
 });
 
 app.get('/api/ai/logic', validateKey, async (req, res) => {
-    const { text, prompt } = req.query;
-    const result = await ai.customAI(text, prompt);
+    const result = await ai.aiLogic(req.query.text);
+    res.json({ status: true, result });
+});
+
+app.get('/api/ai/art', validateKey, async (req, res) => {
+    const result = await ai.aiArtPrompt(req.query.text);
+    res.json({ status: true, result });
+});
+
+app.get('/api/ai/translate', validateKey, async (req, res) => {
+    const result = await ai.aiTranslate(req.query.text);
+    res.json({ status: true, result });
+});
+
+app.get('/api/ai/code', validateKey, async (req, res) => {
+    const result = await ai.aiCode(req.query.text);
     res.json({ status: true, result });
 });
 
 app.get('/api/tiktok', validateKey, async (req, res) => {
-    const { url } = req.query;
-    const result = await downloader.tiktok(url);
-    res.json({ status: true, result });
-});
-
-app.get('/api/youtube', validateKey, async (req, res) => {
-    const { url, type } = req.query;
-    const result = type === 'mp3' ? await downloader.ytmp3(url) : await downloader.ytmp4(url);
+    const result = await downloader.tiktok(req.query.url);
     res.json({ status: true, result });
 });
 
 app.get('/api/pinterest', validateKey, async (req, res) => {
     const { query, url } = req.query;
-    if (url) {
-        const result = await downloader.pinDl(url);
-        return res.json({ status: true, result });
-    }
-    const result = await searcher.pinSearch(query);
+    const result = url ? await downloader.pinDl(url) : await searcher.pinSearch(query);
+    res.json({ status: true, result });
+});
+
+app.get('/api/youtube', validateKey, async (req, res) => {
+    const result = req.query.type === 'mp3' ? await downloader.ytmp3(req.query.url) : await downloader.ytmp4(req.query.url);
     res.json({ status: true, result });
 });
 
