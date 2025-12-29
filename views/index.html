@@ -3,76 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kayzen Izumi | Home</title>
-    <link rel="icon" href="/profile.jpg">
+    <title>Documentation | Kayzen API</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
-        body { background: #020617; color: #f8fafc; }
-        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
+        body { background: #020617; color: white; }
+        .card { background: #0f172a; border: 1px solid #1e293b; border-radius: 16px; padding: 20px; }
+        pre { background: #000; color: #10b981; padding: 15px; border-radius: 10px; font-size: 13px; overflow-x: auto; margin-top: 10px; }
     </style>
 </head>
-<body class="pb-20">
-    <div id="login-overlay" class="fixed inset-0 z-[999] bg-slate-950 flex items-center justify-center p-6">
-        <div class="glass p-8 rounded-3xl max-w-md w-full text-center">
-            <h2 class="text-2xl font-bold mb-6 text-sky-400">Restricted Access</h2>
-            <input type="password" id="access-key" placeholder="Enter Key..." class="w-full bg-slate-900 border border-slate-700 p-4 rounded-2xl mb-4 text-center outline-none">
-            <button onclick="checkLogin()" class="w-full bg-sky-500 hover:bg-sky-600 p-4 rounded-2xl font-bold transition">Unlock Dashboard</button>
-            <p id="err" class="text-red-500 mt-4 hidden">Key Incorrect</p>
-        </div>
-    </div>
-
-    <div class="relative h-64 w-full">
-        <img src="/banner.jpg" class="w-full h-full object-cover">
-        <div class="absolute -bottom-16 left-1/2 -translate-x-1/2">
-            <img src="/profile.jpg" class="w-32 h-32 rounded-full border-4 border-slate-950 shadow-2xl">
-        </div>
-    </div>
-
-    <div class="mt-20 px-6 max-w-4xl mx-auto text-center">
-        <h1 class="text-4xl font-bold">Kayzen Izumi</h1>
-        <p class="text-sky-400">Fullstack Developer & @h___rvn's Hubby</p>
+<body class="p-6 md:p-12">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-sky-400 mb-8">API Documentation</h1>
         
-        <div class="flex justify-center gap-4 mt-8">
-            <a href="/docs" class="bg-sky-500 px-8 py-3 rounded-full font-bold">API Docs</a>
-        </div>
-
-        <div class="mt-16 text-left">
-            <h3 class="text-xl font-bold mb-6 text-pink-500">Cosplayer Gallery</h3>
-            <div class="swiper mySwiper h-96 rounded-2xl">
-                <div class="swiper-wrapper" id="cos-list"></div>
+        <div class="space-y-6">
+            <div class="card">
+                <div class="flex items-center gap-4 mb-4">
+                    <span class="bg-green-500 text-xs font-black px-3 py-1 rounded">GET</span>
+                    <code class="text-sky-300">/api/ai/chat</code>
+                </div>
+                <div class="flex gap-2">
+                    <input type="text" id="i-chat" placeholder="Halo Kayzen..." class="flex-1 bg-slate-900 border border-slate-700 p-3 rounded-xl outline-none">
+                    <button onclick="test('/api/ai/chat', 'text', 'i-chat')" class="bg-sky-500 px-6 rounded-xl font-bold">Try</button>
+                </div>
+                <pre id="r-chat">{}</pre>
             </div>
-        </div>
 
-        <div class="mt-16 text-left">
-            <h3 class="text-xl font-bold mb-6 text-sky-500">My Bini (@h___rvn)</h3>
-            <div class="swiper mySwiper h-96 rounded-2xl">
-                <div class="swiper-wrapper" id="bini-list"></div>
+            <div class="card">
+                <div class="flex items-center gap-4 mb-4">
+                    <span class="bg-green-500 text-xs font-black px-3 py-1 rounded">GET</span>
+                    <code class="text-sky-300">/api/tiktok</code>
+                </div>
+                <div class="flex gap-2">
+                    <input type="text" id="i-tt" placeholder="TikTok URL..." class="flex-1 bg-slate-900 border border-slate-700 p-3 rounded-xl outline-none">
+                    <button onclick="test('/api/tiktok', 'url', 'i-tt')" class="bg-sky-500 px-6 rounded-xl font-bold">Try</button>
+                </div>
+                <pre id="r-tt">{}</pre>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        function checkLogin() {
-            const key = document.getElementById('access-key').value;
-            if (key === 'kayzen123') {
-                document.getElementById('login-overlay').style.display = 'none';
-                localStorage.setItem('auth', 'true');
-            } else {
-                document.getElementById('err').classList.remove('hidden');
+        async function test(path, param, elId) {
+            const val = document.getElementById(elId).value;
+            const res = document.getElementById('r-' + elId.split('-')[1]);
+            res.innerText = 'Processing...';
+            try {
+                const response = await fetch(`${path}?apikey=kayzen-secret&${param}=${encodeURIComponent(val)}`);
+                const data = await response.json();
+                res.innerText = JSON.stringify(data, null, 2);
+            } catch (e) {
+                res.innerText = 'Error: ' + e.message;
             }
         }
-
-        window.onload = () => {
-            if (localStorage.getItem('auth') === 'true') document.getElementById('login-overlay').style.display = 'none';
-            const c = document.getElementById('cos-list');
-            for(let i=1; i<=15; i++) c.innerHTML += `<div class="swiper-slide"><img src="/slide${i}.jpg" class="w-full h-full object-cover"></div>`;
-            const b = document.getElementById('bini-list');
-            for(let i=1; i<=5; i++) b.innerHTML += `<div class="swiper-slide"><img src="/bini${i}.jpg" class="w-full h-full object-cover"></div>`;
-            
-            new Swiper(".mySwiper", { effect: "coverflow", grabCursor: true, autoplay: { delay: 2000 }, loop: true });
-        }
+        async function checkLogin() {
+    const key = document.getElementById('access-key').value;
+    if (key === 'kayzen123') {
+        document.getElementById('login-overlay').style.display = 'none';
+        localStorage.setItem('auth', 'true');
+    } else {
+        document.getElementById('err').classList.remove('hidden');
+    }
+}
     </script>
 </body>
 </html>
