@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayzen Izumi | API</title>
+    <link rel="icon" href="/profile.jpg">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #0a0a0a; color: white; font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+    </style>
+</head>
+<body class="p-5">
+    <div class="max-w-4xl mx-auto">
+        <div class="relative h-48 rounded-3xl overflow-hidden mb-16">
+            <img src="/banner.jpg" class="w-full h-full object-cover">
+            <div class="absolute -bottom-12 left-1/2 -translate-x-1/2">
+                <img src="/profile.jpg" class="w-24 h-24 rounded-full border-4 border-[#0a0a0a]">
+            </div>
+        </div>
+
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-bold">Kayzen Izumi</h1>
+            <p class="text-gray-400">Fullstack Developer | @h___rvn's Hubby</p>
+        </div>
+
+        <div class="swiper mySwiper mb-10 h-64 rounded-xl overflow-hidden">
+            <div class="swiper-wrapper" id="cosplay-slider">
+                </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        const swiper = new Swiper(".mySwiper", {
+            effect: "cards",
+            grabCursor: true,
+            autoplay: { delay: 2500 }
+        });
+    </script>
+</body>
+</html>
