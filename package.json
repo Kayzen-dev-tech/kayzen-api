@@ -1,11 +1,44 @@
 {
-  "name": "kayzen-api-pro",
+  "name": "kayzen-api",
   "version": "1.0.0",
-  "main": "api/index.js",
+  "description": "Professional REST API Platform with Media Downloader and AI Features",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "api",
+    "rest",
+    "tiktok",
+    "youtube",
+    "instagram",
+    "twitter",
+    "pinterest",
+    "ai",
+    "downloader",
+    "vercel"
+  ],
+  "author": "Kayzen Izumi",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "dependencies": {
     "express": "^4.18.2",
-    "axios": "^1.6.0",
+    "axios": "^1.6.2",
     "cheerio": "^1.0.0-rc.12",
-    "cors": "^2.8.5"
+    "dotenv": "^16.3.1",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "express-rate-limit": "^7.1.5",
+    "@tobyg74/tiktok-api-dl": "^1.0.8",
+    "ytdl-core": "^4.11.5",
+    "instagram-url-direct": "^1.0.13",
+    "pinterest-scraper": "^1.0.0",
+    "twitter-api-v2": "^1.15.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
   }
 }
