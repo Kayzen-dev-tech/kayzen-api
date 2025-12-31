@@ -1,0 +1,59 @@
+const axios = require('axios');
+
+module.exports = async (req, res) => {
+  try {
+    const { query } = req.query;
+
+    if (!query) {
+      return res.status(400).json({
+        success: false,
+        error: 'Query parameter is required'
+      });
+    }
+
+    const apiUrl = `https://twitter-api45.p.rapidapi.com/search.php?query=${encodeURIComponent(query)}&search_type=Top`;
+    
+    const response = await axios.get(apiUrl, {
+      headers: {
+        'X-RapidAPI-Host': 'twitter-api45.p.rapidapi.com',
+        'X-RapidAPI-Key': 'demo-key'
+      }
+    });
+
+    const data = response.data;
+
+    if (!data || !data.timeline) {
+      return res.status(404).json({
+        success: false,
+        error: 'No results found'
+      });
+    }
+
+    const tweets = data.timeline.map(tweet => ({
+      id: tweet.tweet_id,
+      text: tweet.text,
+      author: tweet.author.screen_name,
+      author_name: tweet.author.name,
+      author_avatar: tweet.author.avatar,
+      created_at: tweet.created_at,
+      likes: tweet.favorites,
+      retweets: tweet.retweets,
+      replies: tweet.replies,
+      media: tweet.media_url || []
+    }));
+
+    return res.json({
+      success: true,
+      query: query,
+      count: tweets.length,
+      data: tweets
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      error: 'Failed to search Twitter',
+      message: error.message
+    });
+  }
+};
