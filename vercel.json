@@ -1,9 +1,30 @@
 {
   "version": 2,
-  "public": true,
-  "rewrites": [
-    { "source": "/", "destination": "/views/index.html" },
-    { "source": "/docs", "destination": "/views/docs.html" },
-    { "source": "/api/(.*)", "destination": "/api/index.js" }
-  ]
+  "builds": [
+    {
+      "src": "index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/public/(.*)",
+      "dest": "/public/$1"
+    },
+    {
+      "src": "/docs",
+      "dest": "/public/docs.html"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.js"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
 }
