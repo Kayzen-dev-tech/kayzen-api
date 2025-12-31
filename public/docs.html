@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation - Kayzen Izumi</title>
+    <link rel="icon" href="/public/profile.jpg">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #a855f7;
+            --secondary: #ec4899;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --success: #10b981;
+            --error: #ef4444;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-link {
+            color: var(--light);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            transition: background 0.3s;
+        }
+
+        .nav-link:hover {
+            background: rgba(168, 85, 247, 0.2);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .api-key-section {
+            background: var(--dark);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .api-key-input {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 1rem;
+            background: var(--darker);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 10px;
+            color: var(--light);
+            font-size: 1rem;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .endpoint-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .endpoint-card {
+            background: var(--dark);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(168, 85, 247, 0.2);
+        }
+
+        .endpoint-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .method {
+            background: var(--success);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .endpoint-path {
+            color: var(--primary);
+            font-family: monospace;
+            font-size: 1.1rem;
+        }
+
+        .endpoint-description {
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        .params-section {
+            margin-top: 1rem;
+        }
+
+        .param {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 1rem;
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .param-name {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .try-section {
+            background: var(--darker);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+
+        .try-input {
+            margin-bottom: 1rem;
+        }
+
+        .try-input label {
+            display: block;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .try-btn {
+            background: var(--primary);
+            margin-top: 1rem;
+        }
+
+        .response-section {
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .response-section.active {
+            display: block;
+        }
+
+        .response-box {
+            background: #1e293b;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--success);
+            font-family: monospace;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .response-box.error {
+            border-left-color: var(--error);
+        }
+
+        .loading {
+            text-align: center;
+            color: var(--primary);
+            padding: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .param {
+                grid-template-columns: 1fr;
+            }
+
+            .api-key-input {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">📚 API Documentation</div>
+        <a href="/" class="nav-link">← Back to Home</a>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1>API Documentation</h1>
+            <p style="color: var(--gray);">Interactive API Testing Platform</p>
+        </div>
+
+        <div class="api-key-section">
+            <h3 style="margin-bottom: 1rem;">🔑 API Key</h3>
+            <div class="api-key-input">
+                <input type="text" id="apiKeyInput" placeholder="Enter your API key here">
+                <button class="btn" onclick="saveApiKey()">Save Key</button>
+            </div>
+            <p style="color: var(--gray); margin-top: 1rem; font-size: 0.9rem;">Get your API key from the homepage login</p>
+        </div>
+
+        <div class="endpoint-section">
+            <h2 class="section-title">🎵 TikTok API</h2>
+            
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="endpoint-path">/api/tiktok/download</span>
+                </div>
+                <p class="endpoint-description">Download TikTok videos without watermark</p>
+                <div class="params-section">
+                    <div class="param">
+                        <span class="param-name">url</span>
+                        <span>TikTok video URL</span>
+                    </div>
+                </div>
+                <div class="try-section">
+                    <h4>Try it out</h4>
+                    <div class="try-input">
+                        <label>TikTok URL:</label>
+                        <input type="text" id="tiktok-download-url" placeholder="https://vt.tiktok.com/...">
+                    </div>
+                    <button class="btn try-btn" onclick="tryEndpoint('tiktok-download')">Execute</button>
+                    <div class="response-section" id="tiktok-download-response"></div>
+                </div>
+            </div>
+
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="endpoint-path">/api/tiktok/search</span>
+                </div>
+                <p class="endpoint-description">Search TikTok videos by keyword</p>
+                <div class="params-section">
+                    <div class="param">
+                        <span class="param-name">query</span>
+                        <span>Search keyword</span>
+                    </div>
+                </div>
+                <div class="try-section">
+                    <h4>Try it out</h4>
+                    <div class="try-input">
+                        <label>Search Query:</label>
+                        <input type="text" id="tiktok-search-query" placeholder="funny videos">
+                    </div>
+                    <button class="btn try-btn" onclick="tryEndpoint('tiktok-search')">Execute</button>
+                    <div class="response-section" id="tiktok-search-response"></div>
+                </div>
+            </div>
+
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="endpoint-path">/api/tiktok/stalk</span>
+                </div>
+                <p class="endpoint-description">Get TikTok profile information</p>
+                <div class="params-section">
+                    <div class="param">
+                        <span class="param-name">username</span>
+                        <span>TikTok username</span>
+                    </div>
+                </div>
+                <div class="try-section">
+                    <h4>Try it out</h4>
+                    <div class="try-input">
+                        <label>Username:</label>
+                        <input type="text" id="tiktok-stalk-username" placeholder="username">
+                    </div>
+                    <button class="btn try-btn" onclick="tryEndpoint('tiktok-stalk')">Execute</button>
+                    <div class="response-section" id="tiktok-stalk-response"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="endpoint-section">
+            <h2 class="section-title">📺 YouTube API</h2>
+            
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="endpoint-path">/api/youtube/download</span>
+                </div>
+                <p class="endpoint-description">Download YouTube videos</p>
+                <div class="params-section">
+                    <div class="param">
+                        <span class="param-name">url</span>
+                        <span>YouTube video URL</span>
+                    </div>
+                </div>
+                <div class="try-section">
+                    <h4>Try it out</h4>
+                    <div class="try-input">
+                        <label>YouTube URL:</label>
+                        <input type="text" id="youtube-download-url" placeholder="https://youtube.com/watch?v=...">
+                    </div>
+                    <button class="btn try-btn" onclick="tryEndpoint('youtube-download')">Execute</button>
+                    <div class="response-section" id="youtube-download-response"></div>
+                </div>
+            </div>
+
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="endpoint-path">/api/youtube/mp3</span>
+                </div>
+                <p class="endpoint-description">Convert YouTube video to MP3</p>
+                <div class="params-section">
+                    <div class="param">
+                        <span class="param-name">url</span>
+                        <span>YouTube video URL</span>
+                    </div>
+                </div>
+                <div class="try-section">
+                    <h4>Try it out</h4>
+                    <div class="try-input">
+                        <label>YouTube URL:</label>
+                        <input type="text" id="youtube-mp3-url" placeholder="https://youtube.com/watch?v=...">
+                    </div>
+                    <button class="btn try-btn" onclick="tryEndpoint('youtube-mp3')">Execute</button>
+                    <div class="response-section" id="youtube-mp3-response"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="endpoint-section">
+            <h2 class="section-title">📸 Instagram API</h2>
+            
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="endpoint-path">/api/instagram/download</span>
+                </div>
+                <p class="endpoint-description">Download Instagram Reels and Photos</p>
+                <div class="params-section">
+                    <div class="param">
+                        <span class="param-name">url</span>
+                        <span>Instagram post URL</span>
+                    </div>
+                </div>
+                <div class="try-section">
+                    <h4>Try it out</h4>
+                    <div class="try-input">
+                        <label>Instagram URL:</label>
+                        <input type="text" id="instagram-download-url" placeholder="https://instagram.com/p/...">
+                    </div>
+                    <button class="btn try-btn" onclick="tryEndpoint('instagram-download')">Execute</button>
+                    <div class="response-section" id="instagram-download-response"></div>
+                </div>
+            </div>
+
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="endpoint-path">/api/instagram/search</span>
+                </div>
+                <p class="endpoint-description">Search Instagram posts</p>
+                <div class="params-section">
+                    <div class="param">
+                        <span class="param-name">query</span>
+                        <span>Search keyword</span>
+                    </div>
+                </div>
+                <div class="try-section">
+                    <h4>Try it out</h4>
+                    <div class="try-input">
+                        <label>Search Query:</label>
+                        <input type="text" id="instagram-search-query" placeholder="nature">
+                    </div>
+                    <button class="btn try-btn" onclick="tryEndpoint('instagram-search')">Execute</button>
+                    <div class="response-section" id="instagram-search-response"></div>
+                </div>
+            </div>
+
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="endpoint-path">/api/instagram/stalk</span>
+                </div>
+                <p class="endpoint-description">Get Instagram profile information</p>
+                <div class="params-section">
+                    <div class="param">
+                        <span class="param-name">username</span>
+                        <span>Instagram username</span>
+                    </div>
+                </div>
+                <div class="try-section">
+                    <h4>Try it out</h4>
+                    <div class="try-input">
+                        <label>Username:</label>
+                        <input type="text" id="instagram-stalk-username" placeholder="username">
+                    </div>
+                    <button class="btn try-btn" onclick="tryEndpoint('instagram-stalk')">Execute</button>
+                    <div class="response-section" id="instagram-stalk-response"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="endpoint-section">
+            <h2 class="section-title">📌 Pinterest API</h2>
+            
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="endpoint-path">/api/pinterest/search</span>
+                </div>
+                <p class="endpoint-description">Search Pinterest images (returns 5 image URLs)</p>
+                <div class="params-section">
+                    <div class="param">
+                        <span class="param-name">query</span>
+                        <span>Search keyword</span>
+                    </div>
+                </div>
+                <div class="try-section">
+                    <h4>Try it out</h4>
+                    <div class="try-input">
+                        <label>Search Query:</label>
+                        <input type="text" id="pinterest-search-query" placeholder="wallpaper">
+                    </div>
+                    <button class="btn try-btn" onclick="tryEndpoint('pinterest-search')">Execute</button>
+                    <div class="response-section" id="pinterest-search-response"></div>
+                </div>
+            </div>
+
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="endpoint-path">/api/pinterest/download</span>
+                </div>
+                <p class="endpoint-description">Download Pinterest image</p>
+                <div class="params-section">
+                    <div class="param">
+                        <span class="param-name">url</span>
+                        <span>Pinterest image URL</span>
+                    </div>
+                </div>
+                <div class="try-section">
+                    <h4>Try it out</h4>
+                    <div class="try-input">
+                        <label>Pinterest URL:</label>
+                        <input type="text" id="pinterest-download-url" placeholder="https://pinterest.com/pin/...">
+                    </div>
+                    <button class="btn try-btn" onclick="tryEndpoint('pinterest-download')">Execute</button>
+                    <div class="response-section" id="pinterest-download-response"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="endpoint-section">
+            <h2 class="section-title">🐦 Twitter API</h2>
+            
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="endpoint-path">/api/twitter/download</span>
+                </div>
+                <p class="endpoint-description">Download Twitter videos</p>
+                <div class="params-section">
+                    <div class="param">
+                        <span class="param-name">url</span>
+                        <span>Twitter post URL</span>
+                    </div>
+                </div>
+                <div class="try-section">
+                    <h4>Try it out</h4>
+                    <div class="try-input">
+                        <label>Twitter URL:</label>
+                        <input type="text" id="twitter-download-url" placeholder="https://twitter.com/.../status/...">
+                    </div>
+                    <button class="btn try-btn" onclick="tryEndpoint('twitter-download')">Execute</button>
+                    <div class="response-section" id="twitter-download-response"></div>
+                </div>
+            </div>
+
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="endpoint-path">/api/twitter/search</span>
+                </div>
+                <p class="endpoint-description">Search Twitter posts</p>
+                <div class="params-section">
+                    <div class="param">
+                        <span class="param-name">query</span>
+                        <span>Search keyword</span>
+                    </div>
+                </div>
+                <div class="try-section">
+                    <h4>Try it out</h4>
+                    <div class="try-input">
+                        <label>Search Query:</label>
+                        <input type="text" id="twitter-search-query" placeholder="tech news">
+                    </div>
+                    <button class="btn try-btn" onclick="tryEndpoint('twitter-search')">Execute</button>
+                    <div class="response-section" id="twitter-search-response"></div>
+                </div>
+            </div>
+
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="endpoint-path">/api/twitter/stalk</span>
+                </div>
+                <p class="endpoint-description">Get Twitter profile information</p>
+                <div class="params-section">
+                    <div class="param">
+                        <span class="param-name">username</span>
+                        <span>Twitter username</span>
+                    </div>
+                </div>
+                <div class="try-section">
+                    <h4>Try it out</h4>
+                    <div class="try-input">
+                        <label>Username:</label>
+                        <input type="text" id="twitter-stalk-username" placeholder="username">
+                    </div>
+                    <button class="btn try-btn" onclick="tryEndpoint('twitter-stalk')">Execute</button>
+                    <div class="response-section" id="twitter-stalk-response"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="endpoint-section">
+            <h2 class="section-title">🤖 AI API</h2>
+            
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="endpoint-path">/api/ai/chat</span>
+                </div>
+                <p class="endpoint-description">General AI Chat</p>
+                <div class="params-section">
+                    <div class="param">
+                        <span class="param-name">text</span>
+                        <span>Your message</span>
+                    </div>
+                </div>
+                <div class="try-section">
+                    <h4>Try it out</h4>
+                    <div class="try-input">
+                        <label>Message:</label>
+                        <input type="text" id="ai-chat-text" placeholder="Hello!">
+                    </div>
+                    <button class="btn try-btn" onclick="tryEndpoint('ai-chat')">Execute</button>
+                    <div class="response-section" id="ai-chat-response"></div>
+                </div>
+            </div>
+
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="endpoint-path">/api/ai/kayzen</span>
+                </div>
+                <p class="endpoint-description">Chat with Kayzen Izumi AI (18 tahun, bahasa non-baku)</p>
+                <div class="params-section">
+                    <div class="param">
+                        <span class="param-name">text</span>
+                        <span>Your message</span>
+                    </div>
+                </div>
+                <div class="try-section">
+                    <h4>Try it out</h4>
+                    <div class="try-input">
+                        <label>Message:</label>
+                        <input type="text" id="ai-kayzen-text" placeholder="Halo Kayzen!">
+                    </div>
+                    <button class="btn try-btn" onclick="tryEndpoint('ai-kayzen')">Execute</button>
+                    <div class="response-section" id="ai-kayzen-response"></div>
+                </div>
+            </div>
+
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="endpoint-path">/api/ai/image</span>
+                </div>
+                <p class="endpoint-description">AI Image Generator</p>
+                <div class="params-section">
+                    <div class="param">
+                        <span class="param-name">prompt</span>
+                        <span>Image description</span>
+                    </div>
+                </div>
+                <div class="try-section">
+                    <h4>Try it out</h4>
+                    <div class="try-input">
+                        <label>Prompt:</label>
+                        <input type="text" id="ai-image-prompt" placeholder="a beautiful sunset">
+                    </div>
+                    <button class="btn try-btn" onclick="tryEndpoint('ai-image')">Execute</button>
+                    <div class="response-section" id="ai-image-response"></div>
+                </div>
+            </div>
+
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="endpoint-path">/api/ai/text</span>
+                </div>
+                <p class="endpoint-description">AI Text Generator</p>
+                <div class="params-section">
+                    <div class="param">
+                        <span class="param-name">prompt</span>
+                        <span>Text generation prompt</span>
+                    </div>
+                </div>
+                <div class="try-section">
+                    <h4>Try it out</h4>
+                    <div class="try-input">
+                        <label>Prompt:</label>
+                        <input type="text" id="ai-text-prompt" placeholder="Write a story about...">
+                    </div>
+                    <button class="btn try-btn" onclick="tryEndpoint('ai-text')">Execute</button>
+                    <div class="response-section" id="ai-text-response"></div>
+                </div>
+            </div>
+
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method">GET</span>
+                    <span class="endpoint-path">/api/ai/analyze</span>
+                </div>
+                <p class="endpoint-description">AI Text Analyzer</p>
+                <div class="params-section">
+                    <div class="param">
+                        <span class="param-name">text</span>
+                        <span>Text to analyze</span>
+                    </div>
+                </div>
+                <div class="try-section">
+                    <h4>Try it out</h4>
+                    <div class="try-input">
+                        <label>Text:</label>
+                        <input type="text" id="ai-analyze-text" placeholder="Text to analyze...">
+                    </div>
+                    <button class="btn try-btn" onclick="tryEndpoint('ai-analyze')">Execute</button>
+                    <div class="response-section" id="ai-analyze-response"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let apiKey = localStorage.getItem('apiKey') || '';
+        
+        if (apiKey) {
+            document.getElementById('apiKeyInput').value = apiKey;
+        }
+
+        function saveApiKey() {
+            apiKey = document.getElementById('apiKeyInput').value;
+            localStorage.setItem('apiKey', apiKey);
+            alert('API Key saved!');
+        }
+
+        async function tryEndpoint(endpoint) {
+            const responseEl = document.getElementById(`${endpoint}-response`);
+            responseEl.innerHTML = '<div class="loading">⏳ Loading...</div>';
+            responseEl.classList.add('active');
+
+            let url = '';
+            let param = '';
+
+            if (endpoint.includes('download') || endpoint.includes('url')) {
+                const inputEl = document.getElementById(`${endpoint}-url`);
+                param = `url=${encodeURIComponent(inputEl.value)}`;
+            } else if (endpoint.includes('search') || endpoint.includes('query')) {
+                const inputEl = document.getElementById(`${endpoint}-query`);
+                param = `query=${encodeURIComponent(inputEl.value)}`;
+            } else if (endpoint.includes('stalk') || endpoint.includes('username')) {
+                const inputEl = document.getElementById(`${endpoint}-username`);
+                param = `username=${encodeURIComponent(inputEl.value)}`;
+            } else if (endpoint.includes('text')) {
+                const inputEl = document.getElementById(`${endpoint}-text`);
+                param = `text=${encodeURIComponent(inputEl.value)}`;
+            } else if (endpoint.includes('prompt')) {
+                const inputEl = document.getElementById(`${endpoint}-prompt`);
+                param = `prompt=${encodeURIComponent(inputEl.value)}`;
+            }
+
+            const category = endpoint.split('-')[0];
+            const action = endpoint.split('-')[1];
+            url = `/api/${category}/${action}?${param}&apikey=${apiKey}`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                responseEl.innerHTML = `
+                    <div class="response-box ${response.ok ? '' : 'error'}">
+                        ${JSON.stringify(data, null, 2)}
+                    </div>
+                `;
+            } catch (error) {
+                responseEl.innerHTML = `
+                    <div class="response-box error">
+                        Error: ${error.message}
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
