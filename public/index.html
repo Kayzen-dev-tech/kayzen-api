@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Kayzen Izumi API - Professional REST API Platform">
+    <meta name="author" content="Kayzen Izumi">
+    <title>Kayzen Izumi API</title>
+    <link rel="icon" href="/public/profile.jpg">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #a855f7;
+            --secondary: #ec4899;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f8fafc;
+            --gray: #64748b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .hero {
+            margin-top: 80px;
+            height: 400px;
+            background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.9)), url('/public/banner.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.1));
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid var(--primary);
+            margin-bottom: 1rem;
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--gray);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .about-card {
+            background: var(--dark);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .about-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.3);
+        }
+
+        .about-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .slider-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            background: var(--dark);
+            padding: 2rem;
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .slider img {
+            min-width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(168, 85, 247, 0.8);
+            color: white;
+            border: none;
+            padding: 1rem;
+            cursor: pointer;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            z-index: 10;
+            transition: background 0.3s;
+        }
+
+        .slider-btn:hover {
+            background: var(--primary);
+        }
+
+        .slider-btn.prev {
+            left: 20px;
+        }
+
+        .slider-btn.next {
+            right: 20px;
+        }
+
+        .social-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .social-card {
+            background: var(--dark);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            color: var(--light);
+        }
+
+        .social-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.3);
+        }
+
+        .social-icon {
+            font-size: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.5);
+        }
+
+        .login-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-modal.active {
+            display: flex;
+        }
+
+        .login-box {
+            background: var(--dark);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid var(--primary);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .login-box h2 {
+            color: var(--primary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 1rem;
+            background: var(--darker);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 10px;
+            color: var(--light);
+            font-size: 1rem;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        footer {
+            background: var(--dark);
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid rgba(168, 85, 247, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .slider img {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">🚀 Kayzen API</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="/docs">Documentation</a></li>
+            <li><a href="#" id="loginBtn">Login</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <img src="/public/profile.jpg" alt="Kayzen Izumi" class="profile-img">
+            <h1>Kayzen Izumi</h1>
+            <p>Professional REST API Platform</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <section class="section" id="about">
+            <h2 class="section-title">About</h2>
+            <div class="about-grid">
+                <div class="about-card">
+                    <h3>👤 About Me</h3>
+                    <p>Kayzen Izumi - 18 tahun, Fullstack Developer dan API Enthusiast. Passionate tentang teknologi, coding, dan membuat tools yang berguna untuk semua orang.</p>
+                </div>
+                <div class="about-card">
+                    <h3>💝 About My Bini</h3>
+                    <p><strong>@h___rvn</strong> - The one who inspires me every day. Thank you for always being there and supporting my journey in tech.</p>
+                </div>
+                <div class="about-card">
+                    <h3>🚀 About This API</h3>
+                    <p>REST API profesional dengan fitur download media dari TikTok, YouTube, Instagram, Twitter, Pinterest, plus AI-powered features untuk berbagai kebutuhan.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="gallery">
+            <h2 class="section-title">Cosplayer Gallery</h2>
+            <div class="slider-container">
+                <button class="slider-btn prev" onclick="moveSlider('cosplay', -1)">❮</button>
+                <div class="slider" id="cosplaySlider">
+                    <img src="/public/slide1.jpg" alt="Cosplayer 1">
+                    <img src="/public/slide2.jpg" alt="Cosplayer 2">
+                    <img src="/public/slide3.jpg" alt="Cosplayer 3">
+                    <img src="/public/slide4.jpg" alt="Cosplayer 4">
+                    <img src="/public/slide5.jpg" alt="Cosplayer 5">
+                    <img src="/public/slide6.jpg" alt="Cosplayer 6">
+                    <img src="/public/slide7.jpg" alt="Cosplayer 7">
+                    <img src="/public/slide8.jpg" alt="Cosplayer 8">
+                    <img src="/public/slide9.jpg" alt="Cosplayer 9">
+                    <img src="/public/slide10.jpg" alt="Cosplayer 10">
+                    <img src="/public/slide11.jpg" alt="Cosplayer 11">
+                    <img src="/public/slide12.jpg" alt="Cosplayer 12">
+                    <img src="/public/slide13.jpg" alt="Cosplayer 13">
+                    <img src="/public/slide14.jpg" alt="Cosplayer 14">
+                    <img src="/public/slide15.jpg" alt="Cosplayer 15">
+                </div>
+                <button class="slider-btn next" onclick="moveSlider('cosplay', 1)">❯</button>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">My Bini Gallery</h2>
+            <div class="slider-container">
+                <button class="slider-btn prev" onclick="moveSlider('bini', -1)">❮</button>
+                <div class="slider" id="biniSlider">
+                    <img src="/public/bini1.jpg" alt="My Bini 1">
+                    <img src="/public/bini2.jpg" alt="My Bini 2">
+                    <img src="/public/bini3.jpg" alt="My Bini 3">
+                    <img src="/public/bini4.jpg" alt="My Bini 4">
+                    <img src="/public/bini5.jpg" alt="My Bini 5">
+                </div>
+                <button class="slider-btn next" onclick="moveSlider('bini', 1)">❯</button>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Connect With Me</h2>
+            <div class="social-links">
+                <a href="https://wa.me/628152313006" class="social-card" target="_blank">
+                    <span class="social-icon">📱</span>
+                    <div>
+                        <strong>WhatsApp</strong>
+                        <p>+62 815-2313-006</p>
+                    </div>
+                </a>
+                <a href="https://t.me/nonewpo" class="social-card" target="_blank">
+                    <span class="social-icon">✈️</span>
+                    <div>
+                        <strong>Telegram</strong>
+                        <p>@nonewpo</p>
+                    </div>
+                </a>
+                <a href="https://instagram.com/kayzenfry" class="social-card" target="_blank">
+                    <span class="social-icon">📸</span>
+                    <div>
+                        <strong>Instagram</strong>
+                        <p>@kayzenfry</p>
+                    </div>
+                </a>
+                <a href="https://youtube.com/@kayzenfry" class="social-card" target="_blank">
+                    <span class="social-icon">📺</span>
+                    <div>
+                        <strong>YouTube</strong>
+                        <p>@kayzenfry</p>
+                    </div>
+                </a>
+                <a href="https://tiktok.com/@scz_kayzen" class="social-card" target="_blank">
+                    <span class="social-icon">🎵</span>
+                    <div>
+                        <strong>TikTok</strong>
+                        <p>@scz_kayzen</p>
+                    </div>
+                </a>
+                <a href="https://instagram.com/h___rvn" class="social-card" target="_blank">
+                    <span class="social-icon">💝</span>
+                    <div>
+                        <strong>My Bini's Instagram</strong>
+                        <p>@h___rvn</p>
+                    </div>
+                </a>
+                <a href="https://whatsapp.com/channel/0029VbBRpUN8F2pMzHjQqz3S" class="social-card" target="_blank">
+                    <span class="social-icon">📢</span>
+                    <div>
+                        <strong>WhatsApp Channel</strong>
+                        <p>Updates & News</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section class="section" style="text-align: center;">
+            <h2 class="section-title">Get Started</h2>
+            <p style="margin-bottom: 2rem; color: var(--gray);">Explore the API documentation to start using our services</p>
+            <a href="/docs" class="btn">View Documentation</a>
+        </section>
+    </div>
+
+    <div class="login-modal" id="loginModal">
+        <div class="login-box">
+            <h2>🔐 Restricted Access</h2>
+            <form id="loginForm">
+                <div class="input-group">
+                    <input type="password" id="accessCode" placeholder="Enter Access Code" required>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Access</button>
+                <button type="button" class="btn" style="width: 100%; margin-top: 1rem; background: var(--gray);" onclick="closeLogin()">Cancel</button>
+            </form>
+            <p id="loginError" style="color: var(--secondary); margin-top: 1rem; text-align: center; display: none;"></p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Kayzen Izumi API. All rights reserved.</p>
+        <p style="color: var(--gray); margin-top: 0.5rem;">Made with ❤️ by Kayzen Izumi</p>
+    </footer>
+
+    <script>
+        let cosplayIndex = 0;
+        let biniIndex = 0;
+
+        function moveSlider(type, direction) {
+            const slider = document.getElementById(type === 'cosplay' ? 'cosplaySlider' : 'biniSlider');
+            const totalSlides = slider.children.length;
+            
+            if (type === 'cosplay') {
+                cosplayIndex += direction;
+                if (cosplayIndex < 0) cosplayIndex = totalSlides - 1;
+                if (cosplayIndex >= totalSlides) cosplayIndex = 0;
+                slider.style.transform = `translateX(-${cosplayIndex * 100}%)`;
+            } else {
+                biniIndex += direction;
+                if (biniIndex < 0) biniIndex = totalSlides - 1;
+                if (biniIndex >= totalSlides) biniIndex = 0;
+                slider.style.transform = `translateX(-${biniIndex * 100}%)`;
+            }
+        }
+
+        setInterval(() => {
+            moveSlider('cosplay', 1);
+        }, 5000);
+
+        setInterval(() => {
+            moveSlider('bini', 1);
+        }, 6000);
+
+        document.getElementById('loginBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('loginModal').classList.add('active');
+        });
+
+        function closeLogin() {
+            document.getElementById('loginModal').classList.remove('active');
+            document.getElementById('loginError').style.display = 'none';
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const code = document.getElementById('accessCode').value;
+            const validCode = 'KAY2025ZEN';
+            
+            if (code === validCode) {
+                localStorage.setItem('apiKey', 'kayzen2025');
+                alert('Access granted! Your API key: kayzen2025');
+                closeLogin();
+            } else {
+                const errorEl = document.getElementById('loginError');
+                errorEl.textContent = 'Invalid access code!';
+                errorEl.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
