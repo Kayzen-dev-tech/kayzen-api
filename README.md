@@ -14,7 +14,7 @@
 
 ### 🌟 Modern REST API with Multiple Features
 
-[Live Demo](https://your-app.vercel.app) • [Documentation](https://your-app.vercel.app/docs) • [Report Bug](https://github.com/yourusername/your-repo/issues)
+[Live Demo](https://kayzen-api.my.id) • [Documentation](https://kayzen-api.my.id/docs) • [Report Bug](https://github.com/Kayzen-dev-tech/kayzen-api/issues)
 
 </div>
 
