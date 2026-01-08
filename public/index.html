@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Zero Two Dashboard</title>
+<link rel="stylesheet" href="style.css" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="bg"></div>
+
+<div class="container">
+  <img src="assets/banner-profile.png" class="banner">
+
+  <div class="card">
+    <h1>Kayzen Izumi</h1>
+    <p id="time">--:--:--</p>
+    <p id="date">----</p>
+    <span class="status online">ONLINE</span>
+  </div>
+
+  <div class="card">
+    <h2>Zero Two AI</h2>
+    <textarea id="prompt" placeholder="Tanya Zero Two..."></textarea>
+    <button onclick="askAI()">Send</button>
+    <div id="ai"></div>
+  </div>
+
+  <div class="card">
+    <h2>Instagram Downloader</h2>
+    <input id="ig" placeholder="Instagram URL">
+    <button onclick="downloadIG()">Download</button>
+    <pre id="igResult"></pre>
+  </div>
+
+  <div class="card">
+    <h2>Douyin Downloader</h2>
+    <input id="dy" placeholder="Douyin/TikTok URL">
+    <button onclick="downloadDY()">Download</button>
+    <pre id="dyResult"></pre>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+  </html>
