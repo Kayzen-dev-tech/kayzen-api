@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero Two Dashboard</title>
+<link rel="stylesheet" href="style.css">
+<script src="/socket.io/socket.io.js"></script>
+<script defer src="script.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="overlay"></div>
+<div class="container">
+  <header class="header">
+    <img src="assets/banner-profile.png" alt="Banner" class="banner">
+    <div class="profile">
+      <img src="assets/banner-profile.png" alt="Avatar" class="avatar">
+      <h1>Kayzen Izumi</h1>
+      <p>Developer & API Creator</p>
+    </div>
+  </header>
+
+  <main>
+    <!-- Clock -->
+    <div class="card"><h2>Realtime Clock</h2><p id="time">--:--:--</p><p id="date">-- -- ----</p></div>
+
+    <!-- Server Status -->
+    <div class="card"><h2>Server Status</h2><p id="status">OFFLINE</p><p>API Version: 1.0.0</p></div>
+
+    <!-- About Me -->
+    <div class="card"><h2>About Me</h2><p>Halo! Aku Kayzen Izumi, developer & kreator API modern.</p></div>
+
+    <!-- About Web -->
+    <div class="card"><h2>About Web</h2><p>Web API realtime dengan Ghost UI, Socket.io, dan tema Zero Two.</p></div>
+
+    <!-- Media Sosial -->
+    <div class="card">
+      <h2>Media Sosial</h2>
+      <ul>
+        <li><a href="https://tiktok.com/@sczkayzen" target="_blank">TikTok</a></li>
+        <li><a href="https://instagram.com/kayzenfry" target="_blank">Instagram</a></li>
+        <li><a href="https://youtube.com/@kayzenfry" target="_blank">YouTube</a></li>
+        <li><a href="https://github.com/Kayzen-dev-tech" target="_blank">GitHub</a></li>
+      </ul>
+    </div>
+
+    <!-- AI Zero Two -->
+    <div class="card">
+      <h2>Zero Two AI</h2>
+      <div class="ai-container">
+        <img src="assets/banner-profile.png" alt="Zero Two" class="ai-avatar">
+        <div class="ai-chat">
+          <textarea id="ai-prompt" placeholder="Tanya sesuatu ke Zero Two..." rows="2"></textarea>
+          <button id="ai-send">Kirim</button>
+          <div id="ai-response" class="ai-response"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Instagram Downloader -->
+    <div class="card">
+      <h2>Instagram Video Downloader</h2>
+      <input type="text" id="insta-url" placeholder="Masukkan link Instagram..." />
+      <button id="insta-download">Download</button>
+      <div id="insta-result" class="ai-response"></div>
+    </div>
+
+    <!-- Douyin/TikTok Downloader -->
+    <div class="card">
+      <h2>Douyin/TikTok Video Downloader</h2>
+      <input type="text" id="douyin-url" placeholder="Masukkan link Douyin/TikTok..." />
+      <button id="douyin-download">Download</button>
+      <div id="douyin-result" class="ai-response"></div>
+    </div>
+  </main>
+</div>
+</body>
+</html>
