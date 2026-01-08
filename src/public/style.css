@@ -1,0 +1,32 @@
+* {margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body {
+  height: 100vh;
+  background: url('assets/zero-two-bg.jpg') no-repeat center/cover;
+  position: relative;
+  overflow-x: hidden;
+  color:#fff;
+}
+.overlay {
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  background: rgba(0,0,0,0.5);backdrop-filter: blur(5px);z-index:1;
+}
+.container {position:relative;z-index:2;padding:20px;display:flex;flex-direction:column;align-items:center;}
+.header{text-align:center;margin-bottom:20px;}
+.banner{width:100%;max-height:200px;object-fit:cover;border-radius:20px;margin-bottom:-50px;box-shadow:0 0 20px rgba(255,20,147,0.5);}
+.profile{margin-top:60px;}
+.avatar{width:120px;height:120px;border-radius:50%;border:3px solid rgba(255,255,255,0.3);box-shadow:0 0 20px #ff1493;margin-bottom:10px;}
+main{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin-top:20px;}
+.card{background:rgba(255,255,255,0.08);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.15);border-radius:15px;padding:20px;min-width:220px;max-width:300px;text-align:center;transition:transform 0.3s,box-shadow 0.3s;}
+.card:hover{transform:translateY(-5px);box-shadow:0 0 25px #ff1493;}
+a{color:#ff69b4;text-decoration:none;}
+a:hover{text-decoration:underline;}
+
+textarea,input {width:100%;padding:8px;border-radius:10px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);color:#fff;margin-bottom:8px;resize:none;}
+button{padding:8px 15px;border:none;border-radius:10px;background:#ff1493;color:#fff;cursor:pointer;margin-bottom:10px;transition:all 0.3s;}
+button:hover{background:#ff69b4;}
+
+.ai-container{display:flex;align-items:flex-start;gap:10px;}
+.ai-avatar{width:80px;height:80px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);box-shadow:0 0 20px #ff1493;animation:float 3s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.ai-chat{flex:1;display:flex;flex-direction:column;}
+.ai-response{min-height:50px;padding:10px;border-radius:10px;background:rgba(255,255,255,0.08);backdrop-filter:blur(10px);color:#fff;font-family:'Poppins',sans-serif;white-space:pre-wrap;box-shadow:0 0 15px #ff1493;}
