@@ -1,6 +1,7 @@
 {
   "settings": {
     "creator": "Kayzen Izumi",
+    "adminToken": "kayzenganteng",
     "apiName": "Shin Haein",
     "description": "A free and reliable API service designed for modern application development. Built with Node.js and TypeScript, delivering fast performance, stable endpoints, and easy integration.",
     "apiVersion": "v1.0",
