@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="https://c.termai.cc/i191/f9nlM5.jpg" alt="Shin Haein API Banner" width="100%" style="border-radius: 10px;" />
+<img src="https://i.pinimg.com/736x/0e/9f/53/0e9f53e93b1e2c06729cf23a94b3833e.jpg" alt="Shin Haein API Banner" width="100%" style="border-radius: 10px;" />
 
-# KuroNeko API
+# Shin Haein API
 **Simple, Fast, and Dynamic REST API Base built with Express & TypeScript.**
 
 <p align="center">
@@ -13,7 +13,7 @@
   <img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel" />
 </p>
 
-[Demo Website](https://kayzen-api.my.id) • [Rest Api](https://kayzen-api.my.id)
+[Demo Website](https://kayzen-api.vercel.app) • [Rest Api](https://kayzen-api.vercel.app)
 
 </div>
 
