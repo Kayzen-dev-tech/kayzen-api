@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayzen Izumi | Shin Haein API</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="background-overlay"></div>
+    
+    <nav class="glass">
+        <div class="logo">KAYZEN x SHIN HAEIN</div>
+        <div class="nav-links">
+            <button onclick="showPage('home')">Home</button>
+            <button onclick="showPage('docs')">Docs</button>
+        </div>
+    </nav>
+
+    <main id="home" class="page">
+        <div class="profile-card glass">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Kayzen" alt="Profile" class="profile-img">
+            <h1>Kayzen Izumi</h1>
+            <p class="subtitle">Fullstack Developer & Manhwa Enthusiast</p>
+            <div class="socials">
+                <a href="https://github.com/Kayzen-dev-tech">Github</a>
+                <a href="https://instagram.com/kayzenfry">IG</a>
+                <a href="https://tiktok.com/@sczkayzen">TikTok</a>
+                <a href="https://t.me/nonewpo">Telegram</a>
+            </div>
+        </div>
+    </main>
+
+    <main id="docs" class="page" style="display:none;">
+        <div class="docs-container glass">
+            <h2>API Documentation</h2>
+            <div class="endpoint">
+                <span class="method">GET</span> <code>/api/shinhaein?query=halo</code>
+                <p>Chat with Shin Haein (Long Afternoon Vocalist)</p>
+                <a href="/api/shinhaein?query=Halo Haein" class="test-btn">Try It</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function showPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+            document.getElementById(id).style.display = 'flex';
+        }
+    </script>
+</body>
+          </html>
+  
