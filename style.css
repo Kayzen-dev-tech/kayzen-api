@@ -1,0 +1,48 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: url("https://i.imgur.com/3QZ7XzH.jpg") center/cover fixed;
+  color: #fff;
+}
+
+.glass {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px;
+  background: rgba(0,0,0,.45);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  box-shadow: 0 0 30px rgba(255,100,150,.2);
+}
+
+.avatar {
+  width: 120px;
+  border-radius: 50%;
+  display: block;
+  margin: auto;
+}
+
+h1 {
+  text-align: center;
+}
+
+h1 span {
+  color: #ff8fb1;
+}
+
+.socials {
+  text-align: center;
+}
+
+.socials a {
+  margin: 6px;
+  color: #ffb3c7;
+  text-decoration: none;
+}
+
+pre {
+  background: rgba(0,0,0,.5);
+  padding: 15px;
+  border-radius: 10px;
+  overflow-x: auto;
+}
