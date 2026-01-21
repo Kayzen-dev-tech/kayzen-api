@@ -1,54 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kayzen Izumi | Shin Haein API</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <title>Kayzen Izumi | Shin Haein API</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="background-overlay"></div>
-    
-    <nav class="glass">
-        <div class="logo">KAYZEN x SHIN HAEIN</div>
-        <div class="nav-links">
-            <button onclick="showPage('home')">Home</button>
-            <button onclick="showPage('docs')">Docs</button>
-        </div>
-    </nav>
 
-    <main id="home" class="page">
-        <div class="profile-card glass">
-            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Kayzen" alt="Profile" class="profile-img">
-            <h1>Kayzen Izumi</h1>
-            <p class="subtitle">Fullstack Developer & Manhwa Enthusiast</p>
-            <div class="socials">
-                <a href="https://github.com/Kayzen-dev-tech">Github</a>
-                <a href="https://instagram.com/kayzenfry">IG</a>
-                <a href="https://tiktok.com/@sczkayzen">TikTok</a>
-                <a href="https://t.me/nonewpo">Telegram</a>
-            </div>
-        </div>
-    </main>
+<section class="glass">
+  <img class="avatar" src="https://i.imgur.com/7yUvePI.png">
+  <h1>Kayzen Izumi <span>× Shin Haein</span></h1>
+  <p>Express JS Web API • Anime Aesthetic • Ghost UI</p>
 
-    <main id="docs" class="page" style="display:none;">
-        <div class="docs-container glass">
-            <h2>API Documentation</h2>
-            <div class="endpoint">
-                <span class="method">GET</span> <code>/api/shinhaein?query=halo</code>
-                <p>Chat with Shin Haein (Long Afternoon Vocalist)</p>
-                <a href="/api/shinhaein?query=Halo Haein" class="test-btn">Try It</a>
-            </div>
-        </div>
-    </main>
+  <div class="socials">
+    <a href="https://github.com/Kayzen-dev-tech">GitHub</a>
+    <a href="https://instagram.com/kayzenfry">Instagram</a>
+    <a href="https://tiktok.com/@sczkayzen">TikTok</a>
+    <a href="https://youtube.com/@kayzenfry">YouTube</a>
+    <a href="https://wa.me/628152313006">WhatsApp</a>
+    <a href="mailto:kayzz.my@gmail.com">Gmail</a>
+  </div>
+</section>
 
-    <script>
-        function showPage(id) {
-            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-            document.getElementById(id).style.display = 'flex';
-        }
-    </script>
+<section class="glass">
+  <h2>📘 API Documentation</h2>
+
+  <pre>
+GET /api/shin-haein?q=halo&model=gemini
+  </pre>
+
+  <ul>
+    <li><b>q</b> → pertanyaan ke Shin Haein</li>
+    <li><b>model</b> → gemini | gpt4omini | claude | deepseek</li>
+  </ul>
+
+  <p>Response berupa karakter Shin Haein sesuai kepribadian manhwa.</p>
+</section>
+
 </body>
-          </html>
-  
+    </html>
