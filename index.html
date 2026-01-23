@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kayzen Izumi | Shin Haein API</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="glass-card">
+        <nav style="text-align:center; margin-bottom: 20px;">
+            <button onclick="showPage('home')">Home</button>
+            <button onclick="showPage('docs')">API Docs</button>
+        </nav>
+
+        <div id="home">
+            <center>
+                <img src="https://telegra.ph/file/a7e37e96b510496150247.jpg" class="profile-img" alt="Shin Haein">
+                <h1>Kayzen Izumi</h1>
+                <p>Welcome to Shin Haein AI Official API Interface</p>
+                <div class="social-links">
+                    <a href="https://github.com/Kayzen-dev-tech"><i class="fab fa-github"></i></a>
+                    <a href="https://instagram.com/kayzenfry"><i class="fab fa-instagram"></i></a>
+                    <a href="https://tiktok.com/@sczkayzen"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://wa.me/628152313006"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://t.me/nonewpo"><i class="fab fa-telegram"></i></a>
+                </div>
+            </center>
+            <div style="margin-top: 30px;">
+                <h3>About This Project</h3>
+                <p>Web API ini bertema Shin Haein dari manhwa "My Bias Gets on the Last Train". Dikembangkan oleh Kayzen Izumi untuk memberikan pengalaman chat yang realistis dengan karakter favoritmu.</p>
+            </div>
+        </div>
+
+        <div id="docs" style="display:none;">
+            <h2>API Documentation</h2>
+            <div class="endpoint-box">GET /api/shinhaein?message=halo</div>
+            
+            <h3>Try It Out</h3>
+            <div class="glass-card" style="margin: 10px 0; background: rgba(0,0,0,0.5);">
+                <input type="text" id="userQuery" placeholder="Tanya Shin Haein..." style="width: 70%;">
+                <button onclick="askHaein()">Send</button>
+                <div id="response" style="margin-top: 20px; white-space: pre-wrap; font-size: 0.9em;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(id) {
+            document.getElementById('home').style.display = id === 'home' ? 'block' : 'none';
+            document.getElementById('docs').style.display = id === 'docs' ? 'block' : 'none';
+        }
+
+        async function askHaein() {
+            const msg = document.getElementById('userQuery').value;
+            const resDiv = document.getElementById('response');
+            resDiv.innerText = "Haein sedang mengetik...";
+            
+            const response = await fetch(`/api/shinhaein?message=${encodeURIComponent(msg)}`);
+            const data = await response.json();
+            resDiv.innerText = data.result || "Error: " + data.error;
+        }
+    </script>
+</body>
+</html>
