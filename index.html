@@ -234,6 +234,34 @@
                         <div class="bg-gray-800 p-2 rounded text-xs font-mono"><span class="text-red-400">/admin/delete</span> : Hapus Request</div>
                     </div>
                 </div>
+                
+                <div class="glass-panel p-6 rounded-xl border-l-4 border-secondary">
+    <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-3">
+            <span class="bg-secondary/20 text-secondary px-3 py-1 rounded text-xs font-bold border border-secondary/50">GET</span>
+            <code class="text-lg font-mono text-white">/download</code>
+        </div>
+        <span class="text-xs text-gray-500 border border-gray-700 px-2 py-1 rounded">Public</span>
+    </div>
+    <p class="text-gray-300 text-sm mb-4">AIO Downloader (Instagram, etc.) menggunakan engine Vidssave.</p>
+    
+    <div class="bg-black/50 rounded-lg p-4 font-mono text-xs overflow-x-auto">
+        <p class="text-gray-500 mb-2">// Query Parameter</p>
+        <p class="text-blue-400">?url=https://www.instagram.com/p/xxxx</p>
+        <p class="text-gray-500 mt-4 mb-2">// Response Example</p>
+        <pre class="text-secondary">
+          {
+          "status": true,
+          "title": "Video Title",
+          "video": [...],
+          "download": {
+          "url": "https://cdn.link-hasil.com/video.mp4",
+          "task_id": "..."
+          }
+          }
+          </pre>
+          </div>
+          </div>
             </div>
         </div>
 
