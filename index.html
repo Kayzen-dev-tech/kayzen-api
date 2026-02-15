@@ -38,10 +38,14 @@
             border: 4px solid #8b5cf6;
             box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
         }
-        /* Hide scrollbar */
+        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        
+        /* Animation */
+        .animate-fade-in { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
@@ -57,6 +61,8 @@
                         <button onclick="showPage('home')" class="nav-btn hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition">Home</button>
                         <button onclick="showPage('about')" class="nav-btn hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition">About Me</button>
                         <button onclick="showPage('request')" class="nav-btn hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition">Request</button>
+                        <button onclick="showPage('doc')" class="nav-btn hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition"><i class="fas fa-book mr-1"></i> Docs</button>
+                        
                         <button onclick="showPage('contact')" class="nav-btn hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition">Contact</button>
                         <button onclick="showPage('admin')" class="nav-btn hover:text-red-400 px-3 py-2 rounded-md text-sm font-medium transition">Admin</button>
                     </div>
@@ -73,6 +79,7 @@
                 <button onclick="showPage('home')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:text-accent">Home</button>
                 <button onclick="showPage('about')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:text-accent">About</button>
                 <button onclick="showPage('request')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:text-accent">Request</button>
+                <button onclick="showPage('doc')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:text-accent">Documentation</button>
                 <button onclick="showPage('contact')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:text-accent">Contact</button>
                 <button onclick="showPage('admin')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:text-red-400">Admin</button>
             </div>
@@ -113,12 +120,12 @@
                     </div>
                 </div>
                 <div class="glass-panel p-6 rounded-xl">
-                    <h3 class="text-xl font-semibold mb-2">API Documentation</h3>
-                    <p class="text-sm text-gray-400 mb-2">Base URL: <code class="bg-black p-1 rounded">/api</code></p>
+                    <h3 class="text-xl font-semibold mb-2">Quick Stats</h3>
+                    <p class="text-sm text-gray-400 mb-2">Server Status: <span class="text-green-400">Online</span></p>
                     <ul class="space-y-2 text-sm">
-                        <li class="flex justify-between"><span class="text-green-400">GET /</span> <span>Check Status</span></li>
-                        <li class="flex justify-between"><span class="text-yellow-400">POST /request</span> <span>Create Request</span></li>
-                        <li class="flex justify-between"><span class="text-blue-400">POST /login</span> <span>Admin Login</span></li>
+                        <li class="flex justify-between border-b border-gray-700 pb-1"><span>Backend</span> <span class="text-white">Node.js / Express</span></li>
+                        <li class="flex justify-between border-b border-gray-700 pb-1"><span>Frontend</span> <span class="text-white">HTML / Tailwind</span></li>
+                        <li class="flex justify-between"><span>Database</span> <span class="text-white">Supabase (PostgreSQL)</span></li>
                     </ul>
                 </div>
             </div>
@@ -144,6 +151,75 @@
                         <i class="fas fa-paper-plane mr-2"></i> Send Request
                     </button>
                 </form>
+            </div>
+        </div>
+
+        <div id="doc" class="page-section hidden animate-fade-in">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-accent mb-2">API Documentation</h2>
+                <p class="text-gray-400">Panduan lengkap menggunakan Kayzen API.</p>
+                <div class="mt-4 bg-gray-900 inline-block px-4 py-2 rounded-lg border border-gray-700">
+                    <span class="text-gray-500 mr-2">Base URL:</span>
+                    <code class="text-green-400 font-mono">/api</code>
+                </div>
+            </div>
+
+            <div class="grid gap-6">
+                <div class="glass-panel p-6 rounded-xl border-l-4 border-green-500">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded text-xs font-bold border border-green-500/50">GET</span>
+                            <code class="text-lg font-mono text-white">/</code>
+                        </div>
+                        <span class="text-xs text-gray-500 border border-gray-700 px-2 py-1 rounded">Public</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">Mengecek status server API.</p>
+                    <div class="bg-black/50 rounded-lg p-4 font-mono text-xs overflow-x-auto">
+<pre class="text-green-400">
+{
+  "message": "Welcome to Kayzen Izumi API",
+  "status": "Active"
+}
+</pre>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-xl border-l-4 border-yellow-500">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <span class="bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded text-xs font-bold border border-yellow-500/50">POST</span>
+                            <code class="text-lg font-mono text-white">/request</code>
+                        </div>
+                        <span class="text-xs text-gray-500 border border-gray-700 px-2 py-1 rounded">Public</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">Mengirim pesan ke Admin (Supabase + Telegram).</p>
+                    <div class="bg-black/50 rounded-lg p-4 font-mono text-xs overflow-x-auto">
+                        <p class="text-gray-500 mb-2">// Body (JSON)</p>
+<pre class="text-yellow-400">
+{
+  "name": "User Name",
+  "message": "Pesan request...",
+  "contact": "081xxx"
+}
+</pre>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-xl border-l-4 border-red-500">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <span class="bg-red-500/20 text-red-400 px-3 py-1 rounded text-xs font-bold border border-red-500/50">POST</span>
+                            <code class="text-lg font-mono text-white">/admin/*</code>
+                        </div>
+                        <span class="text-xs text-red-400 border border-red-900/50 bg-red-900/10 px-2 py-1 rounded">Admin Only</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">Endpoint manajemen data (Butuh Password).</p>
+                    <div class="space-y-2">
+                        <div class="bg-gray-800 p-2 rounded text-xs font-mono"><span class="text-blue-400">/login</span> : Verifikasi Password</div>
+                        <div class="bg-gray-800 p-2 rounded text-xs font-mono"><span class="text-red-400">/admin/data</span> : Lihat Semua Request</div>
+                        <div class="bg-gray-800 p-2 rounded text-xs font-mono"><span class="text-red-400">/admin/delete</span> : Hapus Request</div>
+                    </div>
+                </div>
             </div>
         </div>
 
