@@ -8,14 +8,14 @@
     
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kayzen-api.vercel.app/">
-    <meta property="og:title" content="Kayzen Izumi | Web API">
-    <meta property="og:description" content="Web Ep Api Profesional by Kayzen Izumi.">
+    <meta property="og:title" content="Kayzen Izumi | Web API Professional">
+    <meta property="og:description" content="Platform API multifungsi yang cepat dan handal oleh Kayzen Izumi.">
     <meta property="og:image" content="https://i.ibb.co.com/wrrLvKCP/image.jpg">
 
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://kayzen-api.vercel.app/">
     <meta property="twitter:title" content="Kayzen Izumi | Web API">
-    <meta property="twitter:description" content="Web Ep Api Profesional by Kayzen Izumi.">
+    <meta property="twitter:description" content="Platform API multifungsi yang cepat dan handal oleh Kayzen Izumi.">
     <meta property="twitter:image" content="https://i.ibb.co.com/wrrLvKCP/image.jpg">
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -76,7 +76,6 @@
                         <button onclick="showPage('about')" class="nav-btn hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition">About Me</button>
                         <button onclick="showPage('request')" class="nav-btn hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition">Request</button>
                         <button onclick="showPage('doc')" class="nav-btn hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition"><i class="fas fa-book mr-1"></i> Docs</button>
-                        
                         <button onclick="showPage('contact')" class="nav-btn hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition">Contact</button>
                         <button onclick="showPage('admin')" class="nav-btn hover:text-red-400 px-3 py-2 rounded-md text-sm font-medium transition">Admin</button>
                     </div>
@@ -111,8 +110,8 @@
                     <button onclick="showPage('request')" class="bg-accent hover:bg-violet-700 text-white font-bold py-2 px-6 rounded-full transition shadow-[0_0_15px_rgba(139,92,246,0.5)]">
                         Make a Request
                     </button>
-                    <button onclick="showPage('about')" class="border border-accent text-accent hover:bg-accent hover:text-white font-bold py-2 px-6 rounded-full transition">
-                        Portfolio
+                    <button onclick="showPage('doc')" class="border border-accent text-accent hover:bg-accent hover:text-white font-bold py-2 px-6 rounded-full transition">
+                        Explore API
                     </button>
                 </div>
             </div>
@@ -198,22 +197,31 @@
                     </div>
                 </div>
 
-                <div class="glass-panel p-6 rounded-xl border-l-4 border-yellow-500">
+                <div class="glass-panel p-6 rounded-xl border-l-4 border-accent">
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center gap-3">
-                            <span class="bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded text-xs font-bold border border-yellow-500/50">POST</span>
-                            <code class="text-lg font-mono text-white">/request</code>
+                            <span class="bg-accent/20 text-accent px-3 py-1 rounded text-xs font-bold border border-accent/50">GET</span>
+                            <code class="text-lg font-mono text-white">/aio</code>
                         </div>
                         <span class="text-xs text-gray-500 border border-gray-700 px-2 py-1 rounded">Public</span>
                     </div>
-                    <p class="text-gray-300 text-sm mb-4">Mengirim pesan ke Admin (Supabase + Telegram).</p>
+                    <p class="text-gray-300 text-sm mb-4">All-in-One Downloader (Instagram, TikTok, FB, etc.) menggunakan engine AIO.</p>
+                    
                     <div class="bg-black/50 rounded-lg p-4 font-mono text-xs overflow-x-auto">
-                        <p class="text-gray-500 mb-2">// Body (JSON)</p>
-<pre class="text-yellow-400">
+                        <p class="text-gray-500 mb-2">// Query Parameter</p>
+                        <p class="text-accent">?url=https://www.instagram.com/p/xxxx</p>
+                        <p class="text-gray-500 mt-4 mb-2">// Response Example</p>
+<pre class="text-accent">
 {
-  "name": "User Name",
-  "message": "Pesan request...",
-  "contact": "081xxx"
+  "title": "Instagram post shared by...",
+  "thumbnail": "...",
+  "links": [
+    {
+      "url": "https://cdn.link...",
+      "type": "jpg/mp4",
+      "quality": "HD"
+    }
+  ]
 }
 </pre>
                     </div>
@@ -234,34 +242,6 @@
                         <div class="bg-gray-800 p-2 rounded text-xs font-mono"><span class="text-red-400">/admin/delete</span> : Hapus Request</div>
                     </div>
                 </div>
-                
-                <div class="glass-panel p-6 rounded-xl border-l-4 border-secondary">
-    <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center gap-3">
-            <span class="bg-secondary/20 text-secondary px-3 py-1 rounded text-xs font-bold border border-secondary/50">GET</span>
-            <code class="text-lg font-mono text-white">/download</code>
-        </div>
-        <span class="text-xs text-gray-500 border border-gray-700 px-2 py-1 rounded">Public</span>
-    </div>
-    <p class="text-gray-300 text-sm mb-4">AIO Downloader (Instagram, etc.) menggunakan engine Vidssave.</p>
-    
-    <div class="bg-black/50 rounded-lg p-4 font-mono text-xs overflow-x-auto">
-        <p class="text-gray-500 mb-2">// Query Parameter</p>
-        <p class="text-blue-400">?url=https://www.instagram.com/p/xxxx</p>
-        <p class="text-gray-500 mt-4 mb-2">// Response Example</p>
-        <pre class="text-secondary">
-          {
-          "status": true,
-          "title": "Video Title",
-          "video": [...],
-          "download": {
-          "url": "https://cdn.link-hasil.com/video.mp4",
-          "task_id": "..."
-          }
-          }
-          </pre>
-          </div>
-          </div>
             </div>
         </div>
 
@@ -297,21 +277,21 @@
 
         <div id="admin" class="page-section hidden">
             <h2 class="text-3xl font-bold text-red-400 mb-6">Admin Panel</h2>
-            
-            <div id="adminLogin" class="max-w-sm mx-auto glass-panel p-6 rounded-xl">
-                <input type="password" id="adminPass" class="w-full bg-dark border border-gray-600 rounded p-2 mb-4 text-center" placeholder="Enter Password">
-                <button onclick="adminLogin()" class="w-full bg-gray-700 hover:bg-gray-600 py-2 rounded">Login</button>
+            <div id="adminLogin" class="max-w-sm mx-auto glass-panel p-6 rounded-xl text-center">
+                <i class="fas fa-lock text-4xl text-red-400 mb-4"></i>
+                <input type="password" id="adminPass" class="w-full bg-dark border border-gray-600 rounded p-2 mb-4 text-center focus:border-red-400 outline-none" placeholder="Enter Password">
+                <button onclick="adminLogin()" class="w-full bg-red-600 hover:bg-red-500 py-2 rounded transition font-bold">Access Dashboard</button>
             </div>
 
-            <div id="adminDashboard" class="hidden">
+            <div id="adminDashboard" class="hidden animate-fade-in">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl">Incoming Requests</h3>
-                    <button onclick="loadAdminData()" class="text-sm bg-blue-600 px-3 py-1 rounded">Refresh</button>
+                    <h3 class="text-xl font-bold"><i class="fas fa-inbox mr-2"></i>Incoming Requests</h3>
+                    <button onclick="loadAdminData()" class="text-sm bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded transition">Refresh Data</button>
                 </div>
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto glass-panel rounded-xl">
                     <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="text-gray-400 border-b border-gray-700">
+                            <tr class="text-gray-400 border-b border-gray-700 bg-black/30">
                                 <th class="p-3">Date</th>
                                 <th class="p-3">Name</th>
                                 <th class="p-3">Message</th>
@@ -319,39 +299,34 @@
                                 <th class="p-3">Action</th>
                             </tr>
                         </thead>
-                        <tbody id="requestTableBody" class="text-sm">
-                            </tbody>
+                        <tbody id="requestTableBody" class="text-sm"></tbody>
                     </table>
                 </div>
             </div>
         </div>
-
     </main>
 
-    <footer class="text-center py-6 text-gray-500 text-sm">
-        &copy; 2026 Kayzen Izumi. All rights reserved.
+    <footer class="text-center py-6 text-gray-500 text-xs">
+        &copy; 2026 <span class="text-accent">Kayzen Izumi</span>. All rights reserved.
     </footer>
 
     <script>
-        // Navigation Logic
         function showPage(pageId) {
             document.querySelectorAll('.page-section').forEach(el => el.classList.add('hidden'));
             document.getElementById(pageId).classList.remove('hidden');
-            document.getElementById('mobile-menu').classList.add('hidden'); // Close mobile menu
+            document.getElementById('mobile-menu').classList.add('hidden');
+            window.scrollTo(0, 0);
         }
 
         function toggleMobileMenu() {
             document.getElementById('mobile-menu').classList.toggle('hidden');
         }
 
-        // --- API INTEGRATION ---
-
-        // 1. Submit Request
         async function submitRequest(e) {
             e.preventDefault();
             const btn = e.target.querySelector('button');
             const originalText = btn.innerHTML;
-            btn.innerHTML = 'Sending...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
             btn.disabled = true;
 
             const payload = {
@@ -368,10 +343,10 @@
                 });
                 const data = await res.json();
                 if(data.success) {
-                    alert('Request sent successfully! Admin has been notified via Telegram.');
+                    alert('Request sent successfully!');
                     document.getElementById('requestForm').reset();
                 } else {
-                    alert('Error: ' + JSON.stringify(data));
+                    alert('Error: ' + (data.error || 'Failed to send'));
                 }
             } catch (err) {
                 alert('Connection error');
@@ -381,7 +356,6 @@
             }
         }
 
-        // 2. Admin Login
         let adminToken = '';
         async function adminLogin() {
             const pass = document.getElementById('adminPass').value;
@@ -393,7 +367,7 @@
                 });
                 const data = await res.json();
                 if(data.success) {
-                    adminToken = pass; // Storing pass locally for simplicity in this demo
+                    adminToken = pass;
                     document.getElementById('adminLogin').classList.add('hidden');
                     document.getElementById('adminDashboard').classList.remove('hidden');
                     loadAdminData();
@@ -403,10 +377,9 @@
             } catch (err) { alert('Error logging in'); }
         }
 
-        // 3. Load Admin Data
         async function loadAdminData() {
             const tbody = document.getElementById('requestTableBody');
-            tbody.innerHTML = '<tr><td colspan="5" class="text-center p-4">Loading...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center p-8"><i class="fas fa-circle-notch fa-spin mr-2"></i>Loading data...</td></tr>';
 
             try {
                 const res = await fetch('/api/admin/data', {
@@ -417,16 +390,21 @@
                 const data = await res.json();
                 
                 tbody.innerHTML = '';
+                if (data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="text-center p-8 text-gray-500">No requests found.</td></tr>';
+                    return;
+                }
+
                 data.forEach(item => {
-                    const date = new Date(item.created_at).toLocaleDateString();
+                    const date = new Date(item.created_at).toLocaleDateString('id-ID');
                     const row = `
-                        <tr class="border-b border-gray-800 hover:bg-gray-900">
+                        <tr class="border-b border-gray-800 hover:bg-gray-900/50 transition">
                             <td class="p-3 text-gray-400">${date}</td>
                             <td class="p-3 font-bold text-accent">${item.name}</td>
                             <td class="p-3">${item.message}</td>
                             <td class="p-3 text-gray-400">${item.contact_info || '-'}</td>
                             <td class="p-3">
-                                <button onclick="deleteRequest(${item.id})" class="text-red-500 hover:text-red-300">
+                                <button onclick="deleteRequest(${item.id})" class="text-red-500 hover:text-red-300 transition">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </td>
@@ -434,19 +412,19 @@
                     `;
                     tbody.innerHTML += row;
                 });
-            } catch (err) { tbody.innerHTML = '<tr><td colspan="5" class="text-center text-red-500">Failed to load</td></tr>'; }
+            } catch (err) { tbody.innerHTML = '<tr><td colspan="5" class="text-center text-red-500 p-8">Failed to load data.</td></tr>'; }
         }
 
-        // 4. Delete Request
         async function deleteRequest(id) {
-            if(!confirm('Delete this request?')) return;
+            if(!confirm('Delete this request permanently?')) return;
             try {
-                await fetch('/api/admin/delete', {
+                const res = await fetch('/api/admin/delete', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ password: adminToken, id: id })
                 });
-                loadAdminData(); // Refresh
+                if(res.ok) loadAdminData();
+                else alert('Delete failed');
             } catch (err) { alert('Delete failed'); }
         }
     </script>
