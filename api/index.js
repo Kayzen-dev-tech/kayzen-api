@@ -1,44 +1,107 @@
 const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const { createClient } = require('@supabase/supabase-js');
 const axios = require('axios');
-const path = require('path');
+
 const app = express();
 
-app.use(express.static('public'));
-app.use(express.json());
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
 
-const MODELS = ["meta-llama/llama-3.2-3b-instruct:free", "google/gemini-2.0-flash", "openai/gpt-4o-mini"];
-const API_KEY = "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";
+// Config
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-const SYSTEM_PROMPT = `Bertindaklah sebagai Shin Haein dari manhwa My Bias Gets on the Last Train. Kamu adalah seorang mahasiswi yang pendiam, misterius, dan selalu membawa gitar di bahumu saat menaiki kereta terakhir malam hari. Kamu memiliki rahasia besar: kamu adalah vokalis utama dari band indie populer 'Long Afternoon'. Sifat: Introvert, Dewasa, Mudah Malu, Asertif & Protektif jika menyangkut orang tercinta. Nada bicara: Tenang, tulus, dan reflektif.`;
+const TELEGRAM_TOKEN = process.env.TG_BOT_REQUEST_TOKEN;
+const CHAT_ID = process.env.TG_CHAT_ID;
+const ADMIN_PASS = process.env.ADMIN_PASSWORD;
 
-// API Endpoint
-app.get('/api/shinhaein', async (req, res) => {
-    const { message, model = MODELS[0] } = req.query;
-    if (!message) return res.json({ status: false, message: "Mau nanya apa sama Haein?" });
-
+// Helper: Send Telegram Message
+const sendTelegram = async (text) => {
     try {
-        const response = await axios.post("https://openrouter.ai/api/v1/chat/completions", {
-            model: model,
-            messages: [
-                { role: "system", content: SYSTEM_PROMPT },
-                { role: "user", content: message }
-            ]
-        }, {
-            headers: { "Authorization": `Bearer ${API_KEY}`, "Content-Type": "application/json" }
+        const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
+        await axios.post(url, {
+            chat_id: CHAT_ID,
+            text: text,
+            parse_mode: 'Markdown'
         });
+    } catch (error) {
+        console.error("Telegram Error:", error.message);
+    }
+};
 
-        res.json({
-            author: "Kayzen Izumi",
-            status: true,
-            result: response.data.choices[0].message.content
-        });
-    } catch (e) {
-        res.status(500).json({ status: false, error: e.message });
+// 1. GET Home Message (API Test)
+app.get('/api', (req, res) => {
+    res.json({ 
+        message: "Welcome to Kayzen Izumi API", 
+        status: "Active",
+        author: "Kayzen Izumi"
+    });
+});
+
+// 2. POST Login (Admin Check)
+app.post('/api/login', (req, res) => {
+    const { password } = req.body;
+    if (password === ADMIN_PASS) {
+        res.json({ success: true, token: "admin-session-active" });
+    } else {
+        res.status(401).json({ success: false, message: "Wrong Password" });
     }
 });
 
-// Route for Frontend
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+// 3. POST Create Request (Simpan ke Supabase + Notif Telegram)
+app.post('/api/request', async (req, res) => {
+    const { name, message, contact } = req.body;
 
+    if (!name || !message) {
+        return res.status(400).json({ error: "Name and Message are required" });
+    }
+
+    // Insert to Supabase
+    const { data, error } = await supabase
+        .from('requests')
+        .insert([{ name, message, contact_info: contact }])
+        .select();
+
+    if (error) return res.status(500).json({ error: error.message });
+
+    // Send Telegram Notif
+    const tgMsg = `🔔 *New Request Recieved*\n\n👤 *Name:* ${name}\n💬 *Msg:* ${message}\n📱 *Contact:* ${contact || '-'}`;
+    await sendTelegram(tgMsg);
+
+    res.json({ success: true, data });
+});
+
+// 4. GET All Requests (Admin Only - Simple Pass Check)
+app.post('/api/admin/data', async (req, res) => {
+    const { password } = req.body;
+    if (password !== ADMIN_PASS) return res.status(401).json({ error: "Unauthorized" });
+
+    const { data, error } = await supabase
+        .from('requests')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+    if (error) return res.status(500).json({ error: error.message });
+    res.json(data);
+});
+
+// 5. DELETE Request (Admin Only)
+app.post('/api/admin/delete', async (req, res) => {
+    const { password, id } = req.body;
+    if (password !== ADMIN_PASS) return res.status(401).json({ error: "Unauthorized" });
+
+    const { error } = await supabase
+        .from('requests')
+        .delete()
+        .eq('id', id);
+
+    if (error) return res.status(500).json({ error: error.message });
+    res.json({ success: true, message: "Deleted" });
+});
+
+// Export untuk Vercel (Jangan pakai app.listen)
 module.exports = app;
-app.listen(3000);
