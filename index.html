@@ -1,64 +1,335 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Kayzen Izumi | Shin Haein API</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayzen Izumi | Web API</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Poppins', 'sans-serif'] },
+                    colors: {
+                        dark: '#0f172a',
+                        darker: '#020617',
+                        accent: '#8b5cf6', // Violet
+                        secondary: '#38bdf8' // Sky blue
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #020617; color: #e2e8f0; }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .nav-item.active { color: #8b5cf6; border-bottom: 2px solid #8b5cf6; }
+        .profile-img {
+            width: 150px; height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #8b5cf6;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+        }
+        /* Hide scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    </style>
 </head>
-<body>
-    <div class="glass-card">
-        <nav style="text-align:center; margin-bottom: 20px;">
-            <button onclick="showPage('home')">Home</button>
-            <button onclick="showPage('docs')">API Docs</button>
-        </nav>
+<body class="flex flex-col min-h-screen">
 
-        <div id="home">
-            <center>
-                <img src="https://telegra.ph/file/a7e37e96b510496150247.jpg" class="profile-img" alt="Shin Haein">
-                <h1>Kayzen Izumi</h1>
-                <p>Welcome to Shin Haein AI Official API Interface</p>
-                <div class="social-links">
-                    <a href="https://github.com/Kayzen-dev-tech"><i class="fab fa-github"></i></a>
-                    <a href="https://instagram.com/kayzenfry"><i class="fab fa-instagram"></i></a>
-                    <a href="https://tiktok.com/@sczkayzen"><i class="fab fa-tiktok"></i></a>
-                    <a href="https://wa.me/628152313006"><i class="fab fa-whatsapp"></i></a>
-                    <a href="https://t.me/nonewpo"><i class="fab fa-telegram"></i></a>
+    <nav class="fixed top-0 w-full z-50 glass-panel shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="font-bold text-xl text-accent"><i class="fas fa-code"></i> Kayzen API</span>
                 </div>
-            </center>
-            <div style="margin-top: 30px;">
-                <h3>About This Project</h3>
-                <p>Web API ini bertema Shin Haein dari manhwa "My Bias Gets on the Last Train". Dikembangkan oleh Kayzen Izumi untuk memberikan pengalaman chat yang realistis dengan karakter favoritmu.</p>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <button onclick="showPage('home')" class="nav-btn hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition">Home</button>
+                        <button onclick="showPage('about')" class="nav-btn hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition">About Me</button>
+                        <button onclick="showPage('request')" class="nav-btn hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition">Request</button>
+                        <button onclick="showPage('contact')" class="nav-btn hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition">Contact</button>
+                        <button onclick="showPage('admin')" class="nav-btn hover:text-red-400 px-3 py-2 rounded-md text-sm font-medium transition">Admin</button>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button onclick="toggleMobileMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-darker">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <button onclick="showPage('home')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:text-accent">Home</button>
+                <button onclick="showPage('about')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:text-accent">About</button>
+                <button onclick="showPage('request')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:text-accent">Request</button>
+                <button onclick="showPage('contact')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:text-accent">Contact</button>
+                <button onclick="showPage('admin')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:text-red-400">Admin</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow pt-24 pb-10 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto w-full">
+        
+        <div id="home" class="page-section text-center animate-fade-in">
+            <div class="mt-10">
+                <img src="https://i.ibb.co.com/wrrLvKCP/image.jpg" alt="Kayzen Profile" class="profile-img mx-auto mb-6">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">Hi, I'm <span class="text-accent">Kayzen Izumi</span></h1>
+                <p class="text-lg text-gray-400 mb-8">Full Stack Developer | API Enthusiast | Tech Explorer</p>
+                <div class="flex justify-center gap-4">
+                    <button onclick="showPage('request')" class="bg-accent hover:bg-violet-700 text-white font-bold py-2 px-6 rounded-full transition shadow-[0_0_15px_rgba(139,92,246,0.5)]">
+                        Make a Request
+                    </button>
+                    <button onclick="showPage('about')" class="border border-accent text-accent hover:bg-accent hover:text-white font-bold py-2 px-6 rounded-full transition">
+                        Portfolio
+                    </button>
+                </div>
             </div>
         </div>
 
-        <div id="docs" style="display:none;">
-            <h2>API Documentation</h2>
-            <div class="endpoint-box">GET /api/shinhaein?message=halo</div>
-            
-            <h3>Try It Out</h3>
-            <div class="glass-card" style="margin: 10px 0; background: rgba(0,0,0,0.5);">
-                <input type="text" id="userQuery" placeholder="Tanya Shin Haein..." style="width: 70%;">
-                <button onclick="askHaein()">Send</button>
-                <div id="response" style="margin-top: 20px; white-space: pre-wrap; font-size: 0.9em;"></div>
+        <div id="about" class="page-section hidden">
+            <h2 class="text-3xl font-bold text-accent mb-6 border-b border-gray-700 pb-2">About Me</h2>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="glass-panel p-6 rounded-xl">
+                    <h3 class="text-xl font-semibold mb-2">Kayzen Izumi</h3>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        Seorang pengembang web yang berdedikasi dengan ketertarikan mendalam pada teknologi backend dan API. 
+                        Web ini dibangun menggunakan Node.js, Express, dan di-hosting di Vercel dengan database Supabase.
+                    </p>
+                    <div class="mt-4">
+                        <span class="inline-block bg-gray-700 rounded-full px-3 py-1 text-xs font-semibold text-gray-300 mr-2 mb-2">#NodeJS</span>
+                        <span class="inline-block bg-gray-700 rounded-full px-3 py-1 text-xs font-semibold text-gray-300 mr-2 mb-2">#Express</span>
+                        <span class="inline-block bg-gray-700 rounded-full px-3 py-1 text-xs font-semibold text-gray-300 mr-2 mb-2">#Supabase</span>
+                    </div>
+                </div>
+                <div class="glass-panel p-6 rounded-xl">
+                    <h3 class="text-xl font-semibold mb-2">API Documentation</h3>
+                    <p class="text-sm text-gray-400 mb-2">Base URL: <code class="bg-black p-1 rounded">/api</code></p>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex justify-between"><span class="text-green-400">GET /</span> <span>Check Status</span></li>
+                        <li class="flex justify-between"><span class="text-yellow-400">POST /request</span> <span>Create Request</span></li>
+                        <li class="flex justify-between"><span class="text-blue-400">POST /login</span> <span>Admin Login</span></li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
+
+        <div id="request" class="page-section hidden">
+            <h2 class="text-3xl font-bold text-accent mb-6">Submit Request</h2>
+            <div class="glass-panel p-8 rounded-xl max-w-lg mx-auto">
+                <form id="requestForm" onsubmit="submitRequest(event)">
+                    <div class="mb-4">
+                        <label class="block text-sm font-bold mb-2">Name</label>
+                        <input type="text" id="reqName" class="w-full bg-dark border border-gray-600 rounded p-3 focus:outline-none focus:border-accent" placeholder="Your Name" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-bold mb-2">Contact (WA/Email)</label>
+                        <input type="text" id="reqContact" class="w-full bg-dark border border-gray-600 rounded p-3 focus:outline-none focus:border-accent" placeholder="How can we reach you?">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-bold mb-2">Message / Request</label>
+                        <textarea id="reqMessage" rows="4" class="w-full bg-dark border border-gray-600 rounded p-3 focus:outline-none focus:border-accent" placeholder="What do you need?" required></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-accent hover:bg-violet-700 text-white font-bold py-3 rounded-lg transition">
+                        <i class="fas fa-paper-plane mr-2"></i> Send Request
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div id="contact" class="page-section hidden">
+            <h2 class="text-3xl font-bold text-accent mb-6 text-center">Get in Touch</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <a href="https://wa.me/628152313006" target="_blank" class="glass-panel p-4 rounded-xl flex items-center hover:bg-gray-800 transition">
+                    <i class="fab fa-whatsapp text-green-500 text-2xl mr-4"></i>
+                    <div><p class="text-xs text-gray-400">WhatsApp</p><p class="font-bold">+62 815-2313-006</p></div>
+                </a>
+                <a href="https://t.me/nonewpo" target="_blank" class="glass-panel p-4 rounded-xl flex items-center hover:bg-gray-800 transition">
+                    <i class="fab fa-telegram text-blue-400 text-2xl mr-4"></i>
+                    <div><p class="text-xs text-gray-400">Telegram</p><p class="font-bold">@nonewpo</p></div>
+                </a>
+                <a href="https://github.com/Kayzen-dev-tech" target="_blank" class="glass-panel p-4 rounded-xl flex items-center hover:bg-gray-800 transition">
+                    <i class="fab fa-github text-white text-2xl mr-4"></i>
+                    <div><p class="text-xs text-gray-400">GitHub</p><p class="font-bold">Kayzen-dev-tech</p></div>
+                </a>
+                <a href="mailto:kayzz.my@gmail.com" class="glass-panel p-4 rounded-xl flex items-center hover:bg-gray-800 transition">
+                    <i class="fas fa-envelope text-red-500 text-2xl mr-4"></i>
+                    <div><p class="text-xs text-gray-400">Email</p><p class="font-bold">kayzz.my@gmail.com</p></div>
+                </a>
+                <a href="https://youtube.com/@kayzenfry" target="_blank" class="glass-panel p-4 rounded-xl flex items-center hover:bg-gray-800 transition">
+                    <i class="fab fa-youtube text-red-600 text-2xl mr-4"></i>
+                    <div><p class="text-xs text-gray-400">YouTube</p><p class="font-bold">kayzenfry</p></div>
+                </a>
+                <a href="https://tiktok.com/@sczkayzen" target="_blank" class="glass-panel p-4 rounded-xl flex items-center hover:bg-gray-800 transition">
+                    <i class="fab fa-tiktok text-pink-500 text-2xl mr-4"></i>
+                    <div><p class="text-xs text-gray-400">TikTok</p><p class="font-bold">@sczkayzen</p></div>
+                </a>
+            </div>
+        </div>
+
+        <div id="admin" class="page-section hidden">
+            <h2 class="text-3xl font-bold text-red-400 mb-6">Admin Panel</h2>
+            
+            <div id="adminLogin" class="max-w-sm mx-auto glass-panel p-6 rounded-xl">
+                <input type="password" id="adminPass" class="w-full bg-dark border border-gray-600 rounded p-2 mb-4 text-center" placeholder="Enter Password">
+                <button onclick="adminLogin()" class="w-full bg-gray-700 hover:bg-gray-600 py-2 rounded">Login</button>
+            </div>
+
+            <div id="adminDashboard" class="hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl">Incoming Requests</h3>
+                    <button onclick="loadAdminData()" class="text-sm bg-blue-600 px-3 py-1 rounded">Refresh</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="text-gray-400 border-b border-gray-700">
+                                <th class="p-3">Date</th>
+                                <th class="p-3">Name</th>
+                                <th class="p-3">Message</th>
+                                <th class="p-3">Contact</th>
+                                <th class="p-3">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="requestTableBody" class="text-sm">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="text-center py-6 text-gray-500 text-sm">
+        &copy; 2026 Kayzen Izumi. All rights reserved.
+    </footer>
 
     <script>
-        function showPage(id) {
-            document.getElementById('home').style.display = id === 'home' ? 'block' : 'none';
-            document.getElementById('docs').style.display = id === 'docs' ? 'block' : 'none';
+        // Navigation Logic
+        function showPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(el => el.classList.add('hidden'));
+            document.getElementById(pageId).classList.remove('hidden');
+            document.getElementById('mobile-menu').classList.add('hidden'); // Close mobile menu
         }
 
-        async function askHaein() {
-            const msg = document.getElementById('userQuery').value;
-            const resDiv = document.getElementById('response');
-            resDiv.innerText = "Haein sedang mengetik...";
-            
-            const response = await fetch(`/api/shinhaein?message=${encodeURIComponent(msg)}`);
-            const data = await response.json();
-            resDiv.innerText = data.result || "Error: " + data.error;
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        // --- API INTEGRATION ---
+
+        // 1. Submit Request
+        async function submitRequest(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'Sending...';
+            btn.disabled = true;
+
+            const payload = {
+                name: document.getElementById('reqName').value,
+                message: document.getElementById('reqMessage').value,
+                contact: document.getElementById('reqContact').value
+            };
+
+            try {
+                const res = await fetch('/api/request', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if(data.success) {
+                    alert('Request sent successfully! Admin has been notified via Telegram.');
+                    document.getElementById('requestForm').reset();
+                } else {
+                    alert('Error: ' + JSON.stringify(data));
+                }
+            } catch (err) {
+                alert('Connection error');
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        // 2. Admin Login
+        let adminToken = '';
+        async function adminLogin() {
+            const pass = document.getElementById('adminPass').value;
+            try {
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: pass })
+                });
+                const data = await res.json();
+                if(data.success) {
+                    adminToken = pass; // Storing pass locally for simplicity in this demo
+                    document.getElementById('adminLogin').classList.add('hidden');
+                    document.getElementById('adminDashboard').classList.remove('hidden');
+                    loadAdminData();
+                } else {
+                    alert('Wrong Password!');
+                }
+            } catch (err) { alert('Error logging in'); }
+        }
+
+        // 3. Load Admin Data
+        async function loadAdminData() {
+            const tbody = document.getElementById('requestTableBody');
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center p-4">Loading...</td></tr>';
+
+            try {
+                const res = await fetch('/api/admin/data', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: adminToken })
+                });
+                const data = await res.json();
+                
+                tbody.innerHTML = '';
+                data.forEach(item => {
+                    const date = new Date(item.created_at).toLocaleDateString();
+                    const row = `
+                        <tr class="border-b border-gray-800 hover:bg-gray-900">
+                            <td class="p-3 text-gray-400">${date}</td>
+                            <td class="p-3 font-bold text-accent">${item.name}</td>
+                            <td class="p-3">${item.message}</td>
+                            <td class="p-3 text-gray-400">${item.contact_info || '-'}</td>
+                            <td class="p-3">
+                                <button onclick="deleteRequest(${item.id})" class="text-red-500 hover:text-red-300">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                });
+            } catch (err) { tbody.innerHTML = '<tr><td colspan="5" class="text-center text-red-500">Failed to load</td></tr>'; }
+        }
+
+        // 4. Delete Request
+        async function deleteRequest(id) {
+            if(!confirm('Delete this request?')) return;
+            try {
+                await fetch('/api/admin/delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: adminToken, id: id })
+                });
+                loadAdminData(); // Refresh
+            } catch (err) { alert('Delete failed'); }
         }
     </script>
 </body>
