@@ -3,6 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const { createClient } = require('@supabase/supabase-js');
 const axios = require('axios');
+const qs = require('qs');
 
 const app = express();
 
@@ -32,6 +33,38 @@ const sendTelegram = async (text) => {
         console.error("Telegram Error:", error.message);
     }
 };
+
+// --- HELPER AIO DOWNLOADER ---
+const AUTH_KEY = '20250901majwlqo';
+const DOMAIN_API = 'api-ak.vidssave.com';
+
+async function parseMedia(url) {
+    const data = qs.stringify({
+        auth: AUTH_KEY,
+        domain: DOMAIN_API,
+        origin: 'source',
+        link: url
+    });
+    const res = await axios.post('https://api.vidssave.com/api/contentsite_api/media/parse', data, {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    });
+    return res.data;
+}
+
+async function getDownloadLink(requestToken) {
+    const data = qs.stringify({
+        auth: AUTH_KEY,
+        domain: DOMAIN_API,
+        request: requestToken,
+        no_encrypt: 1
+    });
+    const res = await axios.post('https://api.vidssave.com/api/contentsite_api/media/download', data, {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    });
+    return res.data;
+}
+
+// --- ROUTES ---
 
 // 1. GET Home Message (API Test)
 app.get('/api', (req, res) => {
@@ -101,6 +134,63 @@ app.post('/api/admin/delete', async (req, res) => {
 
     if (error) return res.status(500).json({ error: error.message });
     res.json({ success: true, message: "Deleted" });
+});
+
+// Endpoint AIO Downloader
+app.get('/api/download', async (req, res) => {
+    const targetUrl = req.query.url;
+
+    if (!targetUrl) {
+        return res.status(400).json({
+            status: false,
+            author: 'Kayzen Izumi',
+            message: 'Masukkan parameter URL! Contoh: /api/download?url=LINK_IG'
+        });
+    }
+
+    try {
+        const parsed = await parseMedia(targetUrl);
+        
+        if (!parsed.data || !parsed.data.resources) {
+            return res.status(404).json({ status: false, message: 'Media tidak ditemukan atau tidak didukung.' });
+        }
+
+        const resources = parsed.data.resources;
+        const video = resources.filter(r => r.type === 'video').map(r => ({
+            quality: r.quality,
+            format: r.format,
+            request: r.resource_content
+        }));
+
+        const audio = resources.filter(r => r.type === 'audio').map(r => ({
+            format: r.format,
+            request: r.resource_content
+        }));
+
+        // Ambil link download untuk video kualitas pertama secara otomatis
+        let downloadInfo = null;
+        if (video.length > 0) {
+            const dlData = await getDownloadLink(video[0].request);
+            downloadInfo = dlData.data;
+        }
+
+        res.json({
+            status: true,
+            author: 'Kayzen Izumi',
+            title: parsed.data.title,
+            thumbnail: parsed.data.thumbnail,
+            duration: parsed.data.duration,
+            video,
+            audio,
+            download: downloadInfo // Berisi task_id dan URL file final
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            status: false,
+            error: error.message
+        });
+    }
 });
 
 // Export untuk Vercel (Jangan pakai app.listen)
