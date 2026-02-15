@@ -3,7 +3,8 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const { createClient } = require('@supabase/supabase-js');
 const axios = require('axios');
-const qs = require('qs');
+const cheerio = require('cheerio');
+const CryptoJS = require('crypto-js');
 
 const app = express();
 
@@ -34,35 +35,52 @@ const sendTelegram = async (text) => {
     }
 };
 
-// --- HELPER AIO DOWNLOADER ---
-const AUTH_KEY = '20250901majwlqo';
-const DOMAIN_API = 'api-ak.vidssave.com';
+// --- AIO SCRAPER FUNCTION ---
+const scrapeAIO = async (targetUrl) => {
+    const baseUrl = 'https://allinonedownloader.com';
+    const ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
-async function parseMedia(url) {
-    const data = qs.stringify({
-        auth: AUTH_KEY,
-        domain: DOMAIN_API,
-        origin: 'source',
-        link: url
-    });
-    const res = await axios.post('https://api.vidssave.com/api/contentsite_api/media/parse', data, {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    });
-    return res.data;
-}
+    try {
+        const initRes = await axios.get(baseUrl, { headers: { 'User-Agent': ua } });
+        const $ = cheerio.load(initRes.data);
+        const token = $('#token').val();
+        const apiPath = $('#scc').val();
+        const cookies = initRes.headers['set-cookie']?.map(c => c.split(';')[0]).join('; ');
 
-async function getDownloadLink(requestToken) {
-    const data = qs.stringify({
-        auth: AUTH_KEY,
-        domain: DOMAIN_API,
-        request: requestToken,
-        no_encrypt: 1
-    });
-    const res = await axios.post('https://api.vidssave.com/api/contentsite_api/media/download', data, {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    });
-    return res.data;
-}
+        if (!token || !apiPath) throw new Error('Params not found');
+
+        const jsPath = $('script[src*="template/main/assets/js/main.js"]').attr('src');
+        const jsUrl = new URL(jsPath, baseUrl).href;
+        const { data: jsContent } = await axios.get(jsUrl, { headers: { 'User-Agent': ua, 'Cookie': cookies } });
+
+        const ivMatch = jsContent.match(/CryptoJS\.enc\.Hex\.parse\(['"]([a-f0-9]{32})['"]\)/);
+        const ivHex = ivMatch ? ivMatch[1] : 'afc4e290725a3bf0ac4d3ff826c43c10';
+
+        const key = CryptoJS.enc.Hex.parse(token);
+        const iv = CryptoJS.enc.Hex.parse(ivHex);
+        const urlhash = CryptoJS.AES.encrypt(targetUrl, key, {
+            iv: iv,
+            padding: CryptoJS.pad.ZeroPadding
+        }).toString();
+
+        const apiUrl = apiPath.startsWith('http') ? apiPath : `https://allinonedownloader.com${apiPath}`;
+        const { data } = await axios.post(apiUrl, 
+            new URLSearchParams({ url: targetUrl, token: token, urlhash: urlhash }).toString(), 
+            {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Referer': baseUrl,
+                    'Cookie': cookies,
+                    'User-Agent': ua
+                }
+            }
+        );
+        return data;
+    } catch (err) {
+        return { error: err.message };
+    }
+};
 
 // --- ROUTES ---
 
@@ -137,60 +155,12 @@ app.post('/api/admin/delete', async (req, res) => {
 });
 
 // Endpoint AIO Downloader
-app.get('/api/download', async (req, res) => {
-    const targetUrl = req.query.url;
-
-    if (!targetUrl) {
-        return res.status(400).json({
-            status: false,
-            author: 'Kayzen Izumi',
-            message: 'Masukkan parameter URL! Contoh: /api/download?url=LINK_IG'
-        });
-    }
-
-    try {
-        const parsed = await parseMedia(targetUrl);
-        
-        if (!parsed.data || !parsed.data.resources) {
-            return res.status(404).json({ status: false, message: 'Media tidak ditemukan atau tidak didukung.' });
-        }
-
-        const resources = parsed.data.resources;
-        const video = resources.filter(r => r.type === 'video').map(r => ({
-            quality: r.quality,
-            format: r.format,
-            request: r.resource_content
-        }));
-
-        const audio = resources.filter(r => r.type === 'audio').map(r => ({
-            format: r.format,
-            request: r.resource_content
-        }));
-
-        // Ambil link download untuk video kualitas pertama secara otomatis
-        let downloadInfo = null;
-        if (video.length > 0) {
-            const dlData = await getDownloadLink(video[0].request);
-            downloadInfo = dlData.data;
-        }
-
-        res.json({
-            status: true,
-            author: 'Kayzen Izumi',
-            title: parsed.data.title,
-            thumbnail: parsed.data.thumbnail,
-            duration: parsed.data.duration,
-            video,
-            audio,
-            download: downloadInfo // Berisi task_id dan URL file final
-        });
-
-    } catch (error) {
-        res.status(500).json({
-            status: false,
-            error: error.message
-        });
-    }
+app.get('/api/aio', async (req, res) => {
+    const { url } = req.query;
+    if (!url) return res.status(400).json({ error: "Query parameter 'url' is required" });
+    
+    const result = await scrapeAIO(url);
+    res.json(result);
 });
 
 // Export untuk Vercel (Jangan pakai app.listen)
